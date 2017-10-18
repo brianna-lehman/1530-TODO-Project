@@ -1,7 +1,3 @@
-/**
- * This file serves as the main program to start the game.
- */
-
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
