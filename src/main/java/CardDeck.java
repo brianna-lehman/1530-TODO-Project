@@ -62,4 +62,9 @@ public class CardDeck {
   private void shuffle() {
     Collections.shuffle(deck);
   }
+
+  // returns size of deck for testing purposes
+  public int deckSize() {
+    return deck.size();
+  }
 }
