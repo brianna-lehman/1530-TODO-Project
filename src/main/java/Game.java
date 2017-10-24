@@ -23,8 +23,6 @@ public class Game extends JFrame {
   static CardDeck deck = new CardDeck();
   static MessagePanel messagePanel = new MessagePanel();
 
-  static MessagePanel messagePanel = new MessagePanel();
-
   public Game() {
     // set label for frame
     super("World of Sweets");
