@@ -22,6 +22,7 @@ public class Game extends JFrame {
 
   // deck of cards
   static CardDeck deck = new CardDeck();
+  static MessagePanel messagePanel = new MessagePanel();
 
   public Game() {
     // set label for frame
@@ -58,7 +59,6 @@ public class Game extends JFrame {
     add(utilityPanel, BorderLayout.PAGE_END);
 
     // panel to display messages to user
-    MessagePanel messagePanel = new MessagePanel();
     utilityPanel.add(messagePanel);
 
     // add panels that represent card and discard piles
