@@ -18,12 +18,30 @@ public class Game extends JFrame {
   static final Color CL_GREEN = hexToColor("#4C9C55");
   static final Color CL_ORANGE = hexToColor("#DD6652");
 
+  static int NUMBER_OF_PLAYERS = -1;
+
   // deck of cards
   static CardDeck deck = new CardDeck();
 
   public Game() {
     // set label for frame
     super("World of Sweets");
+
+    //dialog box for specifying number of players
+    String[] players = {"2", "3", "4"};
+    JComboBox<String> combo = new JComboBox<>(players);
+    JPanel panel = new JPanel(new GridLayout(0, 1));
+    panel.add(new JLabel("Welcome! How many players?"));
+    panel.add(combo);
+    int result = JOptionPane.showConfirmDialog(null, panel, "Test",
+        JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+    if (result == JOptionPane.OK_OPTION) {
+        NUMBER_OF_PLAYERS = Integer.parseInt((String)combo.getSelectedItem());
+    } 
+    else {
+        System.exit(0);
+    }
 
     // create a frame for the game
     setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
