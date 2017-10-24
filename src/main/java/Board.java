@@ -43,13 +43,13 @@ public class Board extends JPanel {
         // add a full row of colored squares starting from the left
         for (int col = 0; col < COLS; col++) {
           squares[row][col].setColor(getColorFromIndex(currIndex++));
-          addButtonToSquare(squares[row][col]);
+          squares[row][col].addButtonToSquare();
         }
       } else if (row % 2 == 0) {
         // add a full row of colored squares starting from the right
         for (int col = COLS - 1; col >= 0; col--) {
           squares[row][col].setColor(getColorFromIndex(currIndex++));
-          addButtonToSquare(squares[row][col]);
+          squares[row][col].addButtonToSquare();
         }
       } else {
         // the odd-numbered rows will mostly be white, exceptions being the
@@ -58,11 +58,11 @@ public class Board extends JPanel {
           if (col == COLS - 1 && (row - 1) % 4 == 0) {
             // connect rows at the right end of the board
             squares[row][col].setColor(getColorFromIndex(currIndex++));
-            addButtonToSquare(squares[row][col]);
+            squares[row][col].addButtonToSquare();
           } else if (col == 0 && (row - 3) % 4 == 0) {
             // connect rows at the left end of the board
             squares[row][col].setColor(getColorFromIndex(currIndex++));
-            addButtonToSquare(squares[row][col]);
+            squares[row][col].addButtonToSquare();
           }
         }
       }
@@ -83,24 +83,6 @@ public class Board extends JPanel {
     startLabel.setFont(new Font("Courier", Font.PLAIN, 12));
     startLabel.setForeground(Game.CL_WHITE);
     startSquare.add(startLabel);
-  }
-
-  /**
-   * This method adds a button with no text to the square
-   * if it's colored and returns true, otherwise returns false
-   * @param sqr the GameboardSquare the button is being added to
-   * @return a boolean signifying whether a button was added or not
-   */
-  private boolean addButtonToSquare(GameboardSquare sqr) {
-    if (sqr.getColor() == Game.CL_WHITE) {
-      return false;
-    }
-
-    JButton btn = new JButton(" ");
-    ActionListener btnListener = new ButtonListener();
-    btn.addActionListener(btnListener);
-    sqr.add(btn);
-    return true;
   }
 
   /**
@@ -144,8 +126,21 @@ public class Board extends JPanel {
       setBackground(this.color);
     }
 
-    public Color getColor() {
-      return color;
+    /**
+     * This method adds a button with no text to the square
+     * if it's colored and returns true, otherwise returns false
+     * @return a boolean signifying whether a button was added or not
+     */
+    public boolean addButtonToSquare() {
+      if (this.color == Game.CL_WHITE) {
+        return false;
+      }
+
+      JButton btn = new JButton(" ");
+      ActionListener btnListener = new ButtonListener();
+      btn.addActionListener(btnListener);
+      this.add(btn);
+      return true;
     }
   }
 
