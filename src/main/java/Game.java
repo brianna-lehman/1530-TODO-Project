@@ -22,6 +22,7 @@ public class Game extends JFrame {
 
   // deck of cards
   static CardDeck deck = new CardDeck();
+
   static MessagePanel messagePanel = new MessagePanel();
 
   static MessagePanel messagePanel = new MessagePanel();
