@@ -50,6 +50,8 @@ public class CardDeckPanel extends JPanel {
 
     // to be called each time the drawCardButton is clicked
     public void actionPerformed(ActionEvent e) {
+      Game game = Game.getInstance();
+
       // remove the current card from the screen if there is one there
       if (currentCard != null) {
         cardPile.remove(currentCard);
@@ -61,6 +63,8 @@ public class CardDeckPanel extends JPanel {
 
       // refresh the component
       refresh();
+
+      game.getMessagePanel().setMessage("Move to the matching colored square");
     }
   }
 }
