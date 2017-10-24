@@ -18,11 +18,9 @@ public class Game extends JFrame {
   static final Color CL_GREEN = hexToColor("#4C9C55");
   static final Color CL_ORANGE = hexToColor("#DD6652");
 
+  private static Game game = null;
   static int NUMBER_OF_PLAYERS = -1;
-
-  // deck of cards
   static CardDeck deck = new CardDeck();
-
   static MessagePanel messagePanel = new MessagePanel();
 
   static MessagePanel messagePanel = new MessagePanel();
@@ -42,7 +40,7 @@ public class Game extends JFrame {
 
     if (result == JOptionPane.OK_OPTION) {
         NUMBER_OF_PLAYERS = Integer.parseInt((String)combo.getSelectedItem());
-    } 
+    }
     else {
         System.exit(0);
     }
@@ -82,8 +80,20 @@ public class Game extends JFrame {
         Integer.valueOf(colorStr.substring(5, 7), 16));
   }
 
+  public static Game getInstance() {
+    if (game == null) {
+      game = new Game();
+    }
+    return game;
+  }
+
+  public MessagePanel getMessagePanel() {
+    return messagePanel;
+  }
+
   // main simply creates an instance of Game for now
   public static void main(String [] args) {
-    new Game();
+    // creates a single instance of the game that can be used in all the other classes
+    Game game = Game.getInstance();
   }
 }

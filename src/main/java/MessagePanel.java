@@ -30,7 +30,7 @@ public class MessagePanel extends JPanel {
   }
 
   public void setMessage(String message) {
-    userMessage.setText(message);
+    userMessage.setText(formatText(message, Game.WINDOW_WIDTH / 2, MESSAGE_STYLES));
     add(userMessage);
   }
 

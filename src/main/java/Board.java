@@ -149,8 +149,11 @@ public class Board extends JPanel {
    */
   private class ButtonListener implements ActionListener {
 
-    // TODO
     public void actionPerformed(ActionEvent e) {
+      Game game = Game.getInstance();
+      MessagePanel messagePanel = game.getMessagePanel();
+      messagePanel.setMessage("Next Player's Turn");
+      // TODO
       // somehow check that the square that was clicked matches the card the player got
       // move the current player's token
       // if the current player is at Grandma's house
