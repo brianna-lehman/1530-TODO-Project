@@ -1,17 +1,5 @@
 Manual Tests
 
-TEST CASE IDENIFIER:
-DESCRIPTION:
-PRECONDITIONS:
-EXECUTION STEPS:
-POSTCONDITIONS:
-
-SUMMARY:
-DESCRIPTION:
-REPRODUCTION STEPS:
-EXPECTED BEHAVIOR:
-OBSERVED BEHAVIOR:
-
 TEST CASE IDENTIFIER: NUMBER-OF-PLAYERS-POPUP
 DESCRIPTION: When the game starts, a popup appears with a drop down menu asking for the number of players.
 PRECONDITIONS: The game is able to compile.
@@ -40,7 +28,10 @@ TEST CASE IDENIFIER: GAMEBOARD-COMPONENTS
 DESCRIPTION: Making sure that all the necessary visual components are on the board at the start of the game.
 PRECONDITIONS: Run the game, chose the number of players, and click OK.
 EXECUTION STEPS: Look at the board that appears.
-POSTCONDITIONS: Part of the board is a grid of connected brightly colored squares. There is a Start square and a Grandma's House square that are unique colors from the other squares. There's a panel for printing messages and a panel with a button for drawing cards. There are tokens equal to the number of players on the Start square.
+POSTCONDITIONS: Part of the board is a grid of connected brightly colored squares.
+There is a Start square and a Grandma's House square that are unique colors from the other squares.
+There's a panel for printing messages and a panel with a button for drawing cards.
+There are tokens equal to the number of players on the Start square.
 
 TEST CASE IDENIFIER: FIRST-DRAW-CARD-BUTTON-CLICK
 DESCRIPTION: When the Draw a Card button is clicked for the first time a random card from the deck will appear on the board.
