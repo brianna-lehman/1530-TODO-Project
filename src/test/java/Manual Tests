@@ -1,0 +1,79 @@
+Manual Tests
+
+TEST CASE IDENIFIER:
+DESCRIPTION:
+PRECONDITIONS:
+EXECUTION STEPS:
+POSTCONDITIONS:
+
+SUMMARY:
+DESCRIPTION:
+REPRODUCTION STEPS:
+EXPECTED BEHAVIOR:
+OBSERVED BEHAVIOR:
+
+TEST CASE IDENTIFIER: NUMBER-OF-PLAYERS-POPUP
+DESCRIPTION: When the game starts, a popup appears with a drop down menu asking for the number of players.
+PRECONDITIONS: The game is able to compile.
+EXECUTION STEPS: Start the game with 'gradle run'.
+POSTCONDITIONS: The popup appears, asking for the number of players to be chosen from a dropdown menu, where the only options are 2, 3, or 4.
+
+TEST CASE IDENIFIER: NUMBER-OF-PLAYERS-2
+DESCRIPTION: Chosing 2 from the dropdown menu allows the board to appear with two player tokens in the start position.
+PRECONDITIONS: The game is running.
+EXECUTION STEPS: Chose 2 from the popup's dropdown menu and press OK
+POSTCONDITIONS: The gameboard appears with 2 token in the start square.
+
+TEST CASE IDENIFIER: NUMBER-OF-PLAYERS-3
+DESCRIPTION: Chosing 3 from the dropdown menu allows the board to appear with two player tokens in the start position.
+PRECONDITIONS: The game is running.
+EXECUTION STEPS: Chose 3 from the popup's dropdown menu and press OK
+POSTCONDITIONS: The gameboard appears with 3 token in the start square.
+
+TEST CASE IDENIFIER: NUMBER-OF-PLAYERS-4
+DESCRIPTION: Chosing 4 from the dropdown menu allows the board to appear with two player tokens in the start position.
+PRECONDITIONS: The game is running.
+EXECUTION STEPS: Chose 4 from the popup's dropdown menu and press OK
+POSTCONDITIONS: The gameboard appears with 4 token in the start square.
+
+TEST CASE IDENIFIER: GAMEBOARD-COMPONENTS
+DESCRIPTION: Making sure that all the necessary visual components are on the board at the start of the game.
+PRECONDITIONS: Run the game, chose the number of players, and click OK.
+EXECUTION STEPS: Look at the board that appears.
+POSTCONDITIONS: Part of the board is a grid of connected brightly colored squares. There is a Start square and a Grandma's House square that are unique colors from the other squares. There's a panel for printing messages and a panel with a button for drawing cards. There are tokens equal to the number of players on the Start square.
+
+TEST CASE IDENIFIER: FIRST-DRAW-CARD-BUTTON-CLICK
+DESCRIPTION: When the Draw a Card button is clicked for the first time a random card from the deck will appear on the board.
+PRECONDITIONS: The board has appeared on the screen, no buttons have been clicked yet.
+EXECUTION STEPS: Click the 'Draw a Card' button in the card panel.
+POSTCONDITIONS: A random card has appeared with a colored square in the card panel.
+
+TEST CASE IDENIFIER: 22ND-DRAW-CARD-BUTTON-CLICK
+DESCRIPTION: When the Draw a Card button is clicked for the 22nd time a random card from the deck will appear on the board.
+PRECONDITIONS: The 'Draw a Card' button has been clicked 21 times with a new card appearing each time.
+EXECUTION STEPS: Click the 'Draw a Card' button a 22nd time.
+POSTCONDITIONS: A new random card has appeared with a colored square on the card panel screen.
+
+TEST CASE IDENIFIER: 61ST-DRAW-CARD-BUTTON-CLICK
+DESCRIPTION: When the Draw a Card button is clicked for the 61st time a random card from the deck will appear on the board.
+PRECONDITIONS: The 'Draw a Card' button has been clicked 60 times with a new card appearing each time.
+EXECUTION STEPS: Click the 'Draw a Card' button a 61st time.
+POSTCONDITIONS: A new random card has appeared with a colored square on the card panel screen.
+
+TEST CASE IDENIFIER: DRAW-CARD-MESSAGE
+DESCRIPTION: When the 'Draw a Card' button is clicked a message appears in the message panel telling the player to move to the appropriate square.
+PRECONDITIONS: The board is on the screen, no buttons have been clicked, and the initial message "Hello, welcome to the World of Sweets!" is printed in the message panel.
+EXECUTION STEPS: Click on the Draw a Card button.
+POSTCONDITIONS: The initial message is replaced with "Move to the next matching colored square"
+
+TEST CASE IDENIFIER: MOVE-TOKEN-MESSAGE-HAPPY-PATH
+DESCRIPTION: When a square on the game board is clicked after a card has been chosen a message appears in the message panel saying that it's the next player's turn.
+PRECONDITIONS: The card button has been clicked and "Move to the next matching colored square" is in the message panel.
+EXECUTION STEPS: Click on the next matching colored square.
+POSTCONDITIONS: A new message that says "It's the next player's turn" replaces the old message.
+
+TEST CASE IDENIFIER: MOVE-TOKEN-MESSAGE-WITHOUT-CARD
+DESCRIPTION: When a square on the game board is clicked without a card being chosen a message appears in the message panel saying that it's the next player's turn.
+PRECONDITIONS: The card button hasn't been clicked and "Hello, welcome to the World of Sweets!" is in the message panel.
+EXECUTION STEPS: Any colored square in the gameboard.
+POSTCONDITIONS: A new message that says "It's the next player's turn" replaces the old message.
