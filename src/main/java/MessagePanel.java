@@ -8,6 +8,8 @@ import java.awt.*;
 
 public class MessagePanel extends JPanel {
 
+  // turn indicator
+  private JLabel turnIndicator;
   // message to be displayed
   private JLabel userMessage;
 
@@ -22,6 +24,11 @@ public class MessagePanel extends JPanel {
   public MessagePanel() {
     setBackground(Game.CL_PINK);
 
+    turnIndicator = new JLabel();
+    turnIndicator.setFont(new Font("Courier", Font.PLAIN, 24));
+    turnIndicator.setText(formatText("Player 1's turn", Game.WINDOW_WIDTH / 2, MESSAGE_STYLES));
+    add(turnIndicator);
+
     // message to be initially displayed to user
     userMessage = new JLabel();
     userMessage.setFont(new Font("Courier", Font.PLAIN, 24));
@@ -29,9 +36,12 @@ public class MessagePanel extends JPanel {
     add(userMessage);
   }
 
+  public void setCurrentTurn(int turn) {
+    turnIndicator.setText(formatText("Player " + (turn + 1) + "'s turn", Game.WINDOW_WIDTH / 2, MESSAGE_STYLES));
+  }
+
   public void setMessage(String message) {
     userMessage.setText(formatText(message, Game.WINDOW_WIDTH / 2, MESSAGE_STYLES));
-    add(userMessage);
   }
 
   /**

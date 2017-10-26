@@ -79,7 +79,8 @@ public class Game extends JFrame {
   public int nextTurn()
   {
     current_turn = (current_turn + 1) % NUMBER_OF_PLAYERS;
-    this.getMessagePanel().setMessage("Player " + (current_turn + 1) + "'s turn");
+    this.getMessagePanel().setCurrentTurn(current_turn);
+    this.getMessagePanel().setMessage("");
     return current_turn;
   }
 
