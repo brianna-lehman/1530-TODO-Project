@@ -20,6 +20,7 @@ public class Game extends JFrame {
 
   private static Game game = null;
   static int NUMBER_OF_PLAYERS = -1;
+  static Token[] tokens;
   static CardDeck deck = new CardDeck();
   static MessagePanel messagePanel = new MessagePanel();
 
@@ -38,6 +39,7 @@ public class Game extends JFrame {
 
     if (result == JOptionPane.OK_OPTION) {
         NUMBER_OF_PLAYERS = Integer.parseInt((String)combo.getSelectedItem());
+        tokens = new Token[NUMBER_OF_PLAYERS];
     }
     else {
         System.exit(0);
@@ -46,6 +48,11 @@ public class Game extends JFrame {
     // create a frame for the game
     setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+    // initialize the player tokens
+    for(int i = 0; i < NUMBER_OF_PLAYERS; i++) {
+      tokens[i] = new Token();
+    }
 
     // panel which contains all of the movement squares
     Board gameboard = new Board();
