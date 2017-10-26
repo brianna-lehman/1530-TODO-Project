@@ -20,6 +20,7 @@ public class Game extends JFrame {
 
   private static Game game = null;
   static int NUMBER_OF_PLAYERS = -1;
+  static int current_turn = 0;
   static Token[] tokens;
   static CardDeck deck = new CardDeck();
   static MessagePanel messagePanel = new MessagePanel();
@@ -51,7 +52,7 @@ public class Game extends JFrame {
 
     // initialize the player tokens
     for(int i = 0; i < NUMBER_OF_PLAYERS; i++) {
-      tokens[i] = new Token(i + 1);
+      tokens[i] = new Token(i);
     }
 
     // panel which contains all of the movement squares
@@ -73,6 +74,14 @@ public class Game extends JFrame {
 
     pack();
     setVisible(true);
+  }
+
+  public int nextTurn()
+  {
+    current_turn = (current_turn + 1) % NUMBER_OF_PLAYERS;
+    this.getMessagePanel().setCurrentTurn(current_turn);
+    this.getMessagePanel().setMessage("");
+    return current_turn;
   }
 
   /**
