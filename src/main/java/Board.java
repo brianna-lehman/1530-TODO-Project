@@ -124,7 +124,6 @@ public class Board extends JPanel {
       this.add(label, BorderLayout.PAGE_START);
 
       tokens = new JPanel();
-      tokens.setLayout(new GridLayout(2,2,5,5));
       tokens.setOpaque(false);
       this.add(tokens, BorderLayout.CENTER);
 
@@ -158,26 +157,6 @@ public class Board extends JPanel {
     public void setColor(Color _color) {
       this.color = _color;
       setBackground(this.color);
-    }
-  }
-
-  /**
-   * The action to take when one of the colored squares on the board is clicked
-   */
-  private class ButtonListener implements ActionListener {
-
-    public void actionPerformed(ActionEvent e) {
-      Game game = Game.getInstance();
-      MessagePanel messagePanel = game.getMessagePanel();
-      messagePanel.setMessage("Next Player's Turn");
-      // TODO
-      // somehow check that the square that was clicked matches the card the player got
-      // move the current player's token
-      // if the current player is at Grandma's house
-        // display message - this player wins
-      // else
-        // switch to next player
-        // display message - next player's turn
     }
   }
 }

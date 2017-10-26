@@ -51,7 +51,7 @@ public class Game extends JFrame {
 
     // initialize the player tokens
     for(int i = 0; i < NUMBER_OF_PLAYERS; i++) {
-      tokens[i] = new Token();
+      tokens[i] = new Token(i + 1);
     }
 
     // panel which contains all of the movement squares
