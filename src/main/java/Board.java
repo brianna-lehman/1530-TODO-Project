@@ -43,13 +43,11 @@ public class Board extends JPanel {
         // add a full row of colored squares starting from the left
         for (int col = 0; col < COLS; col++) {
           squares[row][col].setColor(getColorFromIndex(currIndex++));
-          squares[row][col].addButtonToSquare();
         }
       } else if (row % 2 == 0) {
         // add a full row of colored squares starting from the right
         for (int col = COLS - 1; col >= 0; col--) {
           squares[row][col].setColor(getColorFromIndex(currIndex++));
-          squares[row][col].addButtonToSquare();
         }
       } else {
         // the odd-numbered rows will mostly be white, exceptions being the
@@ -58,11 +56,9 @@ public class Board extends JPanel {
           if (col == COLS - 1 && (row - 1) % 4 == 0) {
             // connect rows at the right end of the board
             squares[row][col].setColor(getColorFromIndex(currIndex++));
-            squares[row][col].addButtonToSquare();
           } else if (col == 0 && (row - 3) % 4 == 0) {
             // connect rows at the left end of the board
             squares[row][col].setColor(getColorFromIndex(currIndex++));
-            squares[row][col].addButtonToSquare();
           }
         }
       }
@@ -71,18 +67,16 @@ public class Board extends JPanel {
     // add Grandma's House
     GameboardSquare grandmasHouse = squares[0][0];
     grandmasHouse.setColor(Game.CL_PINK);
-    JLabel grandmasHouseLabel = new JLabel("Grandma");
-    grandmasHouseLabel.setFont(new Font("Courier", Font.PLAIN, 12));
-    grandmasHouseLabel.setForeground(Game.CL_WHITE);
-    grandmasHouse.add(grandmasHouseLabel);
+    grandmasHouse.setLabelText("Grandma's House");
 
     // add Start square
     GameboardSquare startSquare = squares[ROWS - 1][0];
     startSquare.setColor(Game.CL_PURPLE);
-    JLabel startLabel = new JLabel("START");
-    startLabel.setFont(new Font("Courier", Font.PLAIN, 12));
-    startLabel.setForeground(Game.CL_WHITE);
-    startSquare.add(startLabel);
+    startSquare.setLabelText("START");
+    for(int i = 0; i < Game.NUMBER_OF_PLAYERS; i++) {
+      startSquare.addToken(Game.tokens[i]);
+    }
+
   }
 
   /**
@@ -109,10 +103,49 @@ public class Board extends JPanel {
 
     // color of this square
     private Color color;
+    // label at the top of the square
+    private JLabel label;
+    // panel containing the tokens in the middle of the square
+    private JPanel tokens;
 
     public GameboardSquare(Color _color) {
+      this.setLayout(new BorderLayout());
+
       this.color = _color;
       setBackground(this.color);
+
+      label = new JLabel();
+      label.setFont(new Font("Courier", Font.PLAIN, 12));
+      label.setForeground(Game.CL_WHITE);
+      label.setHorizontalAlignment(JLabel.CENTER);
+      label.setMinimumSize(new Dimension(0, 20));
+      label.setPreferredSize(new Dimension(0, 20));
+      label.setMaximumSize(new Dimension(0, 20));
+      this.add(label, BorderLayout.PAGE_START);
+
+      tokens = new JPanel();
+      tokens.setOpaque(false);
+      this.add(tokens, BorderLayout.CENTER);
+
+      // spacer at the bottom of a square same size as the label to center the tokens JPanel
+      JPanel spacer = new JPanel();
+      spacer.setMinimumSize(new Dimension(0, 20));
+      spacer.setPreferredSize(new Dimension(0, 20));
+      spacer.setMaximumSize(new Dimension(0, 20));
+      spacer.setOpaque(false);
+      this.add(spacer, BorderLayout.PAGE_END);
+    }
+
+    public void setLabelText(String text) {
+      label.setText(text);
+    }
+
+    public void addToken(Token t) {
+      tokens.add(t);
+    }
+
+    public void removeToken(Token t) {
+      tokens.remove(t);
     }
 
     @Override
@@ -124,43 +157,6 @@ public class Board extends JPanel {
     public void setColor(Color _color) {
       this.color = _color;
       setBackground(this.color);
-    }
-
-    /**
-     * This method adds a button with no text to the square
-     * if it's colored and returns true, otherwise returns false
-     * @return a boolean signifying whether a button was added or not
-     */
-    public boolean addButtonToSquare() {
-      if (this.color == Game.CL_WHITE) {
-        return false;
-      }
-
-      JButton btn = new JButton(" ");
-      ActionListener btnListener = new ButtonListener();
-      btn.addActionListener(btnListener);
-      this.add(btn);
-      return true;
-    }
-  }
-
-  /**
-   * The action to take when one of the colored squares on the board is clicked
-   */
-  private class ButtonListener implements ActionListener {
-
-    public void actionPerformed(ActionEvent e) {
-      Game game = Game.getInstance();
-      MessagePanel messagePanel = game.getMessagePanel();
-      messagePanel.setMessage("Next Player's Turn");
-      // TODO
-      // somehow check that the square that was clicked matches the card the player got
-      // move the current player's token
-      // if the current player is at Grandma's house
-        // display message - this player wins
-      // else
-        // switch to next player
-        // display message - next player's turn
     }
   }
 }
