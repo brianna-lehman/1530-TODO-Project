@@ -53,18 +53,18 @@ POSTCONDITIONS: A new random card has appeared with a colored square on the card
 
 TEST CASE IDENIFIER: DRAW-CARD-MESSAGE
 DESCRIPTION: When the 'Draw a Card' button is clicked a message appears in the message panel telling the player to move to the appropriate square.
-PRECONDITIONS: The board is on the screen, no buttons have been clicked, and the initial message "Hello, welcome to the World of Sweets!" is printed in the message panel.
+PRECONDITIONS: The board is on the screen, no buttons have been clicked, and the initial message "Player 1's Turn Hello, welcome to the World of Sweets!" is printed in the message panel.
 EXECUTION STEPS: Click on the Draw a Card button.
-POSTCONDITIONS: The initial message is replaced with "Move to the next matching colored square"
+POSTCONDITIONS: "Player 1's Turn" stays on the screen but the initial message is replaced with "Move to the next matching colored square"
 
-TEST CASE IDENIFIER: MOVE-TOKEN-MESSAGE-HAPPY-PATH
-DESCRIPTION: When a square on the game board is clicked after a card has been chosen a message appears in the message panel saying that it's the next player's turn.
-PRECONDITIONS: The card button has been clicked and "Move to the next matching colored square" is in the message panel.
-EXECUTION STEPS: Click on the next matching colored square.
-POSTCONDITIONS: A new message that says "It's the next player's turn" replaces the old message.
+TEST CASE IDENIFIER: MOVE-TOKEN-MESSAGE
+DESCRIPTION: When the current player token is clicked after a card has been chosen a message appears in the message panel saying that it's the next player's turn.
+PRECONDITIONS: The card button has been clicked and "Move to the next matching colored square" is in the message panel. The current player is Player 1
+EXECUTION STEPS: Click on Player 1's token.
+POSTCONDITIONS: A new message that says "Player 2's turn" replaces the old message.
 
 TEST CASE IDENIFIER: MOVE-TOKEN-MESSAGE-WITHOUT-CARD
-DESCRIPTION: When a square on the game board is clicked without a card being chosen a message appears in the message panel saying that it's the next player's turn.
-PRECONDITIONS: The card button hasn't been clicked and "Hello, welcome to the World of Sweets!" is in the message panel.
-EXECUTION STEPS: Any colored square in the gameboard.
-POSTCONDITIONS: A new message that says "It's the next player's turn" replaces the old message.
+DESCRIPTION: When the current player token is clicked without a card being chosen a message appears in the message panel saying that it's the next player's turn.
+PRECONDITIONS: The card button hasn't been clicked and "Player 1's Turn Hello, welcome to the World of Sweets!" is in the message panel.
+EXECUTION STEPS: Click Player 1's token.
+POSTCONDITIONS: A new message that says "Player 2's turn" replaces the old message.
