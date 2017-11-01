@@ -12,7 +12,7 @@ public class Card extends JPanel {
   private Color color;
 
   // is this card a single or double color card
-  private boolean isDouble = false;
+  private boolean isMultiple = false;
   // is this card a special card
   private boolean isSpecial = false;
 
@@ -20,23 +20,46 @@ public class Card extends JPanel {
   static final int CARD_WIDTH = 160;
   static final int CARD_HEIGHT = 110;
 
-  public Card(Color _color, boolean _isDouble, boolean _isSpecial) {
-    this.color = _color;
-    this.isDouble = _isDouble;
-    this.isSpecial = _isSpecial;
-    setBackground(Game.CL_WHITE);
-
-    // add colored squares to the card
-    add(new ColoredSquare(this.color));
-    if (isDouble) {
-      add(new ColoredSquare(color));
-    }
-  }
-
+  /** constructor for cards with one colored square
+   * @param _color the color of the square on the card
+   */
   public Card(Color _color) {
     this.color = _color;
     setBackground(Game.CL_WHITE);
     add(new ColoredSquare(this.color));
+  }
+
+  /** constructor for cards with multiple colored squares
+   * @param _color the color of the squares on the card
+   * @param numOfSquares number of squares on the card
+   */
+  public Card(Color _color, int numOfSquares) {
+    if (numOfSquares == 1) {
+      new Card(_color);
+    }
+    else {
+      this.color = _color;
+      this.isMultiple = true;
+      setBackground(Game.CL_WHITE);
+
+      for (int i = 1; i <= numOfSquares; i++) {
+        add(new ColoredSquare(this.color));
+      }
+    }
+  }
+
+  /** constructor for special cards which present a message to the user
+   * @param specialMessage the texts that will appear on the card
+   */
+  public Card(String specialMessage) {
+    this.isSpecial = true;
+    setBackground(Game.CL_WHITE);
+
+    JLabel messageLabel = new JLabel();
+    messageLabel.setFont(new Font("Courier", Font.PLAIN, 24));
+    messageLabel.setText(formatText(specialMessage, CARD_WIDTH));
+
+    add(messageLabel);
   }
 
   // public getter methods
@@ -44,12 +67,17 @@ public class Card extends JPanel {
     return this.color.toString();
   }
 
-  public boolean isDouble() {
-    return this.isDouble;
+  public boolean isMultiple() {
+    return this.isMultiple;
   }
 
   public boolean isSpecial() {
     return this.isSpecial;
+  }
+
+  private String formatText(String text, int maxWidth) {
+    String formatStr = "<html><div WIDTH=%d>%s</div><html>";
+    return String.format(formatStr, maxWidth, text);
   }
 
   @Override

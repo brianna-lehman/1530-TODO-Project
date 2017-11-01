@@ -3,12 +3,12 @@ import org.junit.Test;
 
 public class CardDeckTest {
   @SuppressWarnings("unchecked")
+  final int SIZEOFDECK = 65;
 
   @Test
   public void testCardDeckConstructor() {
     CardDeck deck = new CardDeck();
-    int numOfCards = 60;
-    assertEquals(deck.deckSize(), numOfCards);
+    assertEquals(deck.deckSize(), SIZEOFDECK);
   }
 
   // when a card is taken off the deck the deck has one less card
@@ -16,7 +16,7 @@ public class CardDeckTest {
   public void testGetNextCardOneCard() {
     CardDeck deck = new CardDeck();
     deck.getNextCard();
-    assertEquals(deck.deckSize(), 60-1);
+    assertEquals(deck.deckSize(), SIZEOFDECK-1);
   }
 
   // when n cards are taken off the deck the deck has n less cards
@@ -26,16 +26,16 @@ public class CardDeckTest {
     for (int i = 1; i <= 22; i++) {
         deck.getNextCard();
     }
-    assertEquals(deck.deckSize(), 60-22);
+    assertEquals(deck.deckSize(), SIZEOFDECK-22);
   }
 
   // when all the cards are taken off the deck the deck is refilled and reshuffled
   @Test
   public void testGetNextCardAllCards() {
     CardDeck deck = new CardDeck();
-    for (int i = 1; i <= 60; i++) {
+    for (int i = 1; i <= SIZEOFDECK; i++) {
         deck.getNextCard();
     }
-    assertEquals(deck.deckSize(), 60);
+    assertEquals(deck.deckSize(), SIZEOFDECK);
   }
 }

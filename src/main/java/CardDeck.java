@@ -45,17 +45,29 @@ public class CardDeck {
 
     // add the doubles
     for (int i = 0; i < 2; i++) {
-      Card redDouble = new Card(Game.CL_RED, true, false);
-      Card yellowDouble = new Card(Game.CL_YELLOW, true, false);
-      Card blueDouble = new Card(Game.CL_BLUE, true, false);
-      Card greenDouble = new Card(Game.CL_GREEN, true, false);
-      Card orangeDouble = new Card(Game.CL_ORANGE, true, false);
+      Card redDouble = new Card(Game.CL_RED, 2);
+      Card yellowDouble = new Card(Game.CL_YELLOW, 2);
+      Card blueDouble = new Card(Game.CL_BLUE, 2);
+      Card greenDouble = new Card(Game.CL_GREEN, 2);
+      Card orangeDouble = new Card(Game.CL_ORANGE, 2);
 
       deck.push(redDouble);
       deck.push(yellowDouble);
       deck.push(blueDouble);
       deck.push(greenDouble);
       deck.push(orangeDouble);
+    }
+
+    // add special card "Skip Turn"
+    for (int i = 0; i < 5; i++) {
+      Card skip = new Card("Skip Turn");
+      deck.push(skip);
+    }
+
+    // add special card "Move to center square"
+    for (int i = 0; i < 3; i++) {
+      Card middle = new Card("Move to middle square");
+      deck.push(middle);
     }
   }
 

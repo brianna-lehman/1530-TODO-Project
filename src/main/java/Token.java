@@ -15,7 +15,7 @@ public class Token extends JButton {
   }
 
   /**
-   * The action to take when one of the colored squares on the board is clicked
+   * The action to take when the current player's token is clicked
    */
   private class ButtonListener implements ActionListener {
 
