@@ -60,13 +60,13 @@ public class CardDeck {
 
     // add special card "Skip Turn"
     for (int i = 0; i < 5; i++) {
-      Card skip = new Card("Skip Turn");
+      Card skip = new Card(Game.CL_PURPLE, "Skip Turn");
       deck.push(skip);
     }
 
     // add special card "Move to center square"
     for (int i = 0; i < 3; i++) {
-      Card middle = new Card("Move to middle square");
+      Card middle = new Card(Game.CL_PINK, "Move to middle square");
       deck.push(middle);
     }
   }

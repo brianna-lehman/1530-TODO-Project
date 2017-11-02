@@ -64,7 +64,15 @@ public class CardDeckPanel extends JPanel {
       // refresh the component
       refresh();
 
-      game.getMessagePanel().setMessage("Move to the matching colored square");
+      if (currentCard.isSpecial()) {
+        game.getMessagePanel().setMessage("Follow the instructions on the card");
+      }
+      else if (currentCard.isMultiple()) {
+        game.getMessagePanel().setMessage("Move to the second matching colored square");
+      }
+      else {
+        game.getMessagePanel().setMessage("Move to the matching colored square");
+      }
     }
   }
 }

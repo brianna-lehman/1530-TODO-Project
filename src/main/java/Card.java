@@ -49,15 +49,18 @@ public class Card extends JPanel {
   }
 
   /** constructor for special cards which present a message to the user
-   * @param specialMessage the texts that will appear on the card
+   * @param _color the background color of the card
+   * @param specialMessage the text that will appear on the card
    */
-  public Card(String specialMessage) {
+  public Card(Color _color, String specialMessage) {
     this.isSpecial = true;
     setBackground(Game.CL_WHITE);
 
     JLabel messageLabel = new JLabel();
     messageLabel.setFont(new Font("Courier", Font.PLAIN, 24));
     messageLabel.setText(formatText(specialMessage, CARD_WIDTH));
+    messageLabel.setHorizontalAlignment(SwingConstants.CENTER);
+    messageLabel.setVerticalAlignment(SwingConstants.CENTER);
 
     add(messageLabel);
   }
