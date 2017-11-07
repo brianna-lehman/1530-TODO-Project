@@ -1,0 +1,13 @@
+Manual Tests
+
+TEST CASE IDENTIFIER: SPECIAL-CARD-SKIP-CARD
+DESCRIPTION: Skip cards appear in the deck.
+PRECONDITIONS: The game is running and no cards have been pulled from the deck.
+EXECUTION STEPS: Click the 'Draw a Card' button until the 'Skip Turn' message appears on the card panel.
+POSTCONDITIONS: The 'Skip Turn' card has been pulled and a message saying "Follow the instructions on the card" appears in the message panel.
+
+TEST CASE IDENTIFIER: SPECIAL-CARD-MIDDLE-SQUARE
+DESCRIPTION: Middle square cards appear in the deck.
+PRECONDITIONS: The game is running and no cards have been pulled from the deck.
+EXECUTION STEPS: Click the 'Draw a Card' button until the 'Move to middle square' message appears on the card panel.
+POSTCONDITIONS: The 'Middle square' card has been pulled and a message saying "Follow the instructions on the card" appears in the message panel.
