@@ -5,12 +5,12 @@ import javax.swing.*;
 public class Token extends JButton {
 
   private final int player_index;
-  int[] currentSquare = new int[2];
+  int currentSquare;
 
   public Token(int player_index) {
     this.player_index = player_index;
-    // [6,0] is the start square
-    this.currentSquare = {6,0};
+    // 0 is the start square
+    this.currentSquare = 0;
     this.setText("" + (player_index + 1));
     this.setPreferredSize(new Dimension(20, 20));
     this.setBorder(null);
