@@ -83,7 +83,9 @@ public class Game extends JFrame {
   {
     //move Token of current player to square given my currentCard
     Card currentCard = cardDeckPanel.currentCard;
-    this.getBoard().moveToken(tokens[current_turn], currentCard);
+    if(!currentCard.isSpecial){
+      this.getBoard().moveToken(tokens[current_turn], currentCard);
+    }
 
     current_turn = (current_turn + 1) % NUMBER_OF_PLAYERS;
     this.getMessagePanel().setCurrentTurn(current_turn);

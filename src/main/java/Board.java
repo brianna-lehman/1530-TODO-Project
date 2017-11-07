@@ -6,6 +6,8 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javafx.util.Pair;
+import java.util.*;
 
 public class Board extends JPanel {
 
@@ -16,7 +18,9 @@ public class Board extends JPanel {
   private static final int ROWS = 7;
   private static final int COLS = 7;
 
-  private HashMap<Integer, List<Integer>> indexToSquareMap = new HashMap<>();
+  // Map between the order in which squares appear and their location on the board
+  private Map<Integer, Pair<Integer,Integer>> indexToSquareMap = new HashMap<Integer, Pair<Integer,Integer>>();
+  private int  winningIndex;
 
   // 2D array of GameboardSquare which make up the board
   private GameboardSquare [][] squares = new GameboardSquare [ROWS][COLS];
@@ -45,43 +49,46 @@ public class Board extends JPanel {
         // add a full row of colored squares starting from the left
         for (int col = 0; col < COLS; col++) {
           squares[row][col].setColor(getColorFromIndex(currIndex++));
+          indexToSquareMap.put(currIndex, new Pair(row, col));
         }
       } else if (row % 2 == 0) {
         // add a full row of colored squares starting from the right
         for (int col = COLS - 1; col >= 0; col--) {
           squares[row][col].setColor(getColorFromIndex(currIndex++));
+          indexToSquareMap.put(currIndex, new Pair(row, col));
         }
       } else {
         // the odd-numbered rows will mostly be white, exceptions being the
         // one colored square that will be used to connect even, colored rows
         for (int col = 0; col < COLS; col++) {
-          if (row == 3 && col == 0) {
-            squares[row][col].setColor(Game.CL_BRIGHT_PURPLE);
-          }
-          else {
-            if (col == COLS - 1 && (row - 1) % 4 == 0) {
-              // connect rows at the right end of the board
-              squares[row][col].setColor(getColorFromIndex(currIndex++));
-            } else if (col == 0 && (row - 3) % 4 == 0) {
-              // connect rows at the left end of the board
-              squares[row][col].setColor(getColorFromIndex(currIndex++));
-            }
+          if (col == COLS - 1 && (row - 1) % 4 == 0) {
+            // connect rows at the right end of the board
+            squares[row][col].setColor(getColorFromIndex(currIndex++));
+            indexToSquareMap.put(currIndex, new Pair(row, col));
+          } else if (col == 0 && (row - 3) % 4 == 0) {
+            // connect rows at the left end of the board
+            squares[row][col].setColor(getColorFromIndex(currIndex++));
+            indexToSquareMap.put(currIndex, new Pair(row, col));
           }
         }
       }
     }
 
     // add Grandma's House
-    GameboardSquare grandmasHouse = squares[0][0];
+    GameboardSquare grandmasHouse = squares[ROWS - 1][0];
     grandmasHouse.setColor(Game.CL_PINK);
     grandmasHouse.setLabelText("Grandma's House");
+    winningIndex = currIndex;
 
     // add Start square
-    GameboardSquare startSquare = squares[ROWS - 1][0];
+    GameboardSquare startSquare = squares[0][0];
     startSquare.setColor(Game.CL_PURPLE);
     startSquare.setLabelText("START");
     for(int i = 0; i < Game.NUMBER_OF_PLAYERS; i++) {
       startSquare.addToken(Game.tokens[i]);
+    }
+    for(Token t : Game.tokens){
+      t.currentSquare = 0;
     }
 
   }
@@ -103,14 +110,56 @@ public class Board extends JPanel {
     }
   }
 
+  private int getIndexFromColor(Color color){
+    if(color.getRGB() == Game.CL_RED.getRGB()){
+      return 0;
+    }
+    else if(color.getRGB() == Game.CL_YELLOW.getRGB()){
+      return 1;
+    }
+    else if(color.getRGB() == Game.CL_BLUE.getRGB()){
+      return 2;
+    }
+    else if(color.getRGB() == Game.CL_GREEN.getRGB()){
+      return 3;
+    }
+    else if(color.getRGB() == Game.CL_WHITE.getRGB()){
+      return 4;
+    }
+    return -1;
+  }
+
   void moveToken(Token token, Card currentCard){
-    int[] position = token.currentSquare;
-    int[] newPosition = nextSquare(position, currentCard);
+    int position = token.currentSquare;
+    int newPosition = nextSquare(position, currentCard);
+    if(newPosition >= winningIndex) {
+      newPosition = winningIndex;
+      displayVictoryBox();
+    }
+    Pair newSquare = indexToSquareMap.get(newPosition);
+    GameboardSquare gs = squares[(int)newSquare.getKey()][(int)newSquare.getValue()];
+    gs.addToken(token);
   }
 
-  private int[] nextSquare(int[] currentSquare, Card card){
+  private int nextSquare(int currentSquare, Card card){
+    boolean isDouble = card.isMultiple;
+    Color cardColor = card.color;
+    int colorIndex = getIndexFromColor(cardColor);
+    int moves = 1;
+    while((currentSquare + moves) % 5 != colorIndex){
+      moves++;
+    } 
+    if(isDouble){
+      moves += 5;
+    }
+    return currentSquare+moves;
+  }
+
+  private void displayVictoryBox(){
 
   }
+
+
 
   /**
    * This class extends JPanel and will represent a square on the gameboard.
