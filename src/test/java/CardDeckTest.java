@@ -3,7 +3,7 @@ import org.junit.Test;
 
 public class CardDeckTest {
   @SuppressWarnings("unchecked")
-  final int SIZEOFDECK = 65;
+  final int SIZEOFDECK = 68;
 
   @Test
   public void testCardDeckConstructor() {

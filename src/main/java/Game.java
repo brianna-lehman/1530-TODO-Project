@@ -17,6 +17,7 @@ public class Game extends JFrame {
   static final Color CL_BLUE = hexToColor("#1576D5");
   static final Color CL_GREEN = hexToColor("#4C9C55");
   static final Color CL_ORANGE = hexToColor("#DD6652");
+  static final Color CL_BRIGHT_PURPLE = hexToColor("#CA19D1");
 
   private static Game game = null;
   static int NUMBER_OF_PLAYERS = -1;

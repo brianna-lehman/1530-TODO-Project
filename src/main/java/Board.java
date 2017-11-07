@@ -53,12 +53,17 @@ public class Board extends JPanel {
         // the odd-numbered rows will mostly be white, exceptions being the
         // one colored square that will be used to connect even, colored rows
         for (int col = 0; col < COLS; col++) {
-          if (col == COLS - 1 && (row - 1) % 4 == 0) {
-            // connect rows at the right end of the board
-            squares[row][col].setColor(getColorFromIndex(currIndex++));
-          } else if (col == 0 && (row - 3) % 4 == 0) {
-            // connect rows at the left end of the board
-            squares[row][col].setColor(getColorFromIndex(currIndex++));
+          if (row == 3 && col == 0) {
+            squares[row][col].setColor(Game.CL_BRIGHT_PURPLE);
+          }
+          else {
+            if (col == COLS - 1 && (row - 1) % 4 == 0) {
+              // connect rows at the right end of the board
+              squares[row][col].setColor(getColorFromIndex(currIndex++));
+            } else if (col == 0 && (row - 3) % 4 == 0) {
+              // connect rows at the left end of the board
+              squares[row][col].setColor(getColorFromIndex(currIndex++));
+            }
           }
         }
       }
