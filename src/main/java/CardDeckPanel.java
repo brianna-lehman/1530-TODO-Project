@@ -14,7 +14,7 @@ public class CardDeckPanel extends JPanel {
   private JPanel cardPile = new JPanel();
 
   // card that will be shown
-  private Card currentCard = null;
+  Card currentCard = null;
 
   public CardDeckPanel() {
     GridBagConstraints constraints = new GridBagConstraints();

@@ -16,6 +16,8 @@ public class Board extends JPanel {
   private static final int ROWS = 7;
   private static final int COLS = 7;
 
+  private HashMap<Integer, List<Integer>> indexToSquareMap = new HashMap<>();
+
   // 2D array of GameboardSquare which make up the board
   private GameboardSquare [][] squares = new GameboardSquare [ROWS][COLS];
 
@@ -99,6 +101,15 @@ public class Board extends JPanel {
       case 4: return Game.CL_ORANGE;
       default: return Game.CL_WHITE;
     }
+  }
+
+  void moveToken(Token token, Card currentCard){
+    int[] position = token.currentSquare;
+    int[] newPosition = nextSquare(position, currentCard);
+  }
+
+  private int[] nextSquare(int[] currentSquare, Card card){
+
   }
 
   /**
