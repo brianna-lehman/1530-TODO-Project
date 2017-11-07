@@ -25,6 +25,8 @@ public class Game extends JFrame {
   static Token[] tokens;
   static CardDeck deck = new CardDeck();
   static MessagePanel messagePanel = new MessagePanel();
+  static Board gameboard;
+  static CardDeckPanel cardDeckPanel;
 
   public Game() {
     // set label for frame
@@ -57,7 +59,7 @@ public class Game extends JFrame {
     }
 
     // panel which contains all of the movement squares
-    Board gameboard = new Board();
+    gameboard = new Board();
     add(gameboard);
 
     // utility panel at the bottom of the main panel
@@ -70,7 +72,7 @@ public class Game extends JFrame {
     utilityPanel.add(messagePanel);
 
     // add panels that represent card and discard piles
-    CardDeckPanel cardDeckPanel = new CardDeckPanel();
+    cardDeckPanel = new CardDeckPanel();
     utilityPanel.add(cardDeckPanel);
 
     pack();
@@ -79,6 +81,10 @@ public class Game extends JFrame {
 
   public int nextTurn()
   {
+    //move Token of current player to square given my currentCard
+    Card currentCard = cardDeckPanel.currentCard;
+    this.getBoard().moveToken(tokens[current_turn], currentCard);
+
     current_turn = (current_turn + 1) % NUMBER_OF_PLAYERS;
     this.getMessagePanel().setCurrentTurn(current_turn);
     this.getMessagePanel().setMessage("");
@@ -104,6 +110,10 @@ public class Game extends JFrame {
 
   public MessagePanel getMessagePanel() {
     return messagePanel;
+  }
+
+  public Board getBoard() {
+    return gameboard;
   }
 
   // main simply creates an instance of Game for now
