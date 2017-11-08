@@ -85,10 +85,15 @@ public class Board extends JPanel {
     winningIndex = currIndex;
     indexToSquareMap.put(winningIndex, new SquareDetails(ROWS - 1, 0, Game.CL_PINK));
 
+    // set middle index for "Move To Middle card"
+    middleIndex = winningIndex / 2;
+    GameboardSquare middleSquare = squares[3][0];
+    middleSquare.setLabelText("Middle");
+
     // add Start square
     GameboardSquare startSquare = squares[0][0];
     startSquare.setColor(Game.CL_PURPLE);
-    startSquare.setLabelText("START");
+    startSquare.setLabelText("Start");
     indexToSquareMap.put(0, new SquareDetails(0, 0, Game.CL_PURPLE));
     for(int i = 0; i < Game.NUMBER_OF_PLAYERS; i++) {
       startSquare.addToken(Game.tokens[i]);
@@ -96,6 +101,7 @@ public class Board extends JPanel {
     for(Token t : Game.tokens){
       t.currentSquare = 0;
     }
+
 
   }
 
