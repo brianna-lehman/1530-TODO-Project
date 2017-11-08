@@ -144,7 +144,6 @@ public class Board extends JPanel {
     int newPosition = nextSquare(position, currentCard);
     if (newPosition >= winningIndex) {
       newPosition = winningIndex;
-      displayVictoryBox();
     }
 
     SquareDetails newSquare = indexToSquareMap.get(newPosition);
@@ -154,6 +153,11 @@ public class Board extends JPanel {
     oldGS.removeToken(token);
     newGS.addToken(token);
     token.currentSquare = newPosition;
+
+    if(newPosition == winningIndex) {
+      displayVictoryBox(token.player_index);
+      System.exit(0);
+    }
   }
 
   private int nextSquare(int currentSquare, Card card) {
@@ -196,8 +200,9 @@ public class Board extends JPanel {
     }
   }
 
-  private void displayVictoryBox(){
-
+  private void displayVictoryBox(int playerIndex){
+    JPanel panel = new JPanel(new GridLayout(0, 1));
+    JOptionPane.showMessageDialog(panel, "Player " + (playerIndex + 1) + " wins!");
   }
 
   /**

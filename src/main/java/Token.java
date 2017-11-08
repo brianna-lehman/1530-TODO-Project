@@ -4,7 +4,7 @@ import javax.swing.*;
 
 public class Token extends JButton {
 
-  private final int player_index;
+  final int player_index;
   int currentSquare;
 
   public Token(int player_index) {
