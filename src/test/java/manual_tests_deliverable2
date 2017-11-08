@@ -18,6 +18,12 @@ PRECONDITIONS: The game is running and no cards have been pulled from the deck.
 EXECUTION STEPS: Look at the board that appears.
 POSTCONDITIONS: The square that is equally distant from the start and the end is a different color from all the other squares.
 
+TEST CASE IDENTIFIER: AUTOMATICALLY-MOVE-TOKENS
+DESCRIPTION: The middle square is a distinctly different color from the other squares on the board.
+PRECONDITIONS: The game is running and a card has been pulled from the deck on a particular player's turn.
+EXECUTION STEPS: Click the numbered token button corresponding to the player whose turn it currently is.
+POSTCONDITIONS: The player's token will move the correct square as directed by the card.
+
 TEST CASE IDENTIFIER: VICTORY-BOX
 DESCRIPTION: A box that notifies the players which player won the game.
 PRECONDITIONS: The game is running and a player's token is on a square such that the next card they draw will land their token at grandma's house.

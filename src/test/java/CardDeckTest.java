@@ -38,4 +38,30 @@ public class CardDeckTest {
     }
     assertEquals(deck.deckSize(), SIZEOFDECK);
   }
+
+  // when the deck is filled it contains 5 skip cards
+  @Test
+  public void testContainsSkipCards() {
+    int numSkipCards = 0;
+    CardDeck deck = new CardDeck();
+    for (int i = 1; i <= SIZEOFDECK; i++) {
+      if(deck.getNextCard().getCardType() == Card.CardType.SKIP) {
+        numSkipCards++;
+      }
+    }
+    assertEquals(numSkipCards, 5);
+  }
+
+  // when the deck is filled it contains 3 middle cards
+  @Test
+  public void testContainsMiddleCards() {
+    int numMiddleCards = 0;
+    CardDeck deck = new CardDeck();
+    for (int i = 1; i <= SIZEOFDECK; i++) {
+      if(deck.getNextCard().getCardType() == Card.CardType.MIDDLE) {
+        numMiddleCards++;
+      }
+    }
+    assertEquals(numMiddleCards, 3);
+  }
 }
