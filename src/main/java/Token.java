@@ -23,7 +23,7 @@ public class Token extends JButton {
   private class ButtonListener implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
-      if(Game.current_turn == player_index)
+      if(Game.current_turn == player_index && Game.cardDrawn)
       {
         Game game = Game.getInstance();
         game.nextTurn();

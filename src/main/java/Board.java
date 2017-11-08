@@ -164,7 +164,7 @@ public class Board extends JPanel {
     while((currentColorIndex + moves) % 5 != nextColorIndex){
       moves++;
     } 
-    
+
     if(isDouble){
       moves += 5;
     }
@@ -236,10 +236,14 @@ public class Board extends JPanel {
 
     public void addToken(Token t) {
       tokens.add(t);
+      validate();
+      repaint();
     }
 
     public void removeToken(Token t) {
       tokens.remove(t);
+      validate();
+      repaint();
     }
 
     @Override

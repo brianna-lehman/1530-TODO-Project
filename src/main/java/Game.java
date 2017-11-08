@@ -27,6 +27,7 @@ public class Game extends JFrame {
   static MessagePanel messagePanel = new MessagePanel();
   static Board gameboard;
   static CardDeckPanel cardDeckPanel;
+  static boolean cardDrawn = false;
 
   public Game() {
     // set label for frame
@@ -79,10 +80,15 @@ public class Game extends JFrame {
     setVisible(true);
   }
 
-  public int nextTurn()
+  public void nextTurn()
   {
     //move Token of current player to square given my currentCard
     Card currentCard = cardDeckPanel.currentCard;
+    //if no card has been drawn yet at the start of the game
+    if(currentCard == null) {
+      return;
+    }
+
     if(!currentCard.isSpecial){
       this.getBoard().moveToken(tokens[current_turn], currentCard);
     }
@@ -90,7 +96,9 @@ public class Game extends JFrame {
     current_turn = (current_turn + 1) % NUMBER_OF_PLAYERS;
     this.getMessagePanel().setCurrentTurn(current_turn);
     this.getMessagePanel().setMessage("");
-    return current_turn;
+
+    // next player should draw a new card
+    cardDrawn = false;
   }
 
   /**
