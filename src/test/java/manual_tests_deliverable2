@@ -6,6 +6,12 @@ PRECONDITIONS: The game is running and no cards have been pulled from the deck.
 EXECUTION STEPS: Click the 'Draw a Card' button until the 'Skip Turn' message appears on the card panel.
 POSTCONDITIONS: The 'Skip Turn' card has been pulled and a message saying "Follow the instructions on the card" appears in the message panel.
 
+TEST CASE IDENTIFIER: DONT-MOVE
+DESCRIPTION: A player's token doesn't move when they draw a skip card.
+PRECONDITIONS: The game is running and the game is in a state such that a player has drawn a skip card.
+EXECUTION STEPS: Click on the corresponding player's token.
+POSTCONDITIONS: The player's token does not move.
+
 TEST CASE IDENTIFIER: SPECIAL-CARD-MIDDLE-SQUARE
 DESCRIPTION: Middle square cards appear in the deck.
 PRECONDITIONS: The game is running and no cards have been pulled from the deck.
@@ -17,6 +23,12 @@ DESCRIPTION: The middle square is a distinctly different color from the other sq
 PRECONDITIONS: The game is running and no cards have been pulled from the deck.
 EXECUTION STEPS: Look at the board that appears.
 POSTCONDITIONS: The square that is equally distant from the start and the end is a different color from all the other squares.
+
+TEST CASE IDENTIFIER: MOVE-TO-MIDDLE-SQUARE
+DESCRIPTION: A player's token moves to the middle square after drawing a middle card.
+PRECONDITIONS: The game is running and a player has drawn a middle card.
+EXECUTION STEPS: Click on the corresponding player's token.
+POSTCONDITIONS: The player's token does moves to the middle square.
 
 TEST CASE IDENTIFIER: AUTOMATICALLY-MOVE-TOKENS
 DESCRIPTION: The middle square is a distinctly different color from the other squares on the board.
