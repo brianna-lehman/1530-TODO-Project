@@ -8,6 +8,8 @@ import java.awt.*;
 
 public class MessagePanel extends JPanel {
 
+  // game timer
+  private Timer timer;
   // turn indicator
   private JLabel turnIndicator;
   // message to be displayed
@@ -23,6 +25,11 @@ public class MessagePanel extends JPanel {
 
   public MessagePanel() {
     setBackground(Game.CL_PINK);
+
+    timer = new Timer();
+    timer.setFont(new Font("Courier", Font.PLAIN, 16));
+    timer.setForeground(Game.CL_WHITE);
+    add(timer);
 
     turnIndicator = new JLabel();
     turnIndicator.setFont(new Font("Courier", Font.PLAIN, 24));
@@ -42,6 +49,10 @@ public class MessagePanel extends JPanel {
 
   public void setMessage(String message) {
     userMessage.setText(formatText(message, Game.WINDOW_WIDTH / 2, MESSAGE_STYLES));
+  }
+
+  public void startTimer() {
+    timer.start();
   }
 
   /**

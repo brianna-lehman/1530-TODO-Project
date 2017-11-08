@@ -78,6 +78,7 @@ public class Game extends JFrame {
 
     pack();
     setVisible(true);
+    messagePanel.startTimer();
   }
 
   public void nextTurn()
