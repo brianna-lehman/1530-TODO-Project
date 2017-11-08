@@ -23,3 +23,15 @@ DESCRIPTION: The middle square is a distinctly different color from the other sq
 PRECONDITIONS: The game is running and a card has been pulled from the deck on a particular player's turn.
 EXECUTION STEPS: Click the numbered token button corresponding to the player whose turn it currently is.
 POSTCONDITIONS: The player's token will move the correct square as directed by the card.
+
+TEST CASE IDENTIFIER: VICTORY-BOX
+DESCRIPTION: A box that notifies the players which player won the game.
+PRECONDITIONS: The game is running and a player's token is on a square such that the next card they draw will land their token at grandma's house.
+EXECUTION STEPS: A player click's on their token.
+POSTCONDITIONS: A victory box appears with text.
+
+TEST CASE IDENTIFIER: GAME-EXIT
+DESCRIPTION: The game exits when a player wins.
+PRECONDITIONS: The game is running and a victory box has appeared.
+EXECUTION STEPS: The player click's "OK".
+POSTCONDITIONS: The program ends.
