@@ -9,12 +9,12 @@ import javax.swing.border.*;
 public class Card extends JPanel {
 
   // color of this card
-  private Color color;
+  Color color;
 
   // is this card a single or double color card
-  private boolean isMultiple = false;
+  boolean isMultiple = false;
   // is this card a special card
-  private boolean isSpecial = false;
+  boolean isSpecial = false;
 
   // dimensions
   static final int CARD_WIDTH = 160;

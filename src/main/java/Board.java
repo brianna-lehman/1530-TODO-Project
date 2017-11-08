@@ -6,6 +6,7 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import java.util.*;
 
 public class Board extends JPanel {
 
@@ -15,6 +16,10 @@ public class Board extends JPanel {
   // grid dimensions - ROWS and COLS must be equal
   private static final int ROWS = 7;
   private static final int COLS = 7;
+
+  // Map between the order in which squares appear and their location on the board
+  private Map<Integer, SquareDetails> indexToSquareMap = new HashMap<Integer, SquareDetails>();
+  private int  winningIndex;
 
   // 2D array of GameboardSquare which make up the board
   private GameboardSquare [][] squares = new GameboardSquare [ROWS][COLS];
@@ -42,45 +47,61 @@ public class Board extends JPanel {
       if (row % 4 == 0) {
         // add a full row of colored squares starting from the left
         for (int col = 0; col < COLS; col++) {
-          squares[row][col].setColor(getColorFromIndex(currIndex++));
+          if(row == 0 && col == 0) continue;
+          Color color = getColorFromIndex(currIndex++);
+          squares[row][col].setColor(color);
+          indexToSquareMap.put(currIndex, new SquareDetails(row, col, color));
         }
       } else if (row % 2 == 0) {
         // add a full row of colored squares starting from the right
         for (int col = COLS - 1; col >= 0; col--) {
-          squares[row][col].setColor(getColorFromIndex(currIndex++));
+          Color color = getColorFromIndex(currIndex++);
+          squares[row][col].setColor(color);
+          indexToSquareMap.put(currIndex, new SquareDetails(row, col, color));
         }
       } else {
         // the odd-numbered rows will mostly be white, exceptions being the
         // one colored square that will be used to connect even, colored rows
         for (int col = 0; col < COLS; col++) {
-          if (row == 3 && col == 0) {
-            squares[row][col].setColor(Game.CL_BRIGHT_PURPLE);
-          }
-          else {
-            if (col == COLS - 1 && (row - 1) % 4 == 0) {
-              // connect rows at the right end of the board
-              squares[row][col].setColor(getColorFromIndex(currIndex++));
-            } else if (col == 0 && (row - 3) % 4 == 0) {
-              // connect rows at the left end of the board
-              squares[row][col].setColor(getColorFromIndex(currIndex++));
-            }
+          if (col == COLS - 1 && (row - 1) % 4 == 0) {
+            // connect rows at the right end of the board
+            Color color = getColorFromIndex(currIndex++);
+            squares[row][col].setColor(color);
+            indexToSquareMap.put(currIndex, new SquareDetails(row, col, color));
+          } else if (col == 0 && (row - 3) % 4 == 0) {
+            // connect rows at the left end of the board
+            Color color = getColorFromIndex(currIndex++);
+            squares[row][col].setColor(color);
+            indexToSquareMap.put(currIndex, new SquareDetails(row, col, color));
           }
         }
       }
     }
 
     // add Grandma's House
-    GameboardSquare grandmasHouse = squares[0][0];
+    GameboardSquare grandmasHouse = squares[ROWS - 1][0];
     grandmasHouse.setColor(Game.CL_PINK);
     grandmasHouse.setLabelText("Grandma's House");
+    winningIndex = currIndex;
+    indexToSquareMap.put(winningIndex, new SquareDetails(ROWS - 1, 0, Game.CL_PINK));
+
+    // set middle index for "Move To Middle card"
+    middleIndex = winningIndex / 2;
+    GameboardSquare middleSquare = squares[3][0];
+    middleSquare.setLabelText("Middle");
 
     // add Start square
-    GameboardSquare startSquare = squares[ROWS - 1][0];
+    GameboardSquare startSquare = squares[0][0];
     startSquare.setColor(Game.CL_PURPLE);
-    startSquare.setLabelText("START");
+    startSquare.setLabelText("Start");
+    indexToSquareMap.put(0, new SquareDetails(0, 0, Game.CL_PURPLE));
     for(int i = 0; i < Game.NUMBER_OF_PLAYERS; i++) {
       startSquare.addToken(Game.tokens[i]);
     }
+    for(Token t : Game.tokens){
+      t.currentSquare = 0;
+    }
+
 
   }
 
@@ -100,6 +121,80 @@ public class Board extends JPanel {
       default: return Game.CL_WHITE;
     }
   }
+
+  private int getIndexFromColor(Color color){
+    if(color.getRGB() == Game.CL_RED.getRGB()){
+      return 0;
+    }
+    else if(color.getRGB() == Game.CL_YELLOW.getRGB()){
+      return 1;
+    }
+    else if(color.getRGB() == Game.CL_BLUE.getRGB()){
+      return 2;
+    }
+    else if(color.getRGB() == Game.CL_GREEN.getRGB()){
+      return 3;
+    }
+    else if(color.getRGB() == Game.CL_ORANGE.getRGB()){
+      return 4;
+    }
+    return -1;
+  }
+
+  void moveToken(Token token, Card currentCard){
+    int position = token.currentSquare;
+    int newPosition = nextSquare(position, currentCard);
+    if (newPosition >= winningIndex) {
+      newPosition = winningIndex;
+      displayVictoryBox();
+    }
+
+    SquareDetails newSquare = indexToSquareMap.get(newPosition);
+    GameboardSquare newGS = squares[newSquare.x][newSquare.y];
+    SquareDetails oldSquare = indexToSquareMap.get(position);
+    GameboardSquare oldGS = squares[oldSquare.x][oldSquare.y];
+    newGS.addToken(token);
+    oldGS.removeToken(token);
+    token.currentSquare = newPosition;
+  }
+
+  private int nextSquare(int currentSquare, Card card){
+    boolean isDouble = card.isMultiple;
+    Color nextSquareColor = card.color;
+    Color currentSquareColor = indexToSquareMap.get(currentSquare).color;
+
+    int nextColorIndex = getIndexFromColor(nextSquareColor);
+    int currentColorIndex = getIndexFromColor(currentSquareColor);
+    int moves = 1;
+
+    while((currentColorIndex + moves) % 5 != nextColorIndex){
+      moves++;
+    } 
+    
+    if(isDouble){
+      moves += 5;
+    }
+
+    return currentSquare + moves;
+  }
+
+  private class SquareDetails {
+    int x;
+    int y;
+    Color color; 
+
+    SquareDetails(int x, int y, Color c) {
+      this.x = x;
+      this.y = y;
+      this.color = c;
+    }
+  }
+
+  private void displayVictoryBox(){
+
+  }
+
+
 
   /**
    * This class extends JPanel and will represent a square on the gameboard.
