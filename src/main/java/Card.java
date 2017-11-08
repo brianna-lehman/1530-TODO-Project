@@ -22,7 +22,7 @@ public class Card extends JPanel {
   }
   // is this card a special card
   boolean isSpecial = false;
-  CardType cardType;
+  CardType cardType = CardType.NORMAL;
 
   // dimensions
   static final int CARD_WIDTH = 160;

@@ -19,7 +19,8 @@ public class Board extends JPanel {
 
   // Map between the order in which squares appear and their location on the board
   private Map<Integer, SquareDetails> indexToSquareMap = new HashMap<Integer, SquareDetails>();
-  private int  winningIndex;
+  private int winningIndex;
+  private int middleIndex;
 
   // 2D array of GameboardSquare which make up the board
   private GameboardSquare [][] squares = new GameboardSquare [ROWS][COLS];
@@ -85,6 +86,9 @@ public class Board extends JPanel {
     winningIndex = currIndex;
     indexToSquareMap.put(winningIndex, new SquareDetails(ROWS - 1, 0, Game.CL_PINK));
 
+    // set middle index for "Move To Middle card"
+    middleIndex = winningIndex / 2;
+
     // add Start square
     GameboardSquare startSquare = squares[0][0];
     startSquare.setColor(Game.CL_PURPLE);
@@ -135,7 +139,7 @@ public class Board extends JPanel {
     return -1;
   }
 
-  void moveToken(Token token, Card currentCard){
+  void moveToken(Token token, Card currentCard) {
     int position = token.currentSquare;
     int newPosition = nextSquare(position, currentCard);
     if (newPosition >= winningIndex) {
@@ -147,29 +151,37 @@ public class Board extends JPanel {
     GameboardSquare newGS = squares[newSquare.x][newSquare.y];
     SquareDetails oldSquare = indexToSquareMap.get(position);
     GameboardSquare oldGS = squares[oldSquare.x][oldSquare.y];
-    newGS.addToken(token);
     oldGS.removeToken(token);
+    newGS.addToken(token);
     token.currentSquare = newPosition;
   }
 
-  private int nextSquare(int currentSquare, Card card){
-    boolean isDouble = card.isMultiple;
-    Color nextSquareColor = card.color;
-    Color currentSquareColor = indexToSquareMap.get(currentSquare).color;
+  private int nextSquare(int currentSquare, Card card) {
+    switch (card.getCardType()) {
+      case MIDDLE:
+        return middleIndex;
+      case SKIP:
+        return currentSquare;
+      default: {
+        boolean isDouble = card.isMultiple;
+        Color nextSquareColor = card.color;
+        Color currentSquareColor = indexToSquareMap.get(currentSquare).color;
 
-    int nextColorIndex = getIndexFromColor(nextSquareColor);
-    int currentColorIndex = getIndexFromColor(currentSquareColor);
-    int moves = 1;
+        int nextColorIndex = getIndexFromColor(nextSquareColor);
+        int currentColorIndex = getIndexFromColor(currentSquareColor);
+        int moves = 1;
 
-    while((currentColorIndex + moves) % 5 != nextColorIndex){
-      moves++;
-    } 
+        while ((currentColorIndex + moves) % 5 != nextColorIndex) {
+          moves++;
+        } 
 
-    if(isDouble){
-      moves += 5;
+        if (isDouble) {
+          moves += 5;
+        }
+
+        return currentSquare + moves;
+      }
     }
-
-    return currentSquare + moves;
   }
 
   private class SquareDetails {
@@ -187,8 +199,6 @@ public class Board extends JPanel {
   private void displayVictoryBox(){
 
   }
-
-
 
   /**
    * This class extends JPanel and will represent a square on the gameboard.
