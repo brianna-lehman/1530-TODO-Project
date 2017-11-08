@@ -24,6 +24,12 @@ PRECONDITIONS: The game is running and a card has been pulled from the deck on a
 EXECUTION STEPS: Click the numbered token button corresponding to the player whose turn it currently is.
 POSTCONDITIONS: The player's token will move the correct square as directed by the card.
 
+TEST CASE IDENTIFIER: SKIP-TURN-MOVE-TOKEN
+DESCRIPTION: When a skip turn card is picked from the deck the current player's token doesn't move.
+PRECONDITIONS: A "skip turn" card has been pulled from the deck.
+EXECUTION STEPS: Click on the current player's token.
+POSTCONDITIONS: The current player's token doesn't move, and the message panel says that it's the next player's turn.
+
 TEST CASE IDENTIFIER: VICTORY-BOX
 DESCRIPTION: A box that notifies the players which player won the game.
 PRECONDITIONS: The game is running and a player's token is on a square such that the next card they draw will land their token at grandma's house.
