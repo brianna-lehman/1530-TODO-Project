@@ -11,3 +11,9 @@ DESCRIPTION: Middle square cards appear in the deck.
 PRECONDITIONS: The game is running and no cards have been pulled from the deck.
 EXECUTION STEPS: Click the 'Draw a Card' button until the 'Move to middle square' message appears on the card panel.
 POSTCONDITIONS: The 'Middle square' card has been pulled and a message saying "Follow the instructions on the card" appears in the message panel.
+
+TEST CASE IDENTIFIER: MIDDLE-SQUARE-COLOR
+DESCRIPTION: The middle square is a distinctly different color from the other squares on the board.
+PRECONDITIONS: The game is running and no cards have been pulled from the deck.
+EXECUTION STEPS: Look at the board that appears.
+POSTCONDITIONS: The square that is equally distant from the start and the end is a different color from all the other squares.
