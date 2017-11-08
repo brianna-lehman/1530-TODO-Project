@@ -9,12 +9,20 @@ import javax.swing.border.*;
 public class Card extends JPanel {
 
   // color of this card
-  private Color color;
+  Color color;
 
   // is this card a single or double color card
-  private boolean isMultiple = false;
+  boolean isMultiple = false;
+
+  // possible special card types
+  enum CardType {
+    NORMAL,
+    SKIP,
+    MIDDLE
+  }
   // is this card a special card
-  private boolean isSpecial = false;
+  boolean isSpecial = false;
+  CardType cardType = CardType.NORMAL;
 
   // dimensions
   static final int CARD_WIDTH = 160;
@@ -48,17 +56,21 @@ public class Card extends JPanel {
     }
   }
 
-  /** constructor for special cards which present a message to the user
+  /**
+   * Constructor for special cards which present a message to the user
    * @param _color the background color of the card
-   * @param specialMessage the text that will appear on the card
+   * @param type the card type
    */
-  public Card(Color _color, String specialMessage) {
-    this.isSpecial = true;
+  public Card(Color _color, CardType type) {
+    this.isSpecial = (type != CardType.NORMAL);
+    this.cardType = type;
+
+    // initally white background
     setBackground(Game.CL_WHITE);
 
     JLabel messageLabel = new JLabel();
     messageLabel.setFont(new Font("Courier", Font.PLAIN, 24));
-    messageLabel.setText(formatText(specialMessage, CARD_WIDTH));
+    messageLabel.setText(formatText(getSpecialMessage(type), CARD_WIDTH));
     messageLabel.setHorizontalAlignment(SwingConstants.CENTER);
     messageLabel.setVerticalAlignment(SwingConstants.CENTER);
 
@@ -76,6 +88,26 @@ public class Card extends JPanel {
 
   public boolean isSpecial() {
     return this.isSpecial;
+  }
+
+  public CardType getCardType() {
+    return this.cardType;
+  }
+
+  /**
+   * This method returns the special message for given special card type.
+   * @param cardType - the type of card
+   * @return the special message for this card type
+   */
+  private String getSpecialMessage(CardType cardType) {
+    switch (cardType) {
+      case SKIP:
+        return "Skip turn";
+      case MIDDLE:
+        return "Move to middle square";
+      default:
+        return "";
+    }
   }
 
   private String formatText(String text, int maxWidth) {

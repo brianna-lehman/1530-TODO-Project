@@ -4,10 +4,13 @@ import javax.swing.*;
 
 public class Token extends JButton {
 
-  private final int player_index;
+  final int player_index;
+  int currentSquare;
 
   public Token(int player_index) {
     this.player_index = player_index;
+    // 0 is the start square
+    this.currentSquare = 0;
     this.setText("" + (player_index + 1));
     this.setPreferredSize(new Dimension(20, 20));
     this.setBorder(null);
@@ -20,7 +23,7 @@ public class Token extends JButton {
   private class ButtonListener implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
-      if(Game.current_turn == player_index)
+      if(Game.current_turn == player_index && Game.cardDrawn)
       {
         Game game = Game.getInstance();
         game.nextTurn();

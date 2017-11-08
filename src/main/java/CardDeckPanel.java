@@ -14,7 +14,7 @@ public class CardDeckPanel extends JPanel {
   private JPanel cardPile = new JPanel();
 
   // card that will be shown
-  private Card currentCard = null;
+  Card currentCard = null;
 
   public CardDeckPanel() {
     GridBagConstraints constraints = new GridBagConstraints();
@@ -52,6 +52,11 @@ public class CardDeckPanel extends JPanel {
     public void actionPerformed(ActionEvent e) {
       Game game = Game.getInstance();
 
+      // do not let a user draw multiple cards per turn
+      if (game.cardDrawn) {
+        return;
+      }
+
       // remove the current card from the screen if there is one there
       if (currentCard != null) {
         cardPile.remove(currentCard);
@@ -61,11 +66,19 @@ public class CardDeckPanel extends JPanel {
       currentCard = Game.deck.getNextCard();
       cardPile.add(currentCard);
 
+      // set card drawn to true
+      game.cardDrawn = true;
+
       // refresh the component
       refresh();
 
       if (currentCard.isSpecial()) {
         game.getMessagePanel().setMessage("Follow the instructions on the card");
+
+        // skip this player's turn if they draw a skip turn card
+        if (currentCard.getCardType() == Card.CardType.SKIP) {
+          game.nextTurn();
+        }
       }
       else if (currentCard.isMultiple()) {
         game.getMessagePanel().setMessage("Move to the second matching colored square");
