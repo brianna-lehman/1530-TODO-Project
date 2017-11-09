@@ -24,6 +24,7 @@ public class Game extends JFrame {
   static int current_turn = 0;
   static Token[] tokens;
   static CardDeck deck = new CardDeck();
+  static JMenuBar menu;
   static MessagePanel messagePanel = new MessagePanel();
   static Board gameboard;
   static CardDeckPanel cardDeckPanel;
@@ -59,6 +60,10 @@ public class Game extends JFrame {
       tokens[i] = new Token(i);
     }
 
+    // menu bar for saving/loading games
+    menu = new Menu();
+    setJMenuBar(menu);
+
     // panel which contains all of the movement squares
     gameboard = new Board();
     add(gameboard);
@@ -78,6 +83,7 @@ public class Game extends JFrame {
 
     pack();
     setVisible(true);
+    messagePanel.startTimer();
   }
 
   public void nextTurn()

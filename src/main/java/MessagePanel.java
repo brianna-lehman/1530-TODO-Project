@@ -8,12 +8,12 @@ import java.awt.*;
 
 public class MessagePanel extends JPanel {
 
+  // game timer
+  private Timer timer;
   // turn indicator
   private JLabel turnIndicator;
   // message to be displayed
   private JLabel userMessage;
-  // save button
-  private SaveButton saveButton;
 
   // CSS styles for the messages that will be displayed to the user
   private static final String MESSAGE_STYLES = "margin: 10px; text-align: center;"
@@ -26,6 +26,11 @@ public class MessagePanel extends JPanel {
   public MessagePanel() {
     setBackground(Game.CL_PINK);
 
+    timer = new Timer();
+    timer.setFont(new Font("Courier", Font.PLAIN, 16));
+    timer.setForeground(Game.CL_WHITE);
+    add(timer);
+
     turnIndicator = new JLabel();
     turnIndicator.setFont(new Font("Courier", Font.PLAIN, 24));
     turnIndicator.setText(formatText("Player 1's turn", Game.WINDOW_WIDTH / 2, MESSAGE_STYLES));
@@ -36,8 +41,6 @@ public class MessagePanel extends JPanel {
     userMessage.setFont(new Font("Courier", Font.PLAIN, 24));
     userMessage.setText(initialMessage);
     add(userMessage);
-
-    saveButton = new SaveButton();
   }
 
   public void setCurrentTurn(int turn) {
@@ -46,6 +49,10 @@ public class MessagePanel extends JPanel {
 
   public void setMessage(String message) {
     userMessage.setText(formatText(message, Game.WINDOW_WIDTH / 2, MESSAGE_STYLES));
+  }
+
+  public void startTimer() {
+    timer.start();
   }
 
   /**
