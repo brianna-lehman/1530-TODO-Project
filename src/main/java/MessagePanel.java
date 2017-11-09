@@ -12,6 +12,8 @@ public class MessagePanel extends JPanel {
   private JLabel turnIndicator;
   // message to be displayed
   private JLabel userMessage;
+  // save button
+  private SaveButton saveButton;
 
   // CSS styles for the messages that will be displayed to the user
   private static final String MESSAGE_STYLES = "margin: 10px; text-align: center;"
@@ -34,6 +36,8 @@ public class MessagePanel extends JPanel {
     userMessage.setFont(new Font("Courier", Font.PLAIN, 24));
     userMessage.setText(initialMessage);
     add(userMessage);
+
+    saveButton = new SaveButton();
   }
 
   public void setCurrentTurn(int turn) {
