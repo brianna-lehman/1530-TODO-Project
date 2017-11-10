@@ -1,8 +1,9 @@
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
+import java.io.Serializable;
 
-public class Game extends JFrame {
+public class Game extends JFrame implements Serializable{
 
   // constants for the height and width of game window
   static final int WINDOW_WIDTH = 1000;
