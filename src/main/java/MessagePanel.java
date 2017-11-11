@@ -5,8 +5,9 @@
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serializable;
 
-public class MessagePanel extends JPanel {
+public class MessagePanel extends JPanel implements Serializable{
 
   // game timer
   private Timer timer;

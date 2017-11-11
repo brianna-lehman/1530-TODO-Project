@@ -5,8 +5,9 @@
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
+import java.io.Serializable;
 
-public class Card extends JPanel {
+public class Card extends JPanel implements Serializable{
 
   // color of this card
   Color color;

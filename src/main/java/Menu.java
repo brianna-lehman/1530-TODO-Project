@@ -2,10 +2,18 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.util.*;
+import java.io.*;
 
-public class Menu extends JMenuBar {
+public class Menu extends JMenuBar implements Serializable{
   JMenu file;
-  public static final String[] incorrectChars = {"~", "#", "%", "&", "*", "{", "}", "\\", ":", "<", ">", "?", "/", "|", "\"", "."};
+  final String[] INVALID_CHARS = {"~", "#", "%", "&", "*", "{", "}", "\\", ":", "<", ">", "?", "/", "|", "\"", "."};
+  final String EXTENSION = ".ser";
+
+  enum FileValidation {
+    VALID,
+    INVALID,
+    EMPTY,
+  }
 
   public Menu() {
     JMenu file = new JMenu("File");
@@ -23,37 +31,73 @@ public class Menu extends JMenuBar {
     save.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent ev) {
         // code to save the current game
-        // create popup asking what to name the game file
-        // validate that the name returned is valid
-        // store the game instance in an objectoutputstream
         String filename = JOptionPane.showInputDialog("What would you like to name the file? ");
-        JOptionPane.showMessageDialog(null,validateFilename(filename));
+        filename = filename.replace(" ", "_");
+        if (confirmFilePopup(filename)) {
+          boolean success = saveGame(new File(filename));
+          if (success) {
+            JOptionPane.showMessageDialog(null,"Game saved sucessfully");
+          }
+          else {
+            JOptionPane.showMessageDialog(null,"Error saving game");
+          }
+        }
       }
     });
     file.add(save);
   }
 
-  private String validateFilename(String filename) {
+  private boolean confirmFilePopup(String filename) {
+    FileValidation type = validateFilename(filename);
+    if (type == FileValidation.VALID) {
+      JOptionPane.showConfirmDialog(null, "Confirm: "+filename+EXTENSION);
+      return true;
+    }
+    else if (type == FileValidation.EMPTY) {
+      JOptionPane.showMessageDialog(null, "Your file cannot be empty");
+    }
+    else if (type == FileValidation.INVALID) {
+      JOptionPane.showMessageDialog(null, "Your file cannot contain these characters: "+Arrays.toString(INVALID_CHARS));
+    }
+
+    return false;
+  }
+
+  private FileValidation validateFilename(String filename) {
     boolean filenameContainsInvalidChar = false;
-    for (int i = 0; i < incorrectChars.length; i++) {
-      if (filename.contains(incorrectChars[i])) {
+    for (int i = 0; i < INVALID_CHARS.length; i++) {
+      if (filename.contains(INVALID_CHARS[i])) {
         filenameContainsInvalidChar = true;
       }
     }
 
     if (filename.isEmpty()) {
-      return "The file must have a name.";
+      return FileValidation.EMPTY;
     }
     else if (filenameContainsInvalidChar) {
-      StringBuilder errorMsg = new StringBuilder("The file cannot contain these characters: ");
-      errorMsg.append(Arrays.toString(incorrectChars));
-      return errorMsg.toString();
+      return FileValidation.INVALID;
     }
     else {
-      StringBuilder correctMsg = new StringBuilder("Do you want to save you file as '");
-      correctMsg.append(filename);
-      correctMsg.append("'?");
-      return correctMsg.toString();
+      return FileValidation.VALID;
+    }
+  }
+
+  public boolean saveGame(File file) {
+    try {
+        FileOutputStream fileStream = new FileOutputStream(file);
+        ObjectOutputStream objectStream = new ObjectOutputStream(fileStream);
+
+        Game game = Game.getInstance();
+
+        objectStream.writeObject(game);
+
+        objectStream.close();
+        fileStream.close();
+
+        return true;
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null,"Error: "+e.toString());
+        return false;
     }
   }
 }

@@ -6,16 +6,17 @@
 import java.util.*;
 import java.awt.*;
 import javax.swing.*;
+import java.io.Serializable;
 
-public class Timer extends JLabel {
+public class Timer extends JLabel implements Serializable{
 
   // number of seconds in the game so far
   private int timeInSeconds;
 
   // thread that will update this timer
-  private Thread timerThread;
+  private transient Thread timerThread;
 
-  public Timer() {
+  public Timer(){
     // initialize time to zero minutes and seconds
     timeInSeconds = 0;
     setText("Game Clock: " + formatTime(timeInSeconds));

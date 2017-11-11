@@ -7,8 +7,9 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.util.*;
+import java.io.Serializable;
 
-public class Board extends JPanel {
+public class Board extends JPanel implements Serializable{
 
   // height of the game board, 0.75x height of the window
   public static final int GAMEBOARD_HEIGHT = Game.WINDOW_HEIGHT - 200;
@@ -180,7 +181,7 @@ public class Board extends JPanel {
 
         while ((currentColorIndex + moves) % 5 != nextColorIndex) {
           moves++;
-        } 
+        }
 
         if (isDouble) {
           moves += 5;
@@ -191,10 +192,10 @@ public class Board extends JPanel {
     }
   }
 
-  private class SquareDetails {
+  private class SquareDetails implements Serializable{
     int x;
     int y;
-    Color color; 
+    Color color;
 
     SquareDetails(int x, int y, Color c) {
       this.x = x;

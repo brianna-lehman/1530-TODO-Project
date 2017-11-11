@@ -7,8 +7,9 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
+import java.io.Serializable;
 
-public class CardDeckPanel extends JPanel {
+public class CardDeckPanel extends JPanel implements Serializable{
 
   // this will hold cards
   private JPanel cardPile = new JPanel();

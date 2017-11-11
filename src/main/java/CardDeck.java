@@ -3,8 +3,9 @@
  */
 
 import java.util.*;
+import java.io.Serializable;
 
-public class CardDeck {
+public class CardDeck implements Serializable{
 
   // deck of cards
   private Stack<Card> deck = new Stack<Card>();
