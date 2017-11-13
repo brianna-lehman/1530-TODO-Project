@@ -132,6 +132,10 @@ public class Game extends JFrame implements Serializable{
     return gameboard;
   }
 
+  public Token[] getTokens() {
+    return tokens;
+  }
+
   // main simply creates an instance of Game for now
   public static void main(String [] args) {
     // creates a single instance of the game that can be used in all the other classes

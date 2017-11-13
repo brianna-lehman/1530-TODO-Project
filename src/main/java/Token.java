@@ -18,6 +18,16 @@ public class Token extends JButton implements Serializable{
     this.addActionListener(new ButtonListener());
   }
 
+  public void setLabelOnToken(int number) {
+    if (number == player_index) {
+      this.setText("" + (number + 1));
+    }
+  }
+
+  public int getPlayerIndex() {
+    return player_index;
+  }
+
   /**
    * The action to take when the current player's token is clicked
    */

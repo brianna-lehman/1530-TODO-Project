@@ -6,7 +6,7 @@ import java.io.*;
 
 public class Menu extends JMenuBar implements Serializable{
   JMenu file;
-  final String[] INVALID_CHARS = {"~", "#", "%", "&", "*", "{", "}", "\\", ":", "<", ">", "?", "/", "|", "\"", "."};
+  final String[] INVALID_CHARS = {"~", "#", "%", "&", "*", "{", "}", "\\", ":", "<", ">", "?", "/", "|", "\"", ".", " "};
   final String EXTENSION = ".ser";
 
   enum FileValidation {
@@ -30,13 +30,21 @@ public class Menu extends JMenuBar implements Serializable{
     JMenuItem save = new JMenuItem("Save Game");
     save.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent ev) {
-        // code to save the current game
+        // get a filename, check that it's valid, and save the current game
         String filename = JOptionPane.showInputDialog("What would you like to name the file? ");
         filename = filename.replace(" ", "_");
-        if (confirmFilePopup(filename)) {
-          boolean success = saveGame(new File(filename));
+
+        if (confirmFilenamePopup(filename)) {
+          boolean success = saveGame(new File(filename+EXTENSION));
           if (success) {
             JOptionPane.showMessageDialog(null,"Game saved sucessfully");
+
+            // reset the labels on the tokens
+            Game game = Game.getInstance();
+            Token[] tokens = game.getTokens();
+            for (int i=0; i < tokens.length; i++) {
+              tokens[i].setLabelOnToken(tokens[i].getPlayerIndex());
+            }
           }
           else {
             JOptionPane.showMessageDialog(null,"Error saving game");
@@ -47,10 +55,9 @@ public class Menu extends JMenuBar implements Serializable{
     file.add(save);
   }
 
-  private boolean confirmFilePopup(String filename) {
+  public boolean confirmFilenamePopup(String filename) {
     FileValidation type = validateFilename(filename);
     if (type == FileValidation.VALID) {
-      JOptionPane.showConfirmDialog(null, "Confirm: "+filename+EXTENSION);
       return true;
     }
     else if (type == FileValidation.EMPTY) {
@@ -59,7 +66,6 @@ public class Menu extends JMenuBar implements Serializable{
     else if (type == FileValidation.INVALID) {
       JOptionPane.showMessageDialog(null, "Your file cannot contain these characters: "+Arrays.toString(INVALID_CHARS));
     }
-
     return false;
   }
 
@@ -71,7 +77,7 @@ public class Menu extends JMenuBar implements Serializable{
       }
     }
 
-    if (filename.isEmpty()) {
+    if (filename.isEmpty() || filename == null) {
       return FileValidation.EMPTY;
     }
     else if (filenameContainsInvalidChar) {
