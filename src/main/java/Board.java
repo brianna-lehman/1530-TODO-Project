@@ -164,6 +164,22 @@ public class Board extends JPanel implements Serializable{
     }
   }
 
+  void clearBoard(Token[] tokens) {
+    for (int i = 0; i < tokens.length; i++) {
+      int position = tokens[i].currentSquare;
+      SquareDetails square = indexToSquareMap.get(position);
+      GameboardSquare gs = squares[square.x][square.y];
+      gs.removeToken(tokens[i]);
+    }
+  }
+
+  void setToken(Token token) {
+    int position = token.currentSquare;
+    SquareDetails square = indexToSquareMap.get(position);
+    GameboardSquare gs = squares[square.x][square.y];
+    gs.addToken(token);
+  }
+
   private int nextSquare(int currentSquare, Card card) {
     switch (card.getCardType()) {
       case MIDDLE:

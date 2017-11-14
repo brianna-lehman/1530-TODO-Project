@@ -43,6 +43,15 @@ public class CardDeckPanel extends JPanel implements Serializable{
     cardPile.repaint();
   }
 
+  public Card getCurrentCard() {
+    return currentCard;
+  }
+
+  public void setCurrentCard(Card current) {
+    currentCard = current;
+    cardPile.add(currentCard);
+  }
+
   /**
    * This ActionListener corresponds to the button used to draw cards from the
    * pile.

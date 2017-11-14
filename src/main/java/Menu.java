@@ -23,6 +23,12 @@ public class Menu extends JMenuBar implements Serializable{
     load.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent ev) {
         // code to load a saved game
+        // find a list of all files in this directory w/ the extension .ser
+        // create a popup for player to chose from this list
+        // if they choose from the list
+            // create a popup to remind the player that they'll override the current game
+            // if they press okay
+                loadGame(new File("test.ser"));
       }
     });
     file.add(load);
@@ -88,19 +94,90 @@ public class Menu extends JMenuBar implements Serializable{
     }
   }
 
+  public boolean loadGame(File file) {
+    try {
+      FileInputStream fileStream = new FileInputStream(file);
+      ObjectInputStream objectStream = new ObjectInputStream(fileStream);
+
+      Game game = Game.getInstance();
+
+      ArrayList<Object> gameDetails = (ArrayList<Object>)objectStream.readObject();
+
+      // resetting the timer
+      int time = (int)gameDetails.get(0);
+      game.getMessagePanel().getTimer().setTime(time);
+      game.getMessagePanel().getTimer().start();
+
+      // resetting the tokens
+      int numOfPlayers = (int)gameDetails.get(1);
+      Token[] tokens = (Token[])gameDetails.get(2);
+      game.setNumberOfPlayers(numOfPlayers);
+      game.getBoard().clearBoard(game.getTokens());
+      game.setTokens(tokens);
+      for (int i = 0; i < tokens.length; i++) {
+          game.getBoard().setToken(tokens[i]);
+      }
+
+      // resetting the message panel
+      int currentTurn = (int)gameDetails.get(3);
+      game.setCurrentTurn(currentTurn);
+      game.getMessagePanel().setCurrentTurn(currentTurn);
+
+      // resetting the card deck and card deck panel
+      CardDeck deck = (CardDeck)gameDetails.get(4);
+      boolean cardDrawn = (boolean)gameDetails.get(5);
+      Card currentCard = (Card)gameDetails.get(6);
+      game.setDeck(deck);
+      game.setCardDrawn(cardDrawn);
+      game.getCardDeckPanel().setCurrentCard(currentCard);
+
+      objectStream.close();
+      fileStream.close();
+
+      return true;
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null,"Error: "+e.toString());
+        return false;
+    }
+  }
+
   public boolean saveGame(File file) {
     try {
         FileOutputStream fileStream = new FileOutputStream(file);
         ObjectOutputStream objectStream = new ObjectOutputStream(fileStream);
 
         Game game = Game.getInstance();
+        ArrayList<Object> gameDetails = new ArrayList<Object>();
 
-        objectStream.writeObject(game);
+        // saving the timer
+        int time = game.getMessagePanel().getTimer().getTime();
+        gameDetails.add(time);
+
+        // saving the token details
+        int numOfPlayers = game.getNumberOfPlayers();
+        gameDetails.add(numOfPlayers);
+        Token[] tokens = game.getTokens();
+        gameDetails.add(tokens);
+        int currentTurn = game.getCurrentTurn();
+        gameDetails.add(currentTurn);
+
+        // saving the deck details
+        CardDeck deck = game.getDeck();
+        gameDetails.add(deck);
+        boolean cardDrawn = game.getCardDrawn();
+        gameDetails.add(cardDrawn);
+        Card currentCard = game.getCardDeckPanel().getCurrentCard();
+        gameDetails.add(currentCard);
+
+        // write all the above objects to objectStream
+        objectStream.writeObject(gameDetails);
 
         objectStream.close();
         fileStream.close();
 
         return true;
+
     } catch (Exception e) {
         JOptionPane.showMessageDialog(null,"Error: "+e.toString());
         return false;

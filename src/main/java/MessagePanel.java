@@ -56,6 +56,10 @@ public class MessagePanel extends JPanel implements Serializable{
     timer.start();
   }
 
+  public Timer getTimer() {
+    return timer;
+  }
+
   /**
    * This method takes some text and wraps it in html elements and styles so
    * that it will wrap properly when placed inside a JPanel and have the given

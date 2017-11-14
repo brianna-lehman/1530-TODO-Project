@@ -136,6 +136,46 @@ public class Game extends JFrame implements Serializable{
     return tokens;
   }
 
+  public void setTokens(Token[] t) {
+    tokens = t;
+  }
+
+  public CardDeckPanel getCardDeckPanel() {
+    return cardDeckPanel;
+  }
+
+  public int getNumberOfPlayers() {
+    return NUMBER_OF_PLAYERS;
+  }
+
+  public void setNumberOfPlayers(int numOfPlayers) {
+    NUMBER_OF_PLAYERS = numOfPlayers;
+  }
+
+  public int getCurrentTurn() {
+    return current_turn;
+  }
+
+  public void setCurrentTurn(int turn) {
+    current_turn = turn;
+  }
+
+  public CardDeck getDeck() {
+    return deck;
+  }
+
+  public void setDeck(CardDeck d) {
+    deck = d;
+  }
+
+  public boolean getCardDrawn() {
+    return cardDrawn;
+  }
+
+  public void setCardDrawn(boolean cd) {
+    cardDrawn = cd;
+  }
+
   // main simply creates an instance of Game for now
   public static void main(String [] args) {
     // creates a single instance of the game that can be used in all the other classes
