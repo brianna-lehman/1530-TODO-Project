@@ -7,7 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.Serializable;
 
-public class MessagePanel extends JPanel implements Serializable{
+public class MessagePanel extends JPanel implements Serializable {
 
   // game timer
   private Timer timer;
@@ -46,6 +46,10 @@ public class MessagePanel extends JPanel implements Serializable{
 
   public void setCurrentTurn(int turn) {
     turnIndicator.setText(formatText("Player " + (turn + 1) + "'s turn", Game.WINDOW_WIDTH / 2, MESSAGE_STYLES));
+  }
+
+  public String getMessage() {
+    return userMessage.getText();
   }
 
   public void setMessage(String message) {
