@@ -63,24 +63,27 @@ public class Menu extends JMenuBar implements Serializable{
       public void actionPerformed(ActionEvent ev) {
         // get a filename, check that it's valid, and save the current game
         String filename = JOptionPane.showInputDialog("What would you like to name the file? ");
-        filename = filename.replace(" ", "_");
 
-        if (confirmFilenamePopup(filename)) {
-          File dir = new File(DIRECTORY);
-          if (!dir.exists()) {
-            try {
-              dir.mkdir();
-            } catch (Exception e) {
-              JOptionPane.showMessageDialog(null,"Error creating directory");
+        if (filename != null && filename.length() > 0) {
+          filename = filename.replace(" ", "_");
+
+          if (confirmFilenamePopup(filename)) {
+            File dir = new File(DIRECTORY);
+            if (!dir.exists()) {
+              try {
+                dir.mkdir();
+              } catch (Exception e) {
+                JOptionPane.showMessageDialog(null,"Error creating directory");
+              }
             }
-          }
 
-          boolean success = saveGame(new File(DIRECTORY+filename+EXTENSION));
-          if (success) {
-            JOptionPane.showMessageDialog(null,"Game saved sucessfully");
-          }
-          else {
-            JOptionPane.showMessageDialog(null,"Error saving game");
+            boolean success = saveGame(new File(DIRECTORY+filename+EXTENSION));
+            if (success) {
+              JOptionPane.showMessageDialog(null,"Game saved sucessfully");
+            }
+            else {
+              JOptionPane.showMessageDialog(null,"Error saving game");
+            }
           }
         }
       }
