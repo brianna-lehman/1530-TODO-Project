@@ -27,27 +27,32 @@ public class Menu extends JMenuBar implements Serializable{
         // find a list of all files in DIRECTORY w/ the extension .ser
         File dir = new File(DIRECTORY);
         File[] uncheckedFiles = dir.listFiles();
-        ArrayList<String> gameFileNames = new ArrayList<String>();
-        for (int i = 0; i < uncheckedFiles.length; i++) {
-          String fileName = uncheckedFiles[i].getName();
-          if (fileName.contains(EXTENSION)) {
-            gameFileNames.add(fileName);
-          }
+        if (uncheckedFiles.length == 0) {
+          JOptionPane.showMessageDialog(null, "There are no saved games");
         }
+        else {
+          ArrayList<String> gameFileNames = new ArrayList<String>();
+          for (int i = 0; i < uncheckedFiles.length; i++) {
+            String fileName = uncheckedFiles[i].getName();
+            if (fileName.contains(EXTENSION)) {
+              gameFileNames.add(fileName);
+            }
+          }
 
-        // create a popup for player to chose from this list
-        String filename;
-        String[] fileNames = gameFileNames.toArray(new String[0]);
-        JComboBox<String> combo = new JComboBox<String>(fileNames);
-        JPanel panel = new JPanel(new GridLayout(0, 1));
-        panel.add(new JLabel("Choose a game to load"));
-        panel.add(combo);
-        int result = JOptionPane.showConfirmDialog(null, panel, "Load Game",
-            JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+          // create a popup for player to chose from this list
+          String filename;
+          String[] fileNames = gameFileNames.toArray(new String[0]);
+          JComboBox<String> combo = new JComboBox<String>(fileNames);
+          JPanel panel = new JPanel(new GridLayout(0, 1));
+          panel.add(new JLabel("Choose a game to load"));
+          panel.add(combo);
+          int result = JOptionPane.showConfirmDialog(null, panel, "Load Game",
+              JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
-        if (result == JOptionPane.OK_OPTION) {
-            filename = (String)combo.getSelectedItem();
-            loadGame(new File(DIRECTORY+filename));
+          if (result == JOptionPane.OK_OPTION) {
+              filename = (String)combo.getSelectedItem();
+              loadGame(new File(DIRECTORY+filename));
+          }
         }
       }
     });
@@ -203,7 +208,6 @@ public class Menu extends JMenuBar implements Serializable{
         gameDetails.add(deck);
         boolean cardDrawn = game.getCardDrawn();
         gameDetails.add(cardDrawn);
-        JOptionPane.showMessageDialog(null, "Card Drawn: "+cardDrawn);
         Card currentCard = game.getCardDeckPanel().getCurrentCard();
         gameDetails.add(currentCard);
 
