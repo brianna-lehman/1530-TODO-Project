@@ -133,7 +133,12 @@ public class Game extends JFrame implements Serializable{
   }
 
   public Token[] getTokens() {
-    return tokens;
+    Token[] tokensCopy = new Token[tokens.length];
+    for (int i = 0; i < tokens.length; i++) {
+      tokensCopy[i] = new Token(tokens[i].getPlayerIndex());
+      tokensCopy[i].currentSquare = tokens[i].currentSquare;
+    }
+    return tokensCopy;
   }
 
   public void setTokens(Token[] t) {

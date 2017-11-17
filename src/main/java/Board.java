@@ -165,11 +165,16 @@ public class Board extends JPanel implements Serializable{
   }
 
   void clearBoard(Token[] tokens) {
+    JOptionPane.showMessageDialog(null, "# of Tokens "+tokens.length);
+    JOptionPane.showMessageDialog(null,"Clear Board");
     for (int i = 0; i < tokens.length; i++) {
+      JOptionPane.showMessageDialog(null, "Token "+tokens[i].getPlayerIndex());
       int position = tokens[i].currentSquare;
+      JOptionPane.showMessageDialog(null, "Position "+position);
       SquareDetails square = indexToSquareMap.get(position);
       GameboardSquare gs = squares[square.x][square.y];
       gs.removeToken(tokens[i]);
+      JOptionPane.showMessageDialog(null, "Removed from "+square.x+" "+square.y);
     }
   }
 
