@@ -7,9 +7,8 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
-import java.io.Serializable;
 
-public class CardDeckPanel extends JPanel implements Serializable{
+public class CardDeckPanel extends JPanel {
 
   // this will hold cards
   private JPanel cardPile = new JPanel();
@@ -48,8 +47,12 @@ public class CardDeckPanel extends JPanel implements Serializable{
   }
 
   public void setCurrentCard(Card current) {
+    if (currentCard != null) {
+      removeCurrentCard();
+    }
     currentCard = current;
     cardPile.add(currentCard);
+    refresh();
   }
 
   public void removeCurrentCard() {

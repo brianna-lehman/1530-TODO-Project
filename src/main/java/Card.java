@@ -5,9 +5,8 @@
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
-import java.io.Serializable;
 
-public class Card extends JPanel implements Serializable{
+public class Card extends JPanel {
 
   // color of this card
   Color color;
@@ -76,6 +75,106 @@ public class Card extends JPanel implements Serializable{
     messageLabel.setVerticalAlignment(SwingConstants.CENTER);
 
     add(messageLabel);
+  }
+
+  /**
+   * This method is for creating a card from a string representation of a
+   * card which comes from a game saved to a file.
+   * @param cardCode string representation of a card, expected to be of the
+   * form <numSquares>:<color/type>, i.e. "1:R" is a single red square card,
+   * "2:B" is a double blue square card, and "1:S" is a skip card.
+   */
+  public Card(String cardCode) {
+    String[] parts = cardCode.split(":");
+    if (parts[1].equals("M") || parts[1].equals("S")) {
+      this.isSpecial = true;
+      this.cardType = parts[1].equals("S") ? CardType.SKIP : CardType.MIDDLE;
+
+      // initally white background
+      setBackground(Game.CL_WHITE);
+
+      JLabel messageLabel = new JLabel();
+      messageLabel.setFont(new Font("Courier", Font.PLAIN, 24));
+      messageLabel.setText(formatText(getSpecialMessage(this.cardType), CARD_WIDTH));
+      messageLabel.setHorizontalAlignment(SwingConstants.CENTER);
+      messageLabel.setVerticalAlignment(SwingConstants.CENTER);
+
+      add(messageLabel);
+    } else {
+      Color cardColor = Game.CL_WHITE;
+      switch (parts[1]) {
+        case "R": {
+          cardColor = Game.CL_RED;
+          break;
+        }
+        case "B": {
+          cardColor = Game.CL_BLUE;
+          break;
+        }
+        case "G": {
+          cardColor = Game.CL_GREEN;
+          break;
+        }
+        case "Y": {
+          cardColor = Game.CL_YELLOW;
+          break;
+        }
+        case "O": {
+          cardColor = Game.CL_ORANGE;
+          break;
+        }
+        default: {
+          break;
+        }
+      }
+
+      this.color = cardColor;
+      setBackground(Game.CL_WHITE);
+
+      int numSquares = Integer.parseInt(parts[0]);
+      if (numSquares > 1) {
+        this.isMultiple = true;
+      }
+      for (int i = 1; i <= numSquares; i++) {
+        add(new ColoredSquare(this.color));
+      }
+    }
+  }
+
+  /**
+   * This method is used to create a string representation of a card which will
+   * be used to save card decks to file when saving a game.
+   * @return the string representation of a card of the form <numSquares>:<color/type>,
+   * i.e. "1:R" is a single red square card, "2:B" is a double blue square card,
+   * and "1:S" is a skip card.
+   */
+  public String toString() {
+    StringBuilder codeBuilder = new StringBuilder();
+    if (isMultiple) {
+      codeBuilder.append("2:");
+    } else {
+      codeBuilder.append("1:");
+    }
+
+    if (cardType == CardType.NORMAL) {
+      if (color == Game.CL_RED) {
+        codeBuilder.append("R");
+      } else if (color == Game.CL_BLUE) {
+        codeBuilder.append("B");
+      } else if (color == Game.CL_GREEN) {
+        codeBuilder.append("G");
+      } else if (color == Game.CL_YELLOW) {
+        codeBuilder.append("Y");
+      } else if (color == Game.CL_ORANGE) {
+        codeBuilder.append("O");
+      }
+    } else if (cardType == CardType.SKIP) {
+      codeBuilder.append("S");
+    } else if (cardType == CardType.MIDDLE) {
+      codeBuilder.append("M");
+    }
+
+    return codeBuilder.toString();
   }
 
   // public getter methods

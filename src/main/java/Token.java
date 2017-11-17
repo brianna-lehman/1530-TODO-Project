@@ -1,9 +1,8 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import java.io.Serializable;
 
-public class Token extends JButton implements Serializable{
+public class Token extends JButton {
 
   final int player_index;
   int currentSquare;

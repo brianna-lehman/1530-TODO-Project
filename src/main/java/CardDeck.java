@@ -3,9 +3,8 @@
  */
 
 import java.util.*;
-import java.io.Serializable;
 
-public class CardDeck implements Serializable{
+public class CardDeck {
 
   // deck of cards
   private Stack<Card> deck = new Stack<Card>();
@@ -15,6 +14,16 @@ public class CardDeck implements Serializable{
     fill();
     // shuffle the deck
     shuffle();
+  }
+
+  /**
+   * This constructor is used when loading a card deck state from file for a
+   * saved game.
+   * @param cardDeckString a string representation of a card deck, expected to be
+   * of the form <card1>,<card2>,...<cardN>
+   */
+  public CardDeck(String cardDeckString) {
+    parseCardDeckString(cardDeckString);
   }
 
   // method to return card on the top of the deck
@@ -79,5 +88,38 @@ public class CardDeck implements Serializable{
   // returns size of deck for testing purposes
   public int deckSize() {
     return deck.size();
+  }
+
+  /**
+   * This method creates a string representation of a card deck which will be
+   * used when saving a game to file.
+   * @return the string representation of this deck in the form of:
+   * <card1>,<card2>,...<cardN>
+   */
+  public String toString() {
+    List<Card> cardList = new ArrayList<Card>(deck);
+    StringBuilder deckString = new StringBuilder();
+    for (int i = 0; i < cardList.size(); i++) {
+      deckString.append(cardList.get(i).toString());
+
+      if (i != cardList.size() - 1) {
+        deckString.append(",");
+      }
+    }
+
+    return deckString.toString();
+  }
+
+  /**
+   * This method parses a card deck string representation and adds cards to the
+   * deck from the parsed string.
+   * @param cardDeckString the string to parse
+   */
+  public void parseCardDeckString(String cardDeckString) {
+    String[] cardCodeStrings = cardDeckString.split(",");
+    for (int i = 0; i < cardCodeStrings.length; i++) {
+      Card newCard = new Card(cardCodeStrings[i]);
+      deck.push(newCard);
+    }
   }
 }

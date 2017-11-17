@@ -7,9 +7,8 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.util.*;
-import java.io.Serializable;
 
-public class Board extends JPanel implements Serializable{
+public class Board extends JPanel {
 
   // height of the game board, 0.75x height of the window
   public static final int GAMEBOARD_HEIGHT = Game.WINDOW_HEIGHT - 200;
@@ -213,7 +212,7 @@ public class Board extends JPanel implements Serializable{
     }
   }
 
-  private class SquareDetails implements Serializable{
+  private class SquareDetails {
     int x;
     int y;
     Color color;
