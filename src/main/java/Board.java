@@ -159,7 +159,7 @@ public class Board extends JPanel {
 
     if(newPosition == winningIndex) {
       displayVictoryBox(token.player_index);
-      System.exit(0);
+      Game.getInstance().restart();
     }
   }
 

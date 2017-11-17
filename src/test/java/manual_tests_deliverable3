@@ -1,0 +1,19 @@
+Manual Tests
+
+TEST CASE IDENTIFIER: REPLAY-PROMPT
+DESCRIPTION: A replay prompt appears at the end of every game.
+PRECONDITIONS: A player has just won the game and a victory message box has appeared.
+EXECUTION STEPS: Click "Ok" on the victory box.
+POSTCONDITIONS: A prompt appears with the message "Would you like to play again?" with two options: "Yes" and "No".
+
+TEST CASE IDENTIFIER: GAME-RESTART
+DESCRIPTION: The game completely restarts on a replay.
+PRECONDITIONS: The replay prompt has appeared.
+EXECUTION STEPS: Click "Yes".
+POSTCONDITIONS: The game completely resets.
+
+TEST CASE IDENTIFIER: GAME-END
+DESCRIPTION: The game exits at the end of a set of games.
+PRECONDITIONS: The replay prompt has appeared.
+EXECUTION STEPS: Click "No".
+POSTCONDITIONS: The program exits.
