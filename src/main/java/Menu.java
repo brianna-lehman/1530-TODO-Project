@@ -4,11 +4,12 @@ import javax.swing.*;
 import java.util.*;
 import java.io.*;
 
-public class Menu extends JMenuBar implements Serializable{
+public class Menu extends JMenuBar {
   JMenu file;
   final String[] INVALID_CHARS = {"~", "#", "%", "&", "*", "{", "}", "\\", ":", "<", ">", "?", "/", "|", "\"", ".", " "};
   final String EXTENSION = ".ser";
   final String DIRECTORY = "saved_games/";
+  final String NO_CARD_DRAWN = "NO_CARD_DRAWN";
 
   enum FileValidation {
     VALID,
@@ -139,46 +140,53 @@ public class Menu extends JMenuBar implements Serializable{
   public boolean loadGame(File file) {
     try {
       FileInputStream fileStream = new FileInputStream(file);
-      ObjectInputStream objectStream = new ObjectInputStream(fileStream);
+      Scanner fileScanner = new Scanner(fileStream);
 
       Game game = Game.getInstance();
 
-      ArrayList<Object> gameDetails = (ArrayList<Object>)objectStream.readObject();
-
-      int j = 0;
-
       // resetting the timer
-      int time = (int)gameDetails.get(j++);
+      int time = Integer.parseInt(fileScanner.nextLine());
       game.getMessagePanel().getTimer().setTime(time);
       game.getMessagePanel().getTimer().start();
 
-      // resetting the tokens
-      int numOfPlayers = (int)gameDetails.get(j++);
-      Token[] tokens = (Token[])gameDetails.get(j++);
+      // resetting the players
+      int numOfPlayers = Integer.parseInt(fileScanner.nextLine());
       game.setNumberOfPlayers(numOfPlayers);
+
+      // reset the tokens
+      Token[] newTokens = new Token[numOfPlayers];
+      for (int i = 0; i < numOfPlayers; i++) {
+        String[] tokenStringParts = fileScanner.nextLine().split(":");
+        int playerIndex = Integer.parseInt(tokenStringParts[0]);
+        int currentSquare = Integer.parseInt(tokenStringParts[1]);
+        newTokens[i] = new Token(playerIndex);
+        newTokens[i].currentSquare = currentSquare;
+      }
       game.getBoard().clearBoard(game.getTokens());
-      game.setTokens(tokens);
-      for (int i = 0; i < tokens.length; i++) {
-          game.getBoard().setToken(tokens[i]);
+      game.setTokens(newTokens);
+      for (int i = 0; i < newTokens.length; i++) {
+          game.getBoard().setToken(newTokens[i]);
       }
 
       // resetting the message panel
-      int currentTurn = (int)gameDetails.get(j++);
-      String userMessage = (String)gameDetails.get(j++);
+      int currentTurn = Integer.parseInt(fileScanner.nextLine());
+      String userMessage = fileScanner.nextLine();
       game.setCurrentTurn(currentTurn);
       game.getMessagePanel().setCurrentTurn(currentTurn);
       game.getMessagePanel().setMessage(userMessage);
 
       // resetting the card deck and card deck panel
-      CardDeck deck = (CardDeck)gameDetails.get(j++);
-      boolean cardDrawn = (boolean)gameDetails.get(j++);
-      Card currentCard = (Card)gameDetails.get(j++);
-      game.setDeck(deck);
+      String cardDeckString = fileScanner.nextLine();
+      CardDeck newDeck = new CardDeck(cardDeckString);
+      boolean cardDrawn = Boolean.parseBoolean(fileScanner.nextLine());
+      String currentCardString = fileScanner.nextLine();
+      game.setDeck(newDeck);
       game.setCardDrawn(cardDrawn);
-      game.getCardDeckPanel().removeCurrentCard();
-      game.getCardDeckPanel().setCurrentCard(currentCard);
+      if (!currentCardString.equals(NO_CARD_DRAWN)) {
+        game.getCardDeckPanel().setCurrentCard(new Card(currentCardString));
+      }
 
-      objectStream.close();
+      fileScanner.close();
       fileStream.close();
 
       return true;
@@ -192,37 +200,39 @@ public class Menu extends JMenuBar implements Serializable{
   public boolean saveGame(File file) {
     try {
         FileOutputStream fileStream = new FileOutputStream(file);
-        ObjectOutputStream objectStream = new ObjectOutputStream(fileStream);
+        PrintWriter fileWriter = new PrintWriter(fileStream);
 
         Game game = Game.getInstance();
-        ArrayList<Object> gameDetails = new ArrayList<Object>();
 
         // saving the timer
         int time = game.getMessagePanel().getTimer().getTime();
-        gameDetails.add(time);
+        fileWriter.println(time);
 
         // saving the token details
         int numOfPlayers = game.getNumberOfPlayers();
-        gameDetails.add(numOfPlayers);
+        fileWriter.println(numOfPlayers);
         Token[] tokens = game.getTokens();
-        gameDetails.add(tokens);
+        for (int i = 0; i < tokens.length; i++) {
+          fileWriter.println(tokens[i].getPlayerIndex() + ":" + tokens[i].currentSquare);
+        }
         int currentTurn = game.getCurrentTurn();
-        gameDetails.add(currentTurn);
+        fileWriter.println(currentTurn);
         String userMessage = game.getMessagePanel().getMessage();
-        gameDetails.add(userMessage);
+        fileWriter.println(userMessage);
 
         // saving the deck details
         CardDeck deck = game.getDeck();
-        gameDetails.add(deck);
+        fileWriter.println(deck.toString());
         boolean cardDrawn = game.getCardDrawn();
-        gameDetails.add(cardDrawn);
+        fileWriter.println(cardDrawn);
         Card currentCard = game.getCardDeckPanel().getCurrentCard();
-        gameDetails.add(currentCard);
+        if (currentCard != null) {
+          fileWriter.println(currentCard.toString());
+        } else {
+          fileWriter.println(NO_CARD_DRAWN);
+        }
 
-        // write all the above objects to objectStream
-        objectStream.writeObject(gameDetails);
-
-        objectStream.close();
+        fileWriter.close();
         fileStream.close();
 
         return true;

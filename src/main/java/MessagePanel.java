@@ -5,9 +5,8 @@
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.Serializable;
 
-public class MessagePanel extends JPanel implements Serializable {
+public class MessagePanel extends JPanel {
 
   // game timer
   private Timer timer;
@@ -15,6 +14,9 @@ public class MessagePanel extends JPanel implements Serializable {
   private JLabel turnIndicator;
   // message to be displayed
   private JLabel userMessage;
+
+  // the text of the message, unformatted
+  private String message;
 
   // CSS styles for the messages that will be displayed to the user
   private static final String MESSAGE_STYLES = "margin: 10px; text-align: center;"
@@ -42,6 +44,9 @@ public class MessagePanel extends JPanel implements Serializable {
     userMessage.setFont(new Font("Courier", Font.PLAIN, 24));
     userMessage.setText(initialMessage);
     add(userMessage);
+
+    // save unformatted message String
+    message = new String("Hello, welcome to the World of Sweets!");
   }
 
   public void setCurrentTurn(int turn) {
@@ -49,11 +54,12 @@ public class MessagePanel extends JPanel implements Serializable {
   }
 
   public String getMessage() {
-    return userMessage.getText();
+    return new String(message);
   }
 
-  public void setMessage(String message) {
-    userMessage.setText(formatText(message, Game.WINDOW_WIDTH / 2, MESSAGE_STYLES));
+  public void setMessage(String newMessage) {
+    userMessage.setText(formatText(newMessage, Game.WINDOW_WIDTH / 2, MESSAGE_STYLES));
+    message = new String(newMessage);
   }
 
   public void startTimer() {

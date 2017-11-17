@@ -6,15 +6,14 @@
 import java.util.*;
 import java.awt.*;
 import javax.swing.*;
-import java.io.Serializable;
 
-public class Timer extends JLabel implements Serializable{
+public class Timer extends JLabel {
 
   // number of seconds in the game so far
   private int timeInSeconds;
 
   // thread that will update this timer
-  private transient Thread timerThread;
+  private Thread timerThread;
 
   public Timer(){
     // initialize time to zero minutes and seconds

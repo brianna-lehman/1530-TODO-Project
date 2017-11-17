@@ -3,9 +3,8 @@
  */
 
 import java.util.*;
-import java.io.Serializable;
 
-public class CardDeck implements Serializable{
+public class CardDeck {
 
   // deck of cards
   private Stack<Card> deck = new Stack<Card>();
@@ -15,6 +14,11 @@ public class CardDeck implements Serializable{
     fill();
     // shuffle the deck
     shuffle();
+  }
+
+  // for loading card decks from file
+  public CardDeck(String cardDeckString) {
+    parseCardDeckString(cardDeckString);
   }
 
   // method to return card on the top of the deck
@@ -79,5 +83,27 @@ public class CardDeck implements Serializable{
   // returns size of deck for testing purposes
   public int deckSize() {
     return deck.size();
+  }
+
+  public String toString() {
+    List<Card> cardList = new ArrayList<Card>(deck);
+    StringBuilder deckString = new StringBuilder();
+    for (int i = 0; i < cardList.size(); i++) {
+      deckString.append(cardList.get(i).toString());
+
+      if (i != cardList.size() - 1) {
+        deckString.append(",");
+      }
+    }
+
+    return deckString.toString();
+  }
+
+  public void parseCardDeckString(String cardDeckString) {
+    String[] cardCodeStrings = cardDeckString.split(",");
+    for (int i = 0; i < cardCodeStrings.length; i++) {
+      Card newCard = new Card(cardCodeStrings[i]);
+      deck.push(newCard);
+    }
   }
 }
