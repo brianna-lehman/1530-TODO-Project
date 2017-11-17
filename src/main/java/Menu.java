@@ -79,6 +79,11 @@ public class Menu extends JMenuBar implements Serializable{
 
             boolean success = saveGame(new File(DIRECTORY+filename+EXTENSION));
             if (success) {
+              Game game = Game.getInstance();
+              game.getBoard().clearBoard(game.getTokens());
+              for (int i = 0; i < game.getTokens().length; i++) {
+                game.getBoard().setToken(game.getTokens()[i]);
+              }
               JOptionPane.showMessageDialog(null,"Game saved sucessfully");
             }
             else {
