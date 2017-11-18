@@ -1,0 +1,55 @@
+Manual Tests
+
+TEST CASE IDENTIFIER: NO-AVAILABLE-GAMES-TO-LOAD
+DESCRIPTION: Testing what happens when the user tries to load a game when there are no games to load.
+PRECONDITIONS: The game is running with any number of players. No previous games have been saved.
+EXECUTION STEPS: The user clicks the 'Load' item on the menu bar.
+POSTCONDITIONS: A popup appears saying that there are no possible games to load.
+
+TEST CASE IDENTIFIER: SAVE-GAME-NO-MOVEMENTS
+DESCRIPTION: A game can be saved when no cards have been drawn and no tokens have been moved.
+PRECONDITIONS: The game is running. No cards have been drawn and no tokens have been moved.
+EXECUTION STEPS: Click the 'Save' item on the menu bar, give the file the name 'no-movements', and press okay.
+POSTCONDITIONS: A popup appears saying that the game has been saved.
+
+TEST CASE IDENTIFIER: LOAD-GAME-NO-MOVEMENTS
+DESCRIPTION: A game where no cards have been drawn and no tokens have been moved can be loaded and played.
+PRECONDITIONS: The SAVE-GAME-NO-MOVEMENTS test has been run then a card was drawn and each token has moved one space.
+EXECUTION STEPS: Click the 'Load' item on the menu bar and open 'no-movements.ser' from the dropdown menu.
+POSTCONDITIONS: All the tokens are moved back to the starting square, there's a welcome message on the message panel, and there are no cards in the cards panel. The game can be played from this point with no issues.
+
+TEST CASE IDENTIFIER: SAVE-GAME-MULTIPLE-MOVEMENTS
+DESCRIPTION: A game can be saved when cards have been drawn and tokens have been moved.
+PRECONDITIONS: The game is running. A card has been drawn and a token moved for each token on the board. Once each token has been moved don't draw a new card for the first player.
+EXECUTION STEPS: Click the 'Save' item on the menu bar, give the file the name 'multiple-movements', and press okay.
+POSTCONDITIONS: A popup appears saying that the game has been saved.
+
+TEST CASE IDENTIFIER: LOAD-GAME-MULTIPLE-MOVEMENTS
+DESCRIPTION: A game where each token has been oved once can be saved.
+PRECONDITIONS: The SAVE-GAME-MULTIPLE-MOVEMENTS test has been run then a card was drawn and each token has moved one additional space.
+EXECUTION STEPS: Click the 'Load' item on the menu bar and open 'multiple-movements.ser' from the dropdown menu.
+POSTCONDITIONS: All the tokens are moved back to one space previous, there's no message for player 1 in the message panel, and the Draw a Card button can be clicked for the first player. The game can be played from this point with no issues.
+
+TEST CASE IDENTIFIER: LOAD-GAME-WITH-MORE-PLAYERS
+DESCRIPTION: The user can load a game that has more players than the game that is currently running.
+PRECONDITIONS: The game is running with 2 tokens on the board and a previous game named '4-players.ser' which had four tokens has been saved.
+EXECUTION STEPS: Load the game from the dropdown menu named '4-players.ser'
+POSTCONDITIONS: The two tokens from the previous game are removed and four tokens are placed on the board in the position they were in when the game was saved.
+
+TEST CASE IDENTIFIER: LOAD-GAME-WITH-LESS-PLAYERS
+DESCRIPTION: The user can load a game that has less players than the game that is currently running.
+PRECONDITIONS: The game is running with 3 tokens on the board and a previous game named '2-players.ser' which had two tokens on the board has been saved.
+EXECUTION STEPS: Load the game from the dropdown menu named '2-players.ser'
+POSTCONDITIONS: The three tokens from the previous game are removed and two tokens are placed on the board in the position they were in when the game was saved.
+
+TEST CASE IDENTIFIER: CANCEL-SAVE-GAME
+DESCRIPTION: A user can cancel their decision to save a game.
+PRECONDITIONS: A game is running and the user has clicked 'Save' from the menu options.
+EXECUTION STEPS: Click 'Cancel' on the popup asking for a filename.
+POSTCONDITIONS: The popup goes away, the user can continue playing the game, and no errors have been printed to the command line.
+
+TEST CASE IDENTIFIER: CANCEL-LOAD-GAME
+DESCRIPTION: A user can cancel their decision to load a game.
+PRECONDITIONS: A game is running and the user has clicked 'Load' from the menu options.
+EXECUTION STEPS: Click 'Cancel' on the popup asking for a file from the dropdown menu.
+POSTCONDITIONS: The popup goes away, the user can continue playing the original game, and no errors have been printed to the command line.

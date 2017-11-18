@@ -65,7 +65,7 @@ public class Menu extends JMenuBar {
         // get a filename, check that it's valid, and save the current game
         String filename = JOptionPane.showInputDialog("What would you like to name the file? ");
 
-        if (filename != null && filename.length() > 0) {
+        if (filename != null) {
           filename = filename.replace(" ", "_");
 
           if (confirmFilenamePopup(filename)) {
