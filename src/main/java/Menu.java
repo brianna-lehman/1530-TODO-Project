@@ -27,12 +27,12 @@ public class Menu extends JMenuBar {
       public void actionPerformed(ActionEvent ev) {
         // find a list of all files in DIRECTORY w/ the extension .ser
         File dir = new File(DIRECTORY);
-        File[] uncheckedFiles = dir.listFiles();
-        if (uncheckedFiles.length == 0) {
+        if (!dir.exists() || dir.listFiles().length == 0) {
           JOptionPane.showMessageDialog(null, "There are no saved games");
         }
         else {
           ArrayList<String> gameFileNames = new ArrayList<String>();
+          File[] uncheckedFiles = dir.listFiles();
           for (int i = 0; i < uncheckedFiles.length; i++) {
             String fileName = uncheckedFiles[i].getName();
             if (fileName.contains(EXTENSION)) {
