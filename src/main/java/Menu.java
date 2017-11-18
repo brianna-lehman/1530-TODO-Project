@@ -157,7 +157,8 @@ public class Menu extends JMenuBar {
         newTokens[i] = new Token(playerIndex);
         newTokens[i].currentSquare = currentSquare;
       }
-      game.getBoard().clearBoard(game.getTokens());
+      // game.getBoard().clearBoard(game.getTokens());
+      game.getBoard().clearBoard(game.getOriginalTokens());
       game.setTokens(newTokens);
       for (int i = 0; i < newTokens.length; i++) {
           game.getBoard().setToken(newTokens[i]);

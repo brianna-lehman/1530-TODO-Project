@@ -140,6 +140,10 @@ public class Game extends JFrame {
     return tokensCopy;
   }
 
+  public Token[] getOriginalTokens() {
+    return tokens;
+  }
+
   public void setTokens(Token[] t) {
     tokens = t;
   }
