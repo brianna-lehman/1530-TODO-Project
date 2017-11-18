@@ -23,9 +23,10 @@ public class Game extends JFrame {
   static int NUMBER_OF_PLAYERS = -1;
   static int current_turn = 0;
   static Token[] tokens;
-  static CardDeck deck = new CardDeck();
-  static JPanel utilityPanel = new MessagePanel();
-  static MessagePanel messagePanel = new MessagePanel();
+  static String[] playerNames;
+  static CardDeck deck;
+  static JPanel utilityPanel;
+  static MessagePanel messagePanel;
   static Board gameboard;
   static CardDeckPanel cardDeckPanel;
   static boolean cardDrawn = false;
@@ -50,6 +51,31 @@ public class Game extends JFrame {
     else {
         System.exit(0);
     }
+
+    playerNames = new String[NUMBER_OF_PLAYERS];
+    for(int i = 0; i < NUMBER_OF_PLAYERS; i++) {
+      panel = new JPanel();
+      JTextField txt = new JTextField(10);
+      panel.add(new JLabel(String.format("Enter Player %d's name", i + 1)));
+      panel.add(txt);
+      result = JOptionPane.showConfirmDialog(null, panel, "World of Sweets - Number of Players",
+                                                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+      if (result == JOptionPane.OK_OPTION) {
+        String name = txt.getText();
+        if(name.equals(""))
+          playerNames[i] = "Player " + (i + 1);
+        else
+          playerNames[i] = name;
+      }
+      else {
+        playerNames[i] = "Player " + (i + 1);
+      }
+    }
+
+    deck = new CardDeck();
+    utilityPanel = new JPanel();
+    messagePanel = new MessagePanel();
 
     // create a frame for the game
     setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -104,6 +130,27 @@ public class Game extends JFrame {
 
       for(int i = 0; i < NUMBER_OF_PLAYERS; i++) {
         tokens[i] = new Token(i);
+      }
+
+      playerNames = new String[NUMBER_OF_PLAYERS];
+      for(int i = 0; i < NUMBER_OF_PLAYERS; i++) {
+        panel = new JPanel();
+        JTextField txt = new JTextField(10);
+        panel.add(new JLabel(String.format("Enter Player %d's name", i + 1)));
+        panel.add(txt);
+        result = JOptionPane.showConfirmDialog(null, panel, "World of Sweets - Number of Players",
+                                               JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+        if (result == JOptionPane.OK_OPTION) {
+          String name = txt.getText();
+          if(name.equals(""))
+            playerNames[i] = "Player " + (i + 1);
+          else
+            playerNames[i] = name;
+        }
+        else {
+          playerNames[i] = "Player " + (i + 1);
+        }
       }
 
       remove(gameboard);

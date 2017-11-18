@@ -205,7 +205,7 @@ public class Board extends JPanel {
 
   private void displayVictoryBox(int playerIndex){
     JPanel panel = new JPanel(new GridLayout(0, 1));
-    JOptionPane.showMessageDialog(panel, "Player " + (playerIndex + 1) + " wins!");
+    JOptionPane.showMessageDialog(panel, Game.playerNames[playerIndex] + " wins!");
   }
 
   /**

@@ -33,7 +33,7 @@ public class MessagePanel extends JPanel {
 
     turnIndicator = new JLabel();
     turnIndicator.setFont(new Font("Courier", Font.PLAIN, 24));
-    turnIndicator.setText(formatText("Player 1's turn", Game.WINDOW_WIDTH / 2, MESSAGE_STYLES));
+    turnIndicator.setText(formatText(Game.playerNames[0] + "'s turn", Game.WINDOW_WIDTH / 2, MESSAGE_STYLES));
     add(turnIndicator);
 
     // message to be initially displayed to user
@@ -44,7 +44,7 @@ public class MessagePanel extends JPanel {
   }
 
   public void setCurrentTurn(int turn) {
-    turnIndicator.setText(formatText("Player " + (turn + 1) + "'s turn", Game.WINDOW_WIDTH / 2, MESSAGE_STYLES));
+    turnIndicator.setText(formatText(Game.playerNames[turn] + "'s turn", Game.WINDOW_WIDTH / 2, MESSAGE_STYLES));
   }
 
   public void setMessage(String message) {
