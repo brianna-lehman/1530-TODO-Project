@@ -23,6 +23,7 @@ public class Game extends JFrame {
   static int NUMBER_OF_PLAYERS = -1;
   static int current_turn = 0;
   static Token[] tokens;
+  static JMenuBar menu;
   static String[] playerNames;
   static CardDeck deck;
   static JPanel utilityPanel;
@@ -85,6 +86,10 @@ public class Game extends JFrame {
     for(int i = 0; i < NUMBER_OF_PLAYERS; i++) {
       tokens[i] = new Token(i);
     }
+
+    // menu bar for saving/loading games
+    menu = new Menu();
+    setJMenuBar(menu);
 
     // panel which contains all of the movement squares
     gameboard = new Board();
@@ -215,6 +220,59 @@ public class Game extends JFrame {
 
   public Board getBoard() {
     return gameboard;
+  }
+
+  public Token[] getTokens() {
+    Token[] tokensCopy = new Token[tokens.length];
+    for (int i = 0; i < tokens.length; i++) {
+      tokensCopy[i] = new Token(tokens[i].getPlayerIndex());
+      tokensCopy[i].currentSquare = tokens[i].currentSquare;
+    }
+    return tokensCopy;
+  }
+
+  public Token[] getOriginalTokens() {
+    return tokens;
+  }
+
+  public void setTokens(Token[] t) {
+    tokens = t;
+  }
+
+  public CardDeckPanel getCardDeckPanel() {
+    return cardDeckPanel;
+  }
+
+  public int getNumberOfPlayers() {
+    return NUMBER_OF_PLAYERS;
+  }
+
+  public void setNumberOfPlayers(int numOfPlayers) {
+    NUMBER_OF_PLAYERS = numOfPlayers;
+  }
+
+  public int getCurrentTurn() {
+    return current_turn;
+  }
+
+  public void setCurrentTurn(int turn) {
+    current_turn = turn;
+  }
+
+  public CardDeck getDeck() {
+    return deck;
+  }
+
+  public void setDeck(CardDeck d) {
+    deck = d;
+  }
+
+  public boolean getCardDrawn() {
+    return cardDrawn;
+  }
+
+  public void setCardDrawn(boolean cd) {
+    cardDrawn = cd;
   }
 
   // main simply creates an instance of Game for now

@@ -15,7 +15,7 @@ public class Timer extends JLabel {
   // thread that will update this timer
   private Thread timerThread;
 
-  public Timer() {
+  public Timer(){
     // initialize time to zero minutes and seconds
     timeInSeconds = 0;
     setText("Game Clock: " + formatTime(timeInSeconds));

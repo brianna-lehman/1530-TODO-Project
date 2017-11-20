@@ -42,6 +42,23 @@ public class CardDeckPanel extends JPanel {
     cardPile.repaint();
   }
 
+  public Card getCurrentCard() {
+    return currentCard;
+  }
+
+  public void setCurrentCard(Card current) {
+    if (currentCard != null) {
+      removeCurrentCard();
+    }
+    currentCard = current;
+    cardPile.add(currentCard);
+    refresh();
+  }
+
+  public void removeCurrentCard() {
+    cardPile.remove(currentCard);
+  }
+
   /**
    * This ActionListener corresponds to the button used to draw cards from the
    * pile.

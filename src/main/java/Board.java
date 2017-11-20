@@ -163,6 +163,22 @@ public class Board extends JPanel {
     }
   }
 
+  void clearBoard(Token[] tokens) {
+    for (int i = 0; i < tokens.length; i++) {
+      int position = tokens[i].currentSquare;
+      SquareDetails square = indexToSquareMap.get(position);
+      GameboardSquare gs = squares[square.x][square.y];
+      gs.removeToken(tokens[i]);
+    }
+  }
+
+  void setToken(Token token) {
+    int position = token.currentSquare;
+    SquareDetails square = indexToSquareMap.get(position);
+    GameboardSquare gs = squares[square.x][square.y];
+    gs.addToken(token);
+  }
+
   private int nextSquare(int currentSquare, Card card) {
     switch (card.getCardType()) {
       case MIDDLE:
@@ -180,7 +196,7 @@ public class Board extends JPanel {
 
         while ((currentColorIndex + moves) % 5 != nextColorIndex) {
           moves++;
-        } 
+        }
 
         if (isDouble) {
           moves += 5;
@@ -194,7 +210,7 @@ public class Board extends JPanel {
   private class SquareDetails {
     int x;
     int y;
-    Color color; 
+    Color color;
 
     SquareDetails(int x, int y, Color c) {
       this.x = x;
