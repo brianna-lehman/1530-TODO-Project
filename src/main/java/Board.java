@@ -20,17 +20,19 @@ public class Board extends JPanel {
   // Map between the order in which squares appear and their location on the board
   private Map<Integer, SquareDetails> indexToSquareMap = new HashMap<Integer, SquareDetails>();
   private int winningIndex;
-  private int specialSquare0 = 7;
-  private int specialSquare1 = 7;
-  private int specialSquare2 = 7;
-  private int specialSquare3 = 7;
-  private int specialSquare4 = 7;
+  private int specialIndex0 = 6;
+  private int specialIndex1 = 8;
+  private int specialIndex2 = 15;
+  private int specialIndex3 = 22;
+  private int specialIndex4 = 24;
 
   // 2D array of GameboardSquare which make up the board
   private GameboardSquare [][] squares = new GameboardSquare [ROWS][COLS];
 
   // constraints to set the locations of squares in the grid
   private GridBagConstraints constraints = new GridBagConstraints();
+
+  public static String[] specialSquares = {"Ice Cream Land","Chocolate River","Licorice Jungle","Rock Candy Caverns","Hershey Park"};
 
   public Board() {
     setLayout(new GridBagLayout());
@@ -91,8 +93,31 @@ public class Board extends JPanel {
     indexToSquareMap.put(winningIndex, new SquareDetails(ROWS - 1, 0, Game.CL_PINK));
 
     // special squares
-    GameboardSquare middleSquare = squares[3][0];
-    middleSquare.setLabelText("Middle");
+    GameboardSquare specialSquare0 = squares[0][6];
+    specialSquare0.setLabelText(specialSquares[0]);
+    specialSquare0.setColor(Game.CL_LIGHT_PINK);
+    indexToSquareMap.put(specialIndex0, new SquareDetails(0, 6, Game.CL_RED));
+
+    GameboardSquare specialSquare1 = squares[2][6];
+    specialSquare1.setLabelText(specialSquares[1]);
+    specialSquare1.setColor(Game.CL_BROWN);
+    indexToSquareMap.put(specialIndex1, new SquareDetails(2, 6, Game.CL_BLUE));
+
+    GameboardSquare specialSquare2 = squares[3][0];
+    specialSquare2.setLabelText(specialSquares[2]);
+    specialSquare2.setColor(Game.CL_BLACK);
+    indexToSquareMap.put(specialIndex2, new SquareDetails(3, 0, Game.CL_ORANGE));
+
+
+    GameboardSquare specialSquare3 = squares[4][6];
+    specialSquare3.setLabelText(specialSquares[3]);
+    specialSquare3.setColor(Game.CL_CYAN);
+    indexToSquareMap.put(specialIndex3, new SquareDetails(4, 6, Game.CL_YELLOW));
+
+    GameboardSquare specialSquare4 = squares[6][6];
+    specialSquare4.setLabelText(specialSquares[4]);
+    specialSquare4.setColor(Game.CL_LIGHT_BROWN);
+    indexToSquareMap.put(specialIndex4, new SquareDetails(6, 6, Game.CL_GREEN));
 
     // add Start square
     GameboardSquare startSquare = squares[0][0];
@@ -148,6 +173,7 @@ public class Board extends JPanel {
   boolean moveToken(Token token, Card currentCard) {
     int position = token.currentSquare;
     int newPosition = nextSquare(position, currentCard);
+    System.err.println(newPosition);
     if (newPosition >= winningIndex) {
       newPosition = winningIndex;
     }
@@ -184,17 +210,19 @@ public class Board extends JPanel {
   }
 
   private int nextSquare(int currentSquare, Card card) {
+    Set<Integer> specialIndexes = new HashSet<Integer>();
+    specialIndexes.addAll(Arrays.asList(6,8,15,22,24));
     switch (card.getCardType()) {
       case SPECIAL0:
-        return specialSquare0;
+        return specialIndex0;
       case SPECIAL1:
-        return specialSquare1;
+        return specialIndex1;
       case SPECIAL2:
-        return specialSquare2;
+        return specialIndex2;
       case SPECIAL3:
-        return specialSquare3;
+        return specialIndex3;
       case SPECIAL4:
-        return specialSquare4;
+        return specialIndex4;
       case SKIP:
         return currentSquare;
       default: {
@@ -211,6 +239,18 @@ public class Board extends JPanel {
         }
 
         if (isDouble) {
+          moves += 5;
+        }
+
+        //case where the player would land on a special space
+        boolean landOnSpecialSpace = specialIndexes.contains(currentSquare+moves);
+        if(landOnSpecialSpace) {
+          moves += 5;
+        }
+
+        //case where a double card is drawn and the first colored square is a special square
+        boolean skippedOverSpecialSpace = specialIndexes.contains(currentSquare+moves-5) && isDouble;
+        if(skippedOverSpecialSpace) {
           moves += 5;
         }
 

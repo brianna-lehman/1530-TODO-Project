@@ -241,15 +241,16 @@ public class Card extends JPanel {
       case SKIP:
         return "Skip turn";
       case SPECIAL0:
-        return "Move to Ice Cream Land";
+        return "Move to " + Board.specialSquares[0];
       case SPECIAL1:
-        return "Move to Chocolate River";
+        return "Move to " + Board.specialSquares[1];
       case SPECIAL2:
-        return "Move to Licorice Jungle";
+        return "Move to " + Board.specialSquares[2];
       case SPECIAL3:
-        return "Move to Rock Candy Caverns";
-      case SPECIAL4:
-        return "Move to Hershey Park";
+        return "Move to " + Board.specialSquares[3];
+      case SPECIAL4: {
+        return "Move to " + Board.specialSquares[4];
+      }
       default:
         return "";
     }

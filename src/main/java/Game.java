@@ -11,13 +11,19 @@ public class Game extends JFrame {
   // candyland colors!
   static final Color CL_PINK = hexToColor("#ED5E9C");
   static final Color CL_PURPLE = hexToColor("#6A2580");
+  static final Color CL_BRIGHT_PURPLE = hexToColor("#CA19D1");
   static final Color CL_WHITE = hexToColor("#FFFFFF");
   static final Color CL_RED = hexToColor("#D73149");
   static final Color CL_YELLOW = hexToColor("#DCCC1F");
   static final Color CL_BLUE = hexToColor("#1576D5");
   static final Color CL_GREEN = hexToColor("#4C9C55");
   static final Color CL_ORANGE = hexToColor("#DD6652");
-  static final Color CL_BRIGHT_PURPLE = hexToColor("#CA19D1");
+  static final Color CL_LIGHT_PINK = hexToColor("#FF9797");
+  static final Color CL_BROWN = hexToColor("#310C0C");
+  static final Color CL_LIGHT_BROWN = hexToColor("#631919");
+  static final Color CL_CYAN = hexToColor("#00FFFF");
+  static final Color CL_BLACK = hexToColor("#000000");
+
 
   private static Game game = null;
   static int NUMBER_OF_PLAYERS = -1;

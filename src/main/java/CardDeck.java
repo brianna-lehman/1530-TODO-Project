@@ -74,24 +74,12 @@ public class CardDeck {
       deck.push(skip);
     }
 
-    // add special card "Move to [special square]"
-    String[] specialSquares = {"Ice Cream Land","Chocolate River","Licorice Jungle","Rock Candy Caverns","Hershey Park"};
-    for (int i = 0; i < specialSquares.length; i++) {
-      Card special_card = null;
-      switch(i) {
-        case 0:
-          special_card = new Card(Card.CardType.SPECIAL0);
-        case 1:
-          special_card = new Card(Card.CardType.SPECIAL1);
-        case 2:
-          special_card = new Card(Card.CardType.SPECIAL2);
-        case 3:
-          special_card = new Card(Card.CardType.SPECIAL3);
-        case 4:
-          special_card = new Card(Card.CardType.SPECIAL4);
-      }
-      deck.push(special_card);
-    }
+    // add "Move to [special square]"
+    deck.push(new Card(Card.CardType.SPECIAL0));
+    deck.push(new Card(Card.CardType.SPECIAL1));
+    deck.push(new Card(Card.CardType.SPECIAL2));
+    deck.push(new Card(Card.CardType.SPECIAL3));
+    deck.push(new Card(Card.CardType.SPECIAL4));
   }
 
   private void shuffle() {
