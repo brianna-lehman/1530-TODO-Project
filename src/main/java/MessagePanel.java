@@ -10,6 +10,8 @@ public class MessagePanel extends JPanel {
 
   // game timer
   private Timer timer;
+  // turn counter
+  private JLabel turnCounter;
   // turn indicator
   private JLabel turnIndicator;
   // message to be displayed
@@ -27,12 +29,18 @@ public class MessagePanel extends JPanel {
       Game.WINDOW_WIDTH / 2, MESSAGE_STYLES);
 
   public MessagePanel() {
+    setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
     setBackground(Game.CL_PINK);
 
     timer = new Timer();
     timer.setFont(new Font("Courier", Font.PLAIN, 16));
     timer.setForeground(Game.CL_WHITE);
     add(timer);
+
+    turnCounter = new JLabel();
+    turnCounter.setFont(new Font("Courier", Font.PLAIN, 16));
+    turnCounter.setText(formatText("Turn #" + Game.numTurns, Game.WINDOW_WIDTH / 2, MESSAGE_STYLES));
+    add(turnCounter);
 
     turnIndicator = new JLabel();
     turnIndicator.setFont(new Font("Courier", Font.PLAIN, 24));
@@ -68,6 +76,12 @@ public class MessagePanel extends JPanel {
 
   public Timer getTimer() {
     return timer;
+  }
+
+  public void incrementTurn()
+  {
+    Game.numTurns++;
+    turnCounter.setText(formatText("Turn #" + Game.numTurns, Game.WINDOW_WIDTH / 2, MESSAGE_STYLES));
   }
 
   /**
