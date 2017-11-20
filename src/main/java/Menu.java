@@ -3,6 +3,8 @@ import java.awt.event.*;
 import javax.swing.*;
 import java.util.*;
 import java.io.*;
+import java.security.*;
+import javax.crypto.*;
 
 public class Menu extends JMenuBar {
   JMenu file;
@@ -10,6 +12,16 @@ public class Menu extends JMenuBar {
   final String EXTENSION = ".ser";
   final String DIRECTORY = "saved_games/";
   final String NO_CARD_DRAWN = "NO_CARD_DRAWN";
+
+  // key filename
+  final String KEY_FILENAME = "game.key";
+
+  // AES mode of operation - just ECB because I doubt Bill's son is capable of
+  // executing ciphertext replay attacks
+  final String MODE_OF_OPERATION = "AES/ECB/PKCS5Padding";
+
+  // AES key used to encrypt/decrypt saved games
+  Key secretKey = null;
 
   enum FileValidation {
     VALID,
@@ -90,6 +102,33 @@ public class Menu extends JMenuBar {
       }
     });
     file.add(save);
+
+    try {
+      // attempt to load AES key from file
+      File keyFile = new File(KEY_FILENAME);
+      if (keyFile.exists()) {
+        // read key from file
+        FileInputStream keyFileStream = new FileInputStream(keyFile);
+        ObjectInputStream keyStream = new ObjectInputStream(keyFileStream);
+        secretKey = (Key) keyStream.readObject();
+        keyFileStream.close();
+        keyStream.close();
+      } else {
+        // key file does not exist, we should create a new key
+        KeyGenerator keyGen = KeyGenerator.getInstance("AES");
+        secretKey = keyGen.generateKey();
+
+        // write the new key to file to read later
+        FileOutputStream keyFileStream = new FileOutputStream(keyFile);
+        ObjectOutputStream keyStream = new ObjectOutputStream(keyFileStream);
+        keyStream.writeObject(secretKey);
+        keyFileStream.close();
+        keyStream.close();
+      }
+    } catch (Exception e) {
+      System.err.println("Error loading AES key from file.");
+      System.exit(1);
+    }
   }
 
   public boolean confirmFilenamePopup(String filename) {
@@ -134,64 +173,21 @@ public class Menu extends JMenuBar {
 
   public boolean loadGame(File file) {
     try {
+      // initialize cipher for decryption, ECB because who cares?
+      Cipher cipher = Cipher.getInstance(MODE_OF_OPERATION);
+      cipher.init(Cipher.DECRYPT_MODE, secretKey);
+
+      // read encrypted game data from file
+      byte[] encryptedGameData = new byte[(int) file.length()];
       FileInputStream fileStream = new FileInputStream(file);
-      Scanner fileScanner = new Scanner(fileStream);
-
-      Game game = Game.getInstance();
-
-      // resetting the timer
-      int time = Integer.parseInt(fileScanner.nextLine());
-      game.getMessagePanel().getTimer().setTime(time);
-      game.getMessagePanel().getTimer().start();
-
-      // resetting the turn counter
-      int numTurns = Integer.parseInt(fileScanner.nextLine());
-      game.numTurns = numTurns;
-      game.getMessagePanel().refreshTurnCount();
-
-      // resetting the players
-      int numOfPlayers = Integer.parseInt(fileScanner.nextLine());
-      game.setNumberOfPlayers(numOfPlayers);
-
-      // reset the tokens
-      Token[] newTokens = new Token[numOfPlayers];
-      String[] newNames = new String[numOfPlayers];
-      for (int i = 0; i < numOfPlayers; i++) {
-        String[] tokenStringParts = fileScanner.nextLine().split(":");
-        String playerName = new String(tokenStringParts[0]);
-        int playerIndex = Integer.parseInt(tokenStringParts[1]);
-        int currentSquare = Integer.parseInt(tokenStringParts[2]);
-        newNames[i] = playerName;
-        newTokens[i] = new Token(playerIndex);
-        newTokens[i].currentSquare = currentSquare;
-      }
-      game.setPlayerNames(newNames);
-      game.getBoard().clearBoard(game.getOriginalTokens());
-      game.setTokens(newTokens);
-      for (int i = 0; i < newTokens.length; i++) {
-          game.getBoard().setToken(newTokens[i]);
-      }
-
-      // resetting the message panel
-      int currentTurn = Integer.parseInt(fileScanner.nextLine());
-      String userMessage = fileScanner.nextLine();
-      game.setCurrentTurn(currentTurn);
-      game.getMessagePanel().setCurrentTurn(currentTurn);
-      game.getMessagePanel().setMessage(userMessage);
-
-      // resetting the card deck and card deck panel
-      String cardDeckString = fileScanner.nextLine();
-      CardDeck newDeck = new CardDeck(cardDeckString);
-      boolean cardDrawn = Boolean.parseBoolean(fileScanner.nextLine());
-      String currentCardString = fileScanner.nextLine();
-      game.setDeck(newDeck);
-      game.setCardDrawn(cardDrawn);
-      if (!currentCardString.equals(NO_CARD_DRAWN)) {
-        game.getCardDeckPanel().setCurrentCard(new Card(currentCardString));
-      }
-
-      fileScanner.close();
+      fileStream.read(encryptedGameData);
       fileStream.close();
+
+      // decrypt game data
+      byte[] gameData = cipher.doFinal(encryptedGameData);
+
+      // set the game state
+      setGameState(gameData);
 
       return true;
 
@@ -201,47 +197,92 @@ public class Menu extends JMenuBar {
     }
   }
 
+  /**
+   * Given game data, this method states the state of the game from that data.
+   * @param gameData the game data that will be used to set the state of this
+   * game that was read from a saved game file.
+   */
+  private void setGameState(byte[] gameData) {
+    String gameDataString = "";
+    try {
+      gameDataString = new String(gameData, "UTF8");
+    } catch (Exception e) {
+      System.err.println("Somehow UTF8 is unsupported.");
+      System.exit(1);
+    }
+
+    Game game = Game.getInstance();
+    ArrayList<String> gameDataParts = new ArrayList<String>(Arrays.asList(gameDataString.split("\n")));
+    Iterator<String> gameDataIter = gameDataParts.iterator();
+
+    // resetting the timer
+    int time = Integer.parseInt(gameDataIter.next());
+    game.getMessagePanel().getTimer().setTime(time);
+    game.getMessagePanel().getTimer().start();
+
+    // resetting the turn counter
+    int numTurns = Integer.parseInt(gameDataIter.next());
+    game.numTurns = numTurns;
+    game.getMessagePanel().refreshTurnCount();
+
+    // resetting the players
+    int numOfPlayers = Integer.parseInt(gameDataIter.next());
+    game.setNumberOfPlayers(numOfPlayers);
+
+    // reset the tokens
+    Token[] newTokens = new Token[numOfPlayers];
+    String[] newNames = new String[numOfPlayers];
+    for (int i = 0; i < numOfPlayers; i++) {
+      String[] tokenStringParts = gameDataIter.next().split(":");
+      String playerName = new String(tokenStringParts[0]);
+      int playerIndex = Integer.parseInt(tokenStringParts[1]);
+      int currentSquare = Integer.parseInt(tokenStringParts[2]);
+      newNames[i] = playerName;
+      newTokens[i] = new Token(playerIndex);
+      newTokens[i].currentSquare = currentSquare;
+    }
+    game.setPlayerNames(newNames);
+    game.getBoard().clearBoard(game.getOriginalTokens());
+    game.setTokens(newTokens);
+    for (int i = 0; i < newTokens.length; i++) {
+        game.getBoard().setToken(newTokens[i]);
+    }
+
+    // resetting the message panel
+    int currentTurn = Integer.parseInt(gameDataIter.next());
+    String userMessage = gameDataIter.next();
+    game.setCurrentTurn(currentTurn);
+    game.getMessagePanel().setCurrentTurn(currentTurn);
+    game.getMessagePanel().setMessage(userMessage);
+
+    // resetting the card deck and card deck panel
+    String cardDeckString = gameDataIter.next();
+    CardDeck newDeck = new CardDeck(cardDeckString);
+    boolean cardDrawn = Boolean.parseBoolean(gameDataIter.next());
+    String currentCardString = gameDataIter.next();
+    game.setDeck(newDeck);
+    game.setCardDrawn(cardDrawn);
+    if (!currentCardString.equals(NO_CARD_DRAWN)) {
+      game.getCardDeckPanel().setCurrentCard(new Card(currentCardString));
+    }
+  }
+
   public boolean saveGame(File file) {
     try {
+        // build string representation of game state
+        String gameDataString = buildGameDataString();
+
+        // initialize cipher to encrypt file
+        Cipher cipher = Cipher.getInstance(MODE_OF_OPERATION);
+        cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+
+        // encrypt the game data
+        byte[] gameData = gameDataString.getBytes("UTF8");
+        byte[] encryptedGameData = cipher.doFinal(gameData);
+
+        // write the encrypted data to file
         FileOutputStream fileStream = new FileOutputStream(file);
-        PrintWriter fileWriter = new PrintWriter(fileStream);
-
-        Game game = Game.getInstance();
-
-        // saving the timer
-        int time = game.getMessagePanel().getTimer().getTime();
-        fileWriter.println(time);
-
-        // saving the turn counter
-        int numTurns = game.numTurns;
-        fileWriter.println(numTurns);
-
-        // saving the token details
-        int numOfPlayers = game.getNumberOfPlayers();
-        fileWriter.println(numOfPlayers);
-        Token[] tokens = game.getTokens();
-        String[] players = game.getPlayerNames();
-        for (int i = 0; i < tokens.length; i++) {
-          fileWriter.println(players[i] + ":" + tokens[i].getPlayerIndex() + ":" + tokens[i].currentSquare);
-        }
-        int currentTurn = game.getCurrentTurn();
-        fileWriter.println(currentTurn);
-        String userMessage = game.getMessagePanel().getMessage();
-        fileWriter.println(userMessage);
-
-        // saving the deck details
-        CardDeck deck = game.getDeck();
-        fileWriter.println(deck.toString());
-        boolean cardDrawn = game.getCardDrawn();
-        fileWriter.println(cardDrawn);
-        Card currentCard = game.getCardDeckPanel().getCurrentCard();
-        if (currentCard != null) {
-          fileWriter.println(currentCard.toString());
-        } else {
-          fileWriter.println(NO_CARD_DRAWN);
-        }
-
-        fileWriter.close();
+        fileStream.write(encryptedGameData);
         fileStream.close();
 
         return true;
@@ -250,5 +291,60 @@ public class Menu extends JMenuBar {
         JOptionPane.showMessageDialog(null,"Error: "+e.toString());
         return false;
     }
+  }
+
+  /**
+   * This method returns a string representation of the current state of the
+   * game.
+   * @return the string representation of the game
+   */
+  private String buildGameDataString() {
+    Game game = Game.getInstance();
+    StringBuilder gameDataBuilder = new StringBuilder();
+
+    // saving the timer
+    int time = game.getMessagePanel().getTimer().getTime();
+    gameDataBuilder.append(time);
+    gameDataBuilder.append("\n");
+
+    // saving the turn counter
+    int numTurns = game.numTurns;
+    gameDataBuilder.append(numTurns);
+    gameDataBuilder.append("\n");
+
+    // saving the token details
+    int numOfPlayers = game.getNumberOfPlayers();
+    gameDataBuilder.append(numOfPlayers);
+    gameDataBuilder.append("\n");
+    Token[] tokens = game.getTokens();
+    String[] players = game.getPlayerNames();
+    for (int i = 0; i < tokens.length; i++) {
+      gameDataBuilder.append(players[i] + ":" + tokens[i].getPlayerIndex() + ":" + tokens[i].currentSquare);
+      gameDataBuilder.append("\n");
+    }
+    int currentTurn = game.getCurrentTurn();
+    gameDataBuilder.append(currentTurn);
+    gameDataBuilder.append("\n");
+    String userMessage = game.getMessagePanel().getMessage();
+    gameDataBuilder.append(userMessage);
+    gameDataBuilder.append("\n");
+
+    // saving the deck details
+    CardDeck deck = game.getDeck();
+    gameDataBuilder.append(deck.toString());
+    gameDataBuilder.append("\n");
+    boolean cardDrawn = game.getCardDrawn();
+    gameDataBuilder.append(cardDrawn);
+    gameDataBuilder.append("\n");
+    Card currentCard = game.getCardDeckPanel().getCurrentCard();
+    if (currentCard != null) {
+      gameDataBuilder.append(currentCard.toString());
+      gameDataBuilder.append("\n");
+    } else {
+      gameDataBuilder.append(NO_CARD_DRAWN);
+      gameDataBuilder.append("\n");
+    }
+
+    return gameDataBuilder.toString();
   }
 }
