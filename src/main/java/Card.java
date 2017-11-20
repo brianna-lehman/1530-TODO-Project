@@ -92,23 +92,31 @@ public class Card extends JPanel {
     String[] parts = cardCode.split(":");
     if (parts[1].substring(0,1).equals("S")) {
       this.isSpecial = true;
-      String cardIdentifier = parts[1];
-      if(cardIdentifier.equals("S")) {
-        this.cardType =  CardType.SKIP;
-      }
-      else{
-        switch(cardIdentifier) {
-          case "S0": 
-            this.cardType = CardType.SPECIAL0;
-          case "S1": 
-            this.cardType = CardType.SPECIAL1;
-          case "S2": 
-            this.cardType = CardType.SPECIAL2;
-          case "S3": 
-            this.cardType = CardType.SPECIAL3;
-          case "S4": 
-            this.cardType = CardType.SPECIAL4;
+      switch(parts[1]) {
+        case "S": {
+          this.cardType =  CardType.SKIP;
+          break;
         }
+        case "S0": {
+          this.cardType = CardType.SPECIAL0;
+          break;
+        } 
+        case "S1": {
+          this.cardType = CardType.SPECIAL1;
+          break;
+        } 
+        case "S2": {
+          this.cardType = CardType.SPECIAL2;
+          break;
+        } 
+        case "S3": {
+          this.cardType = CardType.SPECIAL3;
+          break;
+        } 
+        case "S4": {
+          this.cardType = CardType.SPECIAL4;
+          break;
+        } 
       }
 
       // initally white background
