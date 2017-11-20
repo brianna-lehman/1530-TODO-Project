@@ -20,7 +20,11 @@ public class Board extends JPanel {
   // Map between the order in which squares appear and their location on the board
   private Map<Integer, SquareDetails> indexToSquareMap = new HashMap<Integer, SquareDetails>();
   private int winningIndex;
-  private int middleIndex;
+  private int specialSquare0 = 7;
+  private int specialSquare1 = 7;
+  private int specialSquare2 = 7;
+  private int specialSquare3 = 7;
+  private int specialSquare4 = 7;
 
   // 2D array of GameboardSquare which make up the board
   private GameboardSquare [][] squares = new GameboardSquare [ROWS][COLS];
@@ -86,8 +90,7 @@ public class Board extends JPanel {
     winningIndex = currIndex;
     indexToSquareMap.put(winningIndex, new SquareDetails(ROWS - 1, 0, Game.CL_PINK));
 
-    // set middle index for "Move To Middle card"
-    middleIndex = winningIndex / 2;
+    // special squares
     GameboardSquare middleSquare = squares[3][0];
     middleSquare.setLabelText("Middle");
 
@@ -181,8 +184,16 @@ public class Board extends JPanel {
 
   private int nextSquare(int currentSquare, Card card) {
     switch (card.getCardType()) {
-      case MIDDLE:
-        return middleIndex;
+      case SPECIAL0:
+        return specialSquare0;
+      case SPECIAL1:
+        return specialSquare1;
+      case SPECIAL2:
+        return specialSquare2;
+      case SPECIAL3:
+        return specialSquare3;
+      case SPECIAL4:
+        return specialSquare4;
       case SKIP:
         return currentSquare;
       default: {

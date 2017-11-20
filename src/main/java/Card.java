@@ -18,7 +18,11 @@ public class Card extends JPanel {
   enum CardType {
     NORMAL,
     SKIP,
-    MIDDLE
+    SPECIAL1,
+    SPECIAL2,
+    SPECIAL3,
+    SPECIAL4,
+    SPECIAL0
   }
   // is this card a special card
   boolean isSpecial = false;
@@ -61,7 +65,7 @@ public class Card extends JPanel {
    * @param _color the background color of the card
    * @param type the card type
    */
-  public Card(Color _color, CardType type) {
+  public Card(CardType type) {
     this.isSpecial = (type != CardType.NORMAL);
     this.cardType = type;
 
@@ -86,9 +90,26 @@ public class Card extends JPanel {
    */
   public Card(String cardCode) {
     String[] parts = cardCode.split(":");
-    if (parts[1].equals("M") || parts[1].equals("S")) {
+    if (parts[1].substring(0,1).equals("S")) {
       this.isSpecial = true;
-      this.cardType = parts[1].equals("S") ? CardType.SKIP : CardType.MIDDLE;
+      String cardIdentifier = parts[1];
+      if(cardIdentifier.equals("S")) {
+        this.cardType =  CardType.SKIP;
+      }
+      else{
+        switch(cardIdentifier) {
+          case "S0": 
+            this.cardType = CardType.SPECIAL0;
+          case "S1": 
+            this.cardType = CardType.SPECIAL1;
+          case "S2": 
+            this.cardType = CardType.SPECIAL2;
+          case "S3": 
+            this.cardType = CardType.SPECIAL3;
+          case "S4": 
+            this.cardType = CardType.SPECIAL4;
+        }
+      }
 
       // initally white background
       setBackground(Game.CL_WHITE);
@@ -170,8 +191,16 @@ public class Card extends JPanel {
       }
     } else if (cardType == CardType.SKIP) {
       codeBuilder.append("S");
-    } else if (cardType == CardType.MIDDLE) {
-      codeBuilder.append("M");
+    } else if (cardType == CardType.SPECIAL0) {
+      codeBuilder.append("S0");
+    } else if (cardType == CardType.SPECIAL1) {
+      codeBuilder.append("S1");
+    } else if (cardType == CardType.SPECIAL2) {
+      codeBuilder.append("S2");
+    } else if (cardType == CardType.SPECIAL3) {
+      codeBuilder.append("S3");
+    } else if (cardType == CardType.SPECIAL4) {
+      codeBuilder.append("S4");
     }
 
     return codeBuilder.toString();
@@ -203,8 +232,16 @@ public class Card extends JPanel {
     switch (cardType) {
       case SKIP:
         return "Skip turn";
-      case MIDDLE:
-        return "Move to middle square";
+      case SPECIAL0:
+        return "Move to Ice Cream Land";
+      case SPECIAL1:
+        return "Move to Chocolate River";
+      case SPECIAL2:
+        return "Move to Licorice Jungle";
+      case SPECIAL3:
+        return "Move to Rock Candy Caverns";
+      case SPECIAL4:
+        return "Move to Hershey Park";
       default:
         return "";
     }
