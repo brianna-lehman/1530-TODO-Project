@@ -38,3 +38,6 @@ gradle-app.setting
 
 # saved game files
 /saved_games/
+
+# secret key for encrypting game data
+game.key

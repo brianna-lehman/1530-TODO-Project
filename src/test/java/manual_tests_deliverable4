@@ -1,0 +1,13 @@
+Manual Tests
+
+TEST CASE IDENTIFIER: ENCRYPTED-GAME-DATA
+DESCRIPTION: Testing to ensure that saved game data is encrypted.
+PRECONDITIONS: The game is running.
+EXECUTION STEPS: The user saves the current state of the game.
+POSTCONDITIONS: The game is saved as seemingly random data - the user should not be able to edit the file to cheat the game.
+
+TEST CASE IDENTIFIER: DECRYPTED-GAME-DATA
+DESCRIPTION: Testing to ensure that the loaded game data is properly decrypted.
+PRECONDITIONS: A game has been saved at some point.
+EXECUTION STEPS: The user loads a game from an encrypted game data file.
+POSTCONDITIONS: The game loads and decrypts the data, no errors are thrown, and the state of the game is set appropriately.
