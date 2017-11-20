@@ -173,7 +173,6 @@ public class Board extends JPanel {
   boolean moveToken(Token token, Card currentCard) {
     int position = token.currentSquare;
     int newPosition = nextSquare(position, currentCard);
-    System.err.println(newPosition);
     if (newPosition >= winningIndex) {
       newPosition = winningIndex;
     }
