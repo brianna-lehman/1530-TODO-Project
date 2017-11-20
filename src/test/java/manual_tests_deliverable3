@@ -79,7 +79,7 @@ EXECUTION STEPS: The user clicks "OK" on the number of players panel for a parti
 POSTCONDITIONS: A prompt with a text field and option buttons appear for each player.
 
 TEST CASE IDENTIFIER: MESSAGPANEL-NAMES
-DESCRIPTION: The messasge panel refers to each player by name.
+DESCRIPTION: The message panel refers to each player by name.
 PRECONDITIONS: It is a particular player's turn.
 EXECUTION STEPS: Look at the message panel.
 POSTCONDITIONS: The message panel has the text "[PLAYERNAME]'s turn", where [PLAYERNAME] is the name of the particular player whose turn it is.
@@ -107,3 +107,15 @@ DESCRIPTION: The turn counter increments everytime its a new player's turn.
 PRECONDITIONS: The game is running and no cards have been drawn.
 EXECUTION STEPS: Draw a card and pick the corresponding player's token. Repeat for each player.
 POSTCONDITIONS: The counter increments by 1 each time.
+
+TEST CASE IDENTIFIER: MOVE-TO-SPECIAL-SPACE
+DESCRIPTION: A player's token moves to the corresponding special square after drawing a special square card.
+PRECONDITIONS: The game is running and a player has drawn a special card.
+EXECUTION STEPS: Click on the corresponding player's token.
+POSTCONDITIONS: The player's token moves to the correct special square listed on the card.
+
+TEST CASE IDENTIFIER: SPECIAL-SQUARE-COLOR
+DESCRIPTION: The special squares are each a distinct color from the other squares on the board.
+PRECONDITIONS: The game is running and no cards have been pulled from the deck.
+EXECUTION STEPS: Look at the board that appears.
+POSTCONDITIONS: The squares that are labeled "Ice Cream Land","Chocolate River","Licorice Jungle","Rock Candy Caverns", or "Hershey Park" are each uniquely colored.
