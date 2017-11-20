@@ -84,6 +84,11 @@ public class MessagePanel extends JPanel {
     turnCounter.setText(formatText("Turn #" + Game.numTurns, Game.WINDOW_WIDTH / 2, MESSAGE_STYLES));
   }
 
+  public void refreshTurnCount()
+  {
+    turnCounter.setText(formatText("Turn #" + Game.numTurns, Game.WINDOW_WIDTH / 2, MESSAGE_STYLES));
+  }
+
   /**
    * This method takes some text and wraps it in html elements and styles so
    * that it will wrap properly when placed inside a JPanel and have the given
