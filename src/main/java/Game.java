@@ -118,6 +118,8 @@ public class Game extends JFrame {
     int reply = JOptionPane.showConfirmDialog(null, "Would you like to play again?", "World of Sweets - Replay", JOptionPane.YES_NO_OPTION);
     if (reply == JOptionPane.YES_OPTION) {
 
+      current_turn = 0;
+
       String[] players = {"2", "3", "4"};
       JComboBox<String> combo = new JComboBox<>(players);
       JPanel panel = new JPanel(new GridLayout(0, 1));
@@ -187,7 +189,11 @@ public class Game extends JFrame {
     }
 
     // possibly move the token on the board
-    this.getBoard().moveToken(tokens[current_turn], currentCard);
+    if(this.getBoard().moveToken(tokens[current_turn], currentCard))
+    {
+      this.restart();
+      return;
+    }
 
     current_turn = (current_turn + 1) % NUMBER_OF_PLAYERS;
     this.getMessagePanel().setCurrentTurn(current_turn);

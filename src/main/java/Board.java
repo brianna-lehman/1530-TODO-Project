@@ -142,7 +142,7 @@ public class Board extends JPanel {
     return -1;
   }
 
-  void moveToken(Token token, Card currentCard) {
+  boolean moveToken(Token token, Card currentCard) {
     int position = token.currentSquare;
     int newPosition = nextSquare(position, currentCard);
     if (newPosition >= winningIndex) {
@@ -159,8 +159,9 @@ public class Board extends JPanel {
 
     if(newPosition == winningIndex) {
       displayVictoryBox(token.player_index);
-      Game.getInstance().restart();
+      return true;
     }
+    return false;
   }
 
   void clearBoard(Token[] tokens) {
