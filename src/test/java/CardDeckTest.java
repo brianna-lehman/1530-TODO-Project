@@ -3,7 +3,7 @@ import org.junit.Test;
 
 public class CardDeckTest {
   @SuppressWarnings("unchecked")
-  final int SIZEOFDECK = 68;
+  final int SIZEOFDECK = 70;
 
   @Test
   public void testCardDeckConstructor() {
@@ -52,16 +52,17 @@ public class CardDeckTest {
     assertEquals(numSkipCards, 5);
   }
 
-  // when the deck is filled it contains 3 middle cards
+  // when the deck is filled it contains 5 special cards
   @Test
-  public void testContainsMiddleCards() {
-    int numMiddleCards = 0;
+  public void testContainsSpecialCards() {
+    int numSpecialCards = 0;
     CardDeck deck = new CardDeck();
     for (int i = 1; i <= SIZEOFDECK; i++) {
-      if(deck.getNextCard().getCardType() == Card.CardType.MIDDLE) {
-        numMiddleCards++;
+      Card card = deck.getNextCard();
+      if((card.getCardType() != Card.CardType.SKIP) && (card.getCardType() != Card.CardType.NORMAL)) {
+        numSpecialCards++;
       }
     }
-    assertEquals(numMiddleCards, 3);
+    assertEquals(numSpecialCards, 5);
   }
 }

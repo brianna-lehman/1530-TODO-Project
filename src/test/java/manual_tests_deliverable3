@@ -119,3 +119,9 @@ DESCRIPTION: The special squares are each a distinct color from the other square
 PRECONDITIONS: The game is running and no cards have been pulled from the deck.
 EXECUTION STEPS: Look at the board that appears.
 POSTCONDITIONS: The squares that are labeled "Ice Cream Land","Chocolate River","Licorice Jungle","Rock Candy Caverns", or "Hershey Park" are each uniquely colored.
+
+TEST CASE IDENTIFIER: SPECIAL-CARD-DESCRIPTION
+DESCRIPTION: One of five different special square cards appear in the deck.
+PRECONDITIONS: The game is running and no cards have been pulled from the deck.
+EXECUTION STEPS: Click the 'Draw a Card' button until a 'Move to X' message appears on the card panel, where 'X' is a special square.
+POSTCONDITIONS: The 'Move to X' card has been pulled and a message saying "Follow the instructions on the card" appears in the message panel.
