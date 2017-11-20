@@ -281,6 +281,14 @@ public class Game extends JFrame {
     cardDrawn = cd;
   }
 
+  public String[] getPlayerNames() {
+    return playerNames;
+  }
+
+  public void setPlayerNames(String[] newNames) {
+    playerNames = newNames;
+  }
+
   // main simply creates an instance of Game for now
   public static void main(String [] args) {
     // creates a single instance of the game that can be used in all the other classes
