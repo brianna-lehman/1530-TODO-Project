@@ -53,3 +53,45 @@ DESCRIPTION: A user can cancel their decision to load a game.
 PRECONDITIONS: A game is running and the user has clicked 'Load' from the menu options.
 EXECUTION STEPS: Click 'Cancel' on the popup asking for a file from the dropdown menu.
 POSTCONDITIONS: The popup goes away, the user can continue playing the original game, and no errors have been printed to the command line.
+
+TEST CASE IDENTIFIER: REPLAY-PROMPT
+DESCRIPTION: A replay prompt appears at the end of every game.
+PRECONDITIONS: A player has just won the game and a victory message box has appeared.
+EXECUTION STEPS: Click "Ok" on the victory box.
+POSTCONDITIONS: A prompt appears with the message "Would you like to play again?" with two options: "Yes" and "No".
+
+TEST CASE IDENTIFIER: GAME-RESTART
+DESCRIPTION: The game completely restarts on a replay.
+PRECONDITIONS: The replay prompt has appeared.
+EXECUTION STEPS: Click "Yes".
+POSTCONDITIONS: The game completely resets.
+
+TEST CASE IDENTIFIER: GAME-END
+DESCRIPTION: The game exits at the end of a set of games.
+PRECONDITIONS: The replay prompt has appeared.
+EXECUTION STEPS: Click "No".
+POSTCONDITIONS: The program exits.
+
+TEST CASE IDENTIFIER: NAME-PROMPTS
+DESCRIPTION: Users can enter their names into prompts.
+PRECONDITIONS: The number of players panel is open.
+EXECUTION STEPS: The user clicks "OK" on the number of players panel for a particular number of players.
+POSTCONDITIONS: A prompt with a text field and option buttons appear for each player.
+
+TEST CASE IDENTIFIER: MESSAGPANEL-NAMES
+DESCRIPTION: The messasge panel refers to each player by name.
+PRECONDITIONS: It is a particular player's turn.
+EXECUTION STEPS: Look at the message panel.
+POSTCONDITIONS: The message panel has the text "[PLAYERNAME]'s turn", where [PLAYERNAME] is the name of the particular player whose turn it is.
+
+TEST CASE IDENTIFIER: VICTORYPANEL-NAME
+DESCRIPTION: The victory panel refers to the winner by name.
+PRECONDITIONS: The victory panel has appeared.
+EXECUTION STEPS: Look at the victory panel label.
+POSTCONDITIONS: The correct name appears in the label.
+
+TEST CASE IDENTIFIER: DEFAULT-NAME
+DESCRIPTION: The default name is "Player #".
+PRECONDITIONS: The name prompt is open for a particular player.
+EXECUTION STEPS: Click "OK" without entering anything into the text field or click "Cancel".
+POSTCONDITIONS: That particular player is referred to as "Player #" for the rest of the game.

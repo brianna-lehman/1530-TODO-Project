@@ -23,9 +23,11 @@ public class Game extends JFrame {
   static int NUMBER_OF_PLAYERS = -1;
   static int current_turn = 0;
   static Token[] tokens;
-  static CardDeck deck = new CardDeck();
   static JMenuBar menu;
-  static MessagePanel messagePanel = new MessagePanel();
+  static String[] playerNames;
+  static CardDeck deck;
+  static JPanel utilityPanel;
+  static MessagePanel messagePanel;
   static Board gameboard;
   static CardDeckPanel cardDeckPanel;
   static boolean cardDrawn = false;
@@ -40,7 +42,7 @@ public class Game extends JFrame {
     JPanel panel = new JPanel(new GridLayout(0, 1));
     panel.add(new JLabel("Welcome! How many players?"));
     panel.add(combo);
-    int result = JOptionPane.showConfirmDialog(null, panel, "Test",
+    int result = JOptionPane.showConfirmDialog(null, panel, "World of Sweets - Number of Players",
         JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
     if (result == JOptionPane.OK_OPTION) {
@@ -50,6 +52,31 @@ public class Game extends JFrame {
     else {
         System.exit(0);
     }
+
+    playerNames = new String[NUMBER_OF_PLAYERS];
+    for(int i = 0; i < NUMBER_OF_PLAYERS; i++) {
+      panel = new JPanel();
+      JTextField txt = new JTextField(10);
+      panel.add(new JLabel(String.format("Enter Player %d's name", i + 1)));
+      panel.add(txt);
+      result = JOptionPane.showConfirmDialog(null, panel, "World of Sweets - Number of Players",
+                                                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+      if (result == JOptionPane.OK_OPTION) {
+        String name = txt.getText();
+        if(name.equals(""))
+          playerNames[i] = "Player " + (i + 1);
+        else
+          playerNames[i] = name;
+      }
+      else {
+        playerNames[i] = "Player " + (i + 1);
+      }
+    }
+
+    deck = new CardDeck();
+    utilityPanel = new JPanel();
+    messagePanel = new MessagePanel();
 
     // create a frame for the game
     setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -69,7 +96,7 @@ public class Game extends JFrame {
     add(gameboard);
 
     // utility panel at the bottom of the main panel
-    JPanel utilityPanel = new JPanel(new GridLayout(1, 2));
+    utilityPanel = new JPanel(new GridLayout(1, 2));
     utilityPanel.setPreferredSize(new Dimension(WINDOW_WIDTH,
         WINDOW_HEIGHT - Board.GAMEBOARD_HEIGHT));
     add(utilityPanel, BorderLayout.PAGE_END);
@@ -84,6 +111,70 @@ public class Game extends JFrame {
     pack();
     setVisible(true);
     messagePanel.startTimer();
+  }
+
+  public void restart()
+  {
+    int reply = JOptionPane.showConfirmDialog(null, "Would you like to play again?", "World of Sweets - Replay", JOptionPane.YES_NO_OPTION);
+    if (reply == JOptionPane.YES_OPTION) {
+
+      String[] players = {"2", "3", "4"};
+      JComboBox<String> combo = new JComboBox<>(players);
+      JPanel panel = new JPanel(new GridLayout(0, 1));
+      panel.add(new JLabel("Welcome! How many players?"));
+      panel.add(combo);
+      int result = JOptionPane.showConfirmDialog(null, panel, "World of Sweets - Number of Players",
+          JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+      if (result == JOptionPane.OK_OPTION) {
+          NUMBER_OF_PLAYERS = Integer.parseInt((String)combo.getSelectedItem());
+          tokens = new Token[NUMBER_OF_PLAYERS];
+      }
+      else {
+          System.exit(0);
+      }
+
+      for(int i = 0; i < NUMBER_OF_PLAYERS; i++) {
+        tokens[i] = new Token(i);
+      }
+
+      playerNames = new String[NUMBER_OF_PLAYERS];
+      for(int i = 0; i < NUMBER_OF_PLAYERS; i++) {
+        panel = new JPanel();
+        JTextField txt = new JTextField(10);
+        panel.add(new JLabel(String.format("Enter Player %d's name", i + 1)));
+        panel.add(txt);
+        result = JOptionPane.showConfirmDialog(null, panel, "World of Sweets - Number of Players",
+                                               JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+        if (result == JOptionPane.OK_OPTION) {
+          String name = txt.getText();
+          if(name.equals(""))
+            playerNames[i] = "Player " + (i + 1);
+          else
+            playerNames[i] = name;
+        }
+        else {
+          playerNames[i] = "Player " + (i + 1);
+        }
+      }
+
+      remove(gameboard);
+      gameboard = new Board();
+      add(gameboard);
+
+      utilityPanel.remove(messagePanel);
+      messagePanel = new MessagePanel();
+      utilityPanel.add(messagePanel);
+
+      utilityPanel.remove(cardDeckPanel);
+      cardDeckPanel = new CardDeckPanel();
+      utilityPanel.add(cardDeckPanel);
+
+      pack();
+    }
+    else {
+      System.exit(0);
+    }
   }
 
   public void nextTurn()
