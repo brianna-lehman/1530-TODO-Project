@@ -144,6 +144,11 @@ public class Menu extends JMenuBar {
       game.getMessagePanel().getTimer().setTime(time);
       game.getMessagePanel().getTimer().start();
 
+      // resetting the turn counter
+      int numTurns = Integer.parseInt(fileScanner.nextLine());
+      game.numTurns = numTurns;
+      game.getMessagePanel().refreshTurnCount();
+
       // resetting the players
       int numOfPlayers = Integer.parseInt(fileScanner.nextLine());
       game.setNumberOfPlayers(numOfPlayers);
@@ -206,6 +211,10 @@ public class Menu extends JMenuBar {
         // saving the timer
         int time = game.getMessagePanel().getTimer().getTime();
         fileWriter.println(time);
+
+        // saving the turn counter
+        int numTurns = game.numTurns;
+        fileWriter.println(numTurns);
 
         // saving the token details
         int numOfPlayers = game.getNumberOfPlayers();

@@ -95,3 +95,15 @@ DESCRIPTION: The default name is "Player #".
 PRECONDITIONS: The name prompt is open for a particular player.
 EXECUTION STEPS: Click "OK" without entering anything into the text field or click "Cancel".
 POSTCONDITIONS: That particular player is referred to as "Player #" for the rest of the game.
+
+TEST CASE IDENTIFIER: TURN-COUNTER
+DESCRIPTION: A counter tracks how many turns have elapsed.
+PRECONDITIONS: The game is running and no cards have been drawn.
+EXECUTION STEPS: Look at the message panel.
+POSTCONDITIONS: A turn counter is in the message panel.
+
+TEST CASE IDENTIFIER: TURN-COUNTER-INCREMENT
+DESCRIPTION: The turn counter increments everytime its a new player's turn.
+PRECONDITIONS: The game is running and no cards have been drawn.
+EXECUTION STEPS: Draw a card and pick the corresponding player's token. Repeat for each player.
+POSTCONDITIONS: The counter increments by 1 each time.

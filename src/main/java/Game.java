@@ -22,6 +22,7 @@ public class Game extends JFrame {
   private static Game game = null;
   static int NUMBER_OF_PLAYERS = -1;
   static int current_turn = 0;
+  static int numTurns;
   static Token[] tokens;
   static JMenuBar menu;
   static String[] playerNames;
@@ -74,6 +75,8 @@ public class Game extends JFrame {
       }
     }
 
+    numTurns = 1;
+
     deck = new CardDeck();
     utilityPanel = new JPanel();
     messagePanel = new MessagePanel();
@@ -86,6 +89,7 @@ public class Game extends JFrame {
     for(int i = 0; i < NUMBER_OF_PLAYERS; i++) {
       tokens[i] = new Token(i);
     }
+
 
     // menu bar for saving/loading games
     menu = new Menu();
@@ -160,6 +164,8 @@ public class Game extends JFrame {
         }
       }
 
+      numTurns = 0;
+
       remove(gameboard);
       gameboard = new Board();
       add(gameboard);
@@ -201,6 +207,9 @@ public class Game extends JFrame {
 
     // next player should draw a new card
     cardDrawn = false;
+
+    // increment turn counter
+    this.getMessagePanel().incrementTurn();
   }
 
   /**
