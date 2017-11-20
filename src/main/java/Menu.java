@@ -150,14 +150,17 @@ public class Menu extends JMenuBar {
 
       // reset the tokens
       Token[] newTokens = new Token[numOfPlayers];
+      String[] newNames = new String[numOfPlayers];
       for (int i = 0; i < numOfPlayers; i++) {
         String[] tokenStringParts = fileScanner.nextLine().split(":");
-        int playerIndex = Integer.parseInt(tokenStringParts[0]);
-        int currentSquare = Integer.parseInt(tokenStringParts[1]);
+        String playerName = new String(tokenStringParts[0]);
+        int playerIndex = Integer.parseInt(tokenStringParts[1]);
+        int currentSquare = Integer.parseInt(tokenStringParts[2]);
+        newNames[i] = playerName;
         newTokens[i] = new Token(playerIndex);
         newTokens[i].currentSquare = currentSquare;
       }
-      // game.getBoard().clearBoard(game.getTokens());
+      game.setPlayerNames(newNames);
       game.getBoard().clearBoard(game.getOriginalTokens());
       game.setTokens(newTokens);
       for (int i = 0; i < newTokens.length; i++) {
@@ -208,8 +211,9 @@ public class Menu extends JMenuBar {
         int numOfPlayers = game.getNumberOfPlayers();
         fileWriter.println(numOfPlayers);
         Token[] tokens = game.getTokens();
+        String[] players = game.getPlayerNames();
         for (int i = 0; i < tokens.length; i++) {
-          fileWriter.println(tokens[i].getPlayerIndex() + ":" + tokens[i].currentSquare);
+          fileWriter.println(players[i] + ":" + tokens[i].getPlayerIndex() + ":" + tokens[i].currentSquare);
         }
         int currentTurn = game.getCurrentTurn();
         fileWriter.println(currentTurn);
