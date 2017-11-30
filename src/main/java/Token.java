@@ -27,6 +27,10 @@ public class Token extends JButton {
     return player_index;
   }
 
+  public int getCurrentSquare() {
+    return currentSquare;
+  }
+
   /**
    * The action to take when the current player's token is clicked
    */

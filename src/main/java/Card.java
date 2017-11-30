@@ -10,6 +10,7 @@ public class Card extends JPanel {
 
   // color of this card
   Color color;
+  int id;
 
   // is this card a single or double color card
   boolean isMultiple = false;
@@ -35,8 +36,9 @@ public class Card extends JPanel {
   /** constructor for cards with one colored square
    * @param _color the color of the square on the card
    */
-  public Card(Color _color) {
+  public Card(Color _color, int id) {
     this.color = _color;
+    this.id = id;
     setBackground(Game.CL_WHITE);
     add(new ColoredSquare(this.color));
   }
@@ -45,13 +47,14 @@ public class Card extends JPanel {
    * @param _color the color of the squares on the card
    * @param numOfSquares number of squares on the card
    */
-  public Card(Color _color, int numOfSquares) {
+  public Card(Color _color, int numOfSquares, int id) {
     if (numOfSquares == 1) {
-      new Card(_color);
+      new Card(_color, id);
     }
     else {
       this.color = _color;
       this.isMultiple = true;
+      this.id = id;
       setBackground(Game.CL_WHITE);
 
       for (int i = 1; i <= numOfSquares; i++) {
@@ -65,9 +68,10 @@ public class Card extends JPanel {
    * @param _color the background color of the card
    * @param type the card type
    */
-  public Card(CardType type) {
+  public Card(CardType type, int id) {
     this.isSpecial = (type != CardType.NORMAL);
     this.cardType = type;
+    this.id = id;
 
     // initally white background
     setBackground(Game.CL_WHITE);
@@ -100,23 +104,23 @@ public class Card extends JPanel {
         case "S0": {
           this.cardType = CardType.SPECIAL0;
           break;
-        } 
+        }
         case "S1": {
           this.cardType = CardType.SPECIAL1;
           break;
-        } 
+        }
         case "S2": {
           this.cardType = CardType.SPECIAL2;
           break;
-        } 
+        }
         case "S3": {
           this.cardType = CardType.SPECIAL3;
           break;
-        } 
+        }
         case "S4": {
           this.cardType = CardType.SPECIAL4;
           break;
-        } 
+        }
       }
 
       // initally white background
@@ -229,6 +233,10 @@ public class Card extends JPanel {
 
   public CardType getCardType() {
     return this.cardType;
+  }
+
+  public int getId() {
+    return this.id;
   }
 
   /**
