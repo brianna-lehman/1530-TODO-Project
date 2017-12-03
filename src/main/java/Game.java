@@ -203,11 +203,7 @@ public class Game extends JFrame {
     }
 
     // possibly move the token on the board
-    if(this.getBoard().moveToken(tokens[current_turn], currentCard))
-    {
-      this.restart();
-      return;
-    }
+    boolean win = this.getBoard().moveToken(tokens[current_turn], currentCard);
 
     current_turn = (current_turn + 1) % NUMBER_OF_PLAYERS;
     this.getMessagePanel().setCurrentTurn(current_turn);
@@ -218,6 +214,9 @@ public class Game extends JFrame {
 
     // increment turn counter
     this.getMessagePanel().incrementTurn();
+
+    if(win)
+      this.restart();
   }
 
   /**
