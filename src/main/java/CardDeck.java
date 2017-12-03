@@ -28,11 +28,11 @@ public class CardDeck {
 
   // method to return card on the top of the deck
   public Card getNextCard() {
-    Card nextCard = (Card) deck.pop();
     if (deck.empty()) {
       fill();
       shuffle();
     }
+    Card nextCard = (Card) deck.pop();
 
     return nextCard;
   }
@@ -44,6 +44,11 @@ public class CardDeck {
    * @return the worst card for the player in the currentSquare to move to
    */
   public Card getWorstCard(int currentSquare) {
+    if (deck.empty()) {
+      fill();
+      shuffle();
+    }
+
     int squareClosestToStart = -1;
     Game game = Game.getInstance();
     Board board = game.getBoard();
@@ -52,10 +57,12 @@ public class CardDeck {
 
     while (!deck.empty()) {
       Card currentCard = deck.pop();
-      int nextSquareIndex = board.nextSquare(currentSquare, currentCard);
-      if (squareClosestToStart == -1 || nextSquareIndex < squareClosestToStart) {
-        squareClosestToStart = nextSquareIndex;
-        worstCard = currentCard;
+      if (currentCard.getCardType() != Card.CardType.SKIP) {
+        int nextSquareIndex = board.nextSquare(currentSquare, currentCard);
+        if (squareClosestToStart == -1 || nextSquareIndex < squareClosestToStart) {
+          squareClosestToStart = nextSquareIndex;
+          worstCard = currentCard;
+        }
       }
       temp.push(currentCard);
     }

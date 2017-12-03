@@ -171,6 +171,8 @@ public class Game extends JFrame {
       }
 
       numTurns = 0;
+      cardDrawn = false;
+      deck = new CardDeck();
 
       remove(gameboard);
       gameboard = new Board();
