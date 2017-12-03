@@ -57,12 +57,10 @@ public class CardDeck {
 
     while (!deck.empty()) {
       Card currentCard = deck.pop();
-      if (currentCard.getCardType() != Card.CardType.SKIP) {
-        int nextSquareIndex = board.nextSquare(currentSquare, currentCard);
-        if (squareClosestToStart == -1 || nextSquareIndex < squareClosestToStart) {
-          squareClosestToStart = nextSquareIndex;
-          worstCard = currentCard;
-        }
+      int nextSquareIndex = board.nextSquare(currentSquare, currentCard);
+      if (squareClosestToStart == -1 || nextSquareIndex < squareClosestToStart) {
+        squareClosestToStart = nextSquareIndex;
+        worstCard = currentCard;
       }
       temp.push(currentCard);
     }
