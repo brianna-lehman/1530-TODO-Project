@@ -40,6 +40,8 @@ public class Game extends JFrame {
   static boolean cardDrawn = false;
   static int mode = 0;
 
+  static final int MODE_CLASSIC = 0;
+
   public Game() {
     // set label for frame
     super("World of Sweets");
@@ -59,6 +61,11 @@ public class Game extends JFrame {
       System.exit(0);
     }
 
+    if(mode == MODE_CLASSIC)
+      initClassic();
+  }
+
+  public void initClassic() {
     //dialog box for specifying number of players
     String[] players = {"2", "3", "4"};
     JComboBox<String> combo = new JComboBox<>(players);
@@ -139,7 +146,7 @@ public class Game extends JFrame {
     messagePanel.startTimer();
   }
 
-  public void restart()
+  public void restartClassic()
   {
     int reply = JOptionPane.showConfirmDialog(null, "Would you like to play again?", "World of Sweets - Replay", JOptionPane.YES_NO_OPTION);
     if (reply == JOptionPane.YES_OPTION) {
@@ -205,6 +212,11 @@ public class Game extends JFrame {
     else {
       System.exit(0);
     }
+  }
+
+  public void restart() {
+    if(mode == MODE_CLASSIC)
+      restartClassic();
   }
 
   public void nextTurn()
