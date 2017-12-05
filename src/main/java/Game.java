@@ -89,7 +89,7 @@ public class Game extends JFrame {
       JTextField txt = new JTextField(10);
       panel.add(new JLabel(String.format("Enter Player %d's name", i + 1)));
       panel.add(txt);
-      result = JOptionPane.showConfirmDialog(null, panel, "World of Sweets - Number of Players",
+      result = JOptionPane.showConfirmDialog(null, panel, "World of Sweets - Names of Players",
                                                  JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
       if (result == JOptionPane.OK_OPTION) {
@@ -102,6 +102,19 @@ public class Game extends JFrame {
       else {
         playerNames[i] = "Player " + (i + 1);
       }
+
+      // let the user decide if this player is AI or not
+      boolean aiPlayer = false;
+      int ai_reply = JOptionPane.showConfirmDialog(null, "Do you want "+playerNames[i]+" to be an AI player?", "World of Sweets - AI",
+                                                JOptionPane.YES_NO_OPTION);
+      if (ai_reply == JOptionPane.YES_OPTION) {
+        aiPlayer = true;
+      }
+      else {
+        aiPlayer = false;
+      }
+
+      tokens[i] = new Token(i, aiPlayer);
     }
 
     numTurns = 1;
@@ -113,12 +126,6 @@ public class Game extends JFrame {
     // create a frame for the game
     setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-    // initialize the player tokens
-    for(int i = 0; i < NUMBER_OF_PLAYERS; i++) {
-      tokens[i] = new Token(i);
-    }
-
 
     // menu bar for saving/loading games
     menu = new Menu();
@@ -168,10 +175,6 @@ public class Game extends JFrame {
           System.exit(0);
       }
 
-      for(int i = 0; i < NUMBER_OF_PLAYERS; i++) {
-        tokens[i] = new Token(i);
-      }
-
       playerNames = new String[NUMBER_OF_PLAYERS];
       for(int i = 0; i < NUMBER_OF_PLAYERS; i++) {
         panel = new JPanel();
@@ -191,6 +194,18 @@ public class Game extends JFrame {
         else {
           playerNames[i] = "Player " + (i + 1);
         }
+
+        boolean aiPlayer = false;
+        int ai_reply = JOptionPane.showConfirmDialog(null, "Do you want "+playerNames[i]+" to be an AI player?", "World of Sweets - AI",
+                                                  JOptionPane.YES_NO_OPTION);
+        if (ai_reply == JOptionPane.YES_OPTION) {
+          aiPlayer = true;
+        }
+        else {
+          aiPlayer = false;
+        }
+
+        tokens[i] = new Token(i, aiPlayer);
       }
 
       numTurns = 0;
@@ -275,7 +290,7 @@ public class Game extends JFrame {
   public Token[] getTokens() {
     Token[] tokensCopy = new Token[tokens.length];
     for (int i = 0; i < tokens.length; i++) {
-      tokensCopy[i] = new Token(tokens[i].getPlayerIndex());
+      tokensCopy[i] = new Token(tokens[i].getPlayerIndex(), tokens[i].getAIStatus());
       tokensCopy[i].currentSquare = tokens[i].currentSquare;
     }
     return tokensCopy;
