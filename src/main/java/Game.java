@@ -103,6 +103,7 @@ public class Game extends JFrame {
         playerNames[i] = "Player " + (i + 1);
       }
 
+      // let the user decide if this player is AI or not
       boolean aiPlayer = false;
       int ai_reply = JOptionPane.showConfirmDialog(null, "Do you want "+playerNames[i]+" to be an AI player?", "World of Sweets - AI",
                                                 JOptionPane.YES_NO_OPTION);
