@@ -6,11 +6,13 @@ public class Token extends JButton {
 
   final int player_index;
   int currentSquare;
+  boolean isAI;
 
-  public Token(int player_index) {
+  public Token(int player_index, boolean isAI) {
     this.player_index = player_index;
     // 0 is the start square
     this.currentSquare = 0;
+    this.isAI = isAI;
     this.setText("" + (player_index + 1));
     this.setPreferredSize(new Dimension(20, 20));
     this.setBorder(null);
@@ -25,6 +27,10 @@ public class Token extends JButton {
 
   public int getPlayerIndex() {
     return player_index;
+  }
+
+  public boolean getAIStatus() {
+    return isAI;
   }
 
   /**
