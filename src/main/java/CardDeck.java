@@ -28,23 +28,64 @@ public class CardDeck {
 
   // method to return card on the top of the deck
   public Card getNextCard() {
+    if (deck.empty()) {
+      fill();
+      shuffle();
+    }
     Card nextCard = (Card) deck.pop();
+
+    return nextCard;
+  }
+
+  /**
+   * given the current player's position
+   * find the card in the remaining deck that will move them closest to the start
+   * @param currentSquare the index of the square where the token we're cheating against is
+   * @return the worst card for the player in the currentSquare to move to
+   */
+  public Card getWorstCard(int currentSquare) {
     if (deck.empty()) {
       fill();
       shuffle();
     }
 
-    return nextCard;
+    int squareClosestToStart = -1;
+    Game game = Game.getInstance();
+    Board board = game.getBoard();
+    Card worstCard = null;
+    Stack<Card> temp = new Stack<Card>();
+
+    while (!deck.empty()) {
+      Card currentCard = deck.pop();
+      int nextSquareIndex = board.nextSquare(currentSquare, currentCard);
+      if (squareClosestToStart == -1 || nextSquareIndex < squareClosestToStart) {
+        squareClosestToStart = nextSquareIndex;
+        worstCard = currentCard;
+      }
+      temp.push(currentCard);
+    }
+
+    // puts all the remaining cards back in the deck in the order they were removed
+    // except for the card that's being pulled and given to the player
+    while (!temp.empty()) {
+      Card topCard = temp.pop();
+      if (topCard.getId() != worstCard.getId()) {
+        deck.push(topCard);
+      }
+    }
+
+    return worstCard;
   }
 
   private void fill() {
+    int id = 0;
     // add the singles
     for (int i = 0; i < 10; i++) {
-      Card redCard = new Card(Game.CL_RED);
-      Card yellowCard = new Card(Game.CL_YELLOW);
-      Card blueCard = new Card(Game.CL_BLUE);
-      Card greenCard = new Card(Game.CL_GREEN);
-      Card orangeCard = new Card(Game.CL_ORANGE);
+      Card redCard = new Card(Game.CL_RED, id++);
+      Card yellowCard = new Card(Game.CL_YELLOW, id++);
+      Card blueCard = new Card(Game.CL_BLUE, id++);
+      Card greenCard = new Card(Game.CL_GREEN, id++);
+      Card orangeCard = new Card(Game.CL_ORANGE, id++);
 
       deck.push(redCard);
       deck.push(yellowCard);
@@ -55,11 +96,11 @@ public class CardDeck {
 
     // add the doubles
     for (int i = 0; i < 2; i++) {
-      Card redDouble = new Card(Game.CL_RED, 2);
-      Card yellowDouble = new Card(Game.CL_YELLOW, 2);
-      Card blueDouble = new Card(Game.CL_BLUE, 2);
-      Card greenDouble = new Card(Game.CL_GREEN, 2);
-      Card orangeDouble = new Card(Game.CL_ORANGE, 2);
+      Card redDouble = new Card(Game.CL_RED, 2, id++);
+      Card yellowDouble = new Card(Game.CL_YELLOW, 2, id++);
+      Card blueDouble = new Card(Game.CL_BLUE, 2, id++);
+      Card greenDouble = new Card(Game.CL_GREEN, 2, id++);
+      Card orangeDouble = new Card(Game.CL_ORANGE, 2, id++);
 
       deck.push(redDouble);
       deck.push(yellowDouble);
@@ -70,16 +111,16 @@ public class CardDeck {
 
     // add special card "Skip Turn"
     for (int i = 0; i < 5; i++) {
-      Card skip = new Card(Card.CardType.SKIP);
+      Card skip = new Card(Card.CardType.SKIP, id++);
       deck.push(skip);
     }
 
     // add "Move to [special square]"
-    deck.push(new Card(Card.CardType.SPECIAL0));
-    deck.push(new Card(Card.CardType.SPECIAL1));
-    deck.push(new Card(Card.CardType.SPECIAL2));
-    deck.push(new Card(Card.CardType.SPECIAL3));
-    deck.push(new Card(Card.CardType.SPECIAL4));
+    deck.push(new Card(Card.CardType.SPECIAL0, id++));
+    deck.push(new Card(Card.CardType.SPECIAL1, id++));
+    deck.push(new Card(Card.CardType.SPECIAL2, id++));
+    deck.push(new Card(Card.CardType.SPECIAL3, id++));
+    deck.push(new Card(Card.CardType.SPECIAL4, id++));
   }
 
   private void shuffle() {

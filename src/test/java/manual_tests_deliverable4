@@ -23,3 +23,21 @@ DESCRIPTION: When two players are playing and one of the players is AI the game 
 PRECONDITIONS: The game has already been played once and been restarted in classic mode with two players. The first player inputs their name and clicks 'no' on the popup asking if they want to be an AI player.
 EXECUTION STEPS: The second player inputs their name and clicks 'yes' to the popup asking if they want to be an AI player
 POSTCONDITIONS: The game starts with no issues.
+
+TEST CASE IDENTIFIER: ONE-DAD-PLAYER-CLASSIC
+DESCRIPTION: When there are two players, one dad and one regular player in classic mode, the dad player will always move to the square closest to start.
+PRECONDITIONS: The game is running with two players, one named "Dad"
+EXECUTION STEPS: Draw the first card for the Dad player.
+POSTCONDITIONS: The card should be a skip card, and the token shouldn't move.
+
+TEST CASE IDENTIFIER: TWO-DAD-PLAYERS-CLASSIC
+DESCRIPTION: When there are two players and both are dad players each token should move to the space closest to the start, depending on what cards are left in the deck.
+PRECONDITIONS: The game is running with two players, both named "Dad"
+EXECUTION STEPS: Draw the first card for first Dad player, then draw the first card for the second Dad player.
+POSTCONDITIONS: Both cards should be skip cards, and neither token should move. After 5 turns the skip cards will run out and Dad token 2 will pull a red square and move to the square directly beside the start square.
+
+TEST CASE IDENTIFIER: FOUR-DAD-PLAYERS-CLASSIC
+DESCRIPTION: When there are four players and all are dad players each token should move to the space closest to the start, depending on what cards are left in the deck.
+PRECONDITIONS: The game is running with four players, all named "Dad"
+EXECUTION STEPS: Play the game by drawing a card for each player and moving their token.
+POSTCONDITIONS: All tokens should pull a skip card once. Dad token 1 will pull a second skip card then every token will pull a red card and move to the red square directly beside the start square. Eventually Dad token 4 will win in 64 movements.

@@ -208,7 +208,9 @@ public class Game extends JFrame {
         tokens[i] = new Token(i, aiPlayer);
       }
 
-      numTurns = 1;
+      numTurns = 0;
+      cardDrawn = false;
+      deck = new CardDeck();
 
       remove(gameboard);
       gameboard = new Board();

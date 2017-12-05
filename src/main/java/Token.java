@@ -31,6 +31,9 @@ public class Token extends JButton {
 
   public boolean getAIStatus() {
     return isAI;
+
+  public int getCurrentSquare() {
+    return currentSquare;
   }
 
   /**
