@@ -38,16 +38,39 @@ public class Game extends JFrame {
   static Board gameboard;
   static CardDeckPanel cardDeckPanel;
   static boolean cardDrawn = false;
+  static int mode = 0;
+
+  static final int MODE_CLASSIC = 0;
 
   public Game() {
     // set label for frame
     super("World of Sweets");
 
+    //dialog box for specifying which mode
+    String[] modes = {"Classic"};
+    JComboBox<String> comboModes = new JComboBox<>(modes);
+    JPanel panelModes = new JPanel(new GridLayout(0, 1));
+    panelModes.add(new JLabel("Welcome! Which gamemode?"));
+    panelModes.add(comboModes);
+    int resultModes = JOptionPane.showConfirmDialog(null, panelModes, "World of Sweets - Gamemode",
+                                               JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+    if (resultModes == JOptionPane.OK_OPTION) {
+      mode = comboModes.getSelectedIndex();
+    }
+    else {
+      System.exit(0);
+    }
+
+    if(mode == MODE_CLASSIC)
+      initClassic();
+  }
+
+  public void initClassic() {
     //dialog box for specifying number of players
     String[] players = {"2", "3", "4"};
     JComboBox<String> combo = new JComboBox<>(players);
     JPanel panel = new JPanel(new GridLayout(0, 1));
-    panel.add(new JLabel("Welcome! How many players?"));
+    panel.add(new JLabel("How many players?"));
     panel.add(combo);
     int result = JOptionPane.showConfirmDialog(null, panel, "World of Sweets - Number of Players",
         JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
@@ -123,7 +146,7 @@ public class Game extends JFrame {
     messagePanel.startTimer();
   }
 
-  public void restart()
+  public void restartClassic()
   {
     int reply = JOptionPane.showConfirmDialog(null, "Would you like to play again?", "World of Sweets - Replay", JOptionPane.YES_NO_OPTION);
     if (reply == JOptionPane.YES_OPTION) {
@@ -189,6 +212,11 @@ public class Game extends JFrame {
     else {
       System.exit(0);
     }
+  }
+
+  public void restart() {
+    if(mode == MODE_CLASSIC)
+      restartClassic();
   }
 
   public void nextTurn()
