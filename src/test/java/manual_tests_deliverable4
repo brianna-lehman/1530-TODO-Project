@@ -11,3 +11,15 @@ DESCRIPTION: Testing to ensure that the loaded game data is properly decrypted.
 PRECONDITIONS: A game has been saved at some point.
 EXECUTION STEPS: The user loads a game from an encrypted game data file.
 POSTCONDITIONS: The game loads and decrypts the data, no errors are thrown, and the state of the game is set appropriately.
+
+TEST CASE IDENTIFIER: AI-POP-UP-FOR-FOUR-PLAYERS
+DESCRIPTION: When four players are playing each player is given a popup asking if they want to be an AI player.
+PRECONDITIONS: The game is running in classic mode with 4 players, the first user puts in their player name.
+EXECUTION STEPS: A popup appears with the message "Do you want Player 1 to be an AI player?" (or whatever the player's name is) and a yes/no option. Click on the 'yes' button. Click on 'yes' for the remaining three players as well.
+POSTCONDITIONS: The game starts with no issues.
+
+TEST CASE IDENTIFIER: AI-POP-UP-FOR-ONE-PLAYER-RESTART
+DESCRIPTION: When two players are playing and one of the players is AI the game still plays normally.
+PRECONDITIONS: The game has already been played once and been restarted in classic mode with two players. The first player inputs their name and clicks 'no' on the popup asking if they want to be an AI player.
+EXECUTION STEPS: The second player inputs their name and clicks 'yes' to the popup asking if they want to be an AI player
+POSTCONDITIONS: The game starts with no issues.
