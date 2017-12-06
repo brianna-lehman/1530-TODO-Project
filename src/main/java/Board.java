@@ -233,27 +233,61 @@ public class Board extends JPanel {
         int currentColorIndex = getIndexFromColor(currentSquareColor);
         int moves = 1;
 
-        while ((currentColorIndex + moves) % 5 != nextColorIndex) {
-          moves++;
-        }
+        if(Game.boomerangNext)
+        {
+          System.out.println(nextColorIndex);
+          System.out.println(currentColorIndex);
+          while(((currentColorIndex - moves) % 5 + 5) % 5 != nextColorIndex) {
+            moves++;
+            System.out.println("Moves: " + moves);
+            System.out.println("Mod: " + ((currentColorIndex - moves) % 5 + 5) % 5);
+          }
 
-        if (isDouble) {
-          moves += 5;
-        }
+          if (isDouble) {
+            moves += 5;
+          }
 
-        //case where the player would land on a special space
-        boolean landOnSpecialSpace = specialIndexes.contains(currentSquare+moves);
-        if(landOnSpecialSpace) {
-          moves += 5;
-        }
+          //case where the player would land on a special space
+          boolean landOnSpecialSpace = specialIndexes.contains(currentSquare-moves);
+          if(landOnSpecialSpace) {
+            moves += 5;
+          }
 
-        //case where a double card is drawn and the first colored square is a special square
-        boolean skippedOverSpecialSpace = specialIndexes.contains(currentSquare+moves-5) && isDouble;
-        if(skippedOverSpecialSpace) {
-          moves += 5;
-        }
+          //case where a double card is drawn and the first colored square is a special square
+          boolean skippedOverSpecialSpace = specialIndexes.contains(currentSquare-moves-5) && isDouble;
+          if(skippedOverSpecialSpace) {
+            moves += 5;
+          }
 
-        return currentSquare + moves;
+          if(currentSquare - moves > 0)
+            return currentSquare - moves;
+          else
+            return 0;
+        }
+        else
+        {
+          while ((currentColorIndex + moves) % 5 != nextColorIndex) {
+            moves++;
+          }
+
+          if (isDouble) {
+            moves += 5;
+          }
+
+          //case where the player would land on a special space
+          boolean landOnSpecialSpace = specialIndexes.contains(currentSquare+moves);
+          if(landOnSpecialSpace) {
+            moves += 5;
+          }
+
+          //case where a double card is drawn and the first colored square is a special square
+          boolean skippedOverSpecialSpace = specialIndexes.contains(currentSquare+moves-5) && isDouble;
+          if(skippedOverSpecialSpace) {
+            moves += 5;
+          }
+
+          return currentSquare + moves;
+        }
       }
     }
   }

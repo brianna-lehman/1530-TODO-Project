@@ -43,13 +43,13 @@ public class MessagePanel extends JPanel {
     add(turnCounter);
 
     turnIndicator = new JLabel();
-    turnIndicator.setFont(new Font("Courier", Font.PLAIN, 24));
+    turnIndicator.setFont(new Font("Courier", Font.PLAIN, 12));
     turnIndicator.setText(formatText(Game.playerNames[0] + "'s turn", Game.WINDOW_WIDTH / 2, MESSAGE_STYLES));
     add(turnIndicator);
 
     // message to be initially displayed to user
     userMessage = new JLabel();
-    userMessage.setFont(new Font("Courier", Font.PLAIN, 24));
+    userMessage.setFont(new Font("Courier", Font.PLAIN, 12));
     userMessage.setText(initialMessage);
     add(userMessage);
 
