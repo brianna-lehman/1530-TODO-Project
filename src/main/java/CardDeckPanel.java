@@ -64,6 +64,7 @@ public class CardDeckPanel extends JPanel {
    * pile.
    */
   private class DrawCardListener implements ActionListener {
+    final String DAD = "Dad";
 
     // to be called each time the drawCardButton is clicked
     public void actionPerformed(ActionEvent e) {
@@ -100,8 +101,19 @@ public class CardDeckPanel extends JPanel {
           cardPile.remove(currentCard);
         }
 
+        int currentPlayerIndex = game.getCurrentTurn();
+        String currentPlayerName = game.getPlayerNames()[currentPlayerIndex];
+        int currentPlayerPosition = game.getTokens()[currentPlayerIndex].getCurrentSquare();
+
+        // replace the current card with the worst card left in the deck
+        if (currentPlayerName.equals(DAD)) {
+          currentCard = Game.deck.getWorstCard(currentPlayerPosition);
+        }
         // replace the card with the next one from the deck
-        currentCard = Game.deck.getNextCard();
+        else {
+          currentCard = Game.deck.getNextCard();
+        }
+
         cardPile.add(currentCard);
 
         // set card drawn to true
