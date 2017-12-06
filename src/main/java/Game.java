@@ -430,6 +430,7 @@ public class Game extends JFrame {
       if(tokens[current_turn].getAIStatus())
         this.aiTurn();
     else if(mode == MODE_STRATEGIC)
+      System.out.println("restart");
       restartStrategic();
       if(tokens[current_turn].getAIStatus())
         this.aiTurn();
@@ -481,7 +482,7 @@ public class Game extends JFrame {
       // 30% chance of using boomerang on random player
       Random rand = new Random();
       int x = rand.nextInt(10);
-      if(x > 6) {
+      if(x > 6 && numBoomerangs[current_turn] > 0) {
         boomerangPanel.throwBoomerangButton.doClick();
         int y = rand.nextInt(NUMBER_OF_PLAYERS);
         while(y == current_turn) {
