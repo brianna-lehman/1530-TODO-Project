@@ -266,6 +266,30 @@ public class Menu extends JMenuBar {
     if (!currentCardString.equals(NO_CARD_DRAWN)) {
       game.getCardDeckPanel().setCurrentCard(new Card(currentCardString));
     }
+
+    // resetting the strategic details
+    int newMode = Integer.parseInt(gameDataIter.next());
+    if(newMode == game.MODE_STRATEGIC)
+    {
+      if(game.mode == game.MODE_CLASSIC)
+      {
+        game.boomerangPanel = new BoomerangPanel();
+        game.utilityPanel.add(game.boomerangPanel);
+      }
+      game.mode = newMode;
+
+      int[] newBoomerangs = new int[numOfPlayers];
+      for (int i = 0; i < numOfPlayers; i++) {
+        newBoomerangs[i] = Integer.parseInt(gameDataIter.next());
+      }
+      game.numBoomerangs = newBoomerangs;
+      game.refreshBoomerang();
+    }
+    else
+    {
+      if(game.mode == game.MODE_STRATEGIC)
+        game.utilityPanel.remove(game.boomerangPanel);
+    }
   }
 
   public boolean saveGame(File file) {
@@ -345,6 +369,18 @@ public class Menu extends JMenuBar {
       gameDataBuilder.append(NO_CARD_DRAWN);
       gameDataBuilder.append("\n");
     }
+
+    // saving gamemode details
+    gameDataBuilder.append(game.mode);
+    gameDataBuilder.append("\n");
+    if(game.mode == game.MODE_STRATEGIC)
+    {
+      for (int i = 0; i < game.numBoomerangs.length; i++) {
+        gameDataBuilder.append(game.numBoomerangs[i]);
+        gameDataBuilder.append("\n");
+      }
+    }
+
 
     return gameDataBuilder.toString();
   }
