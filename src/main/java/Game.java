@@ -1,6 +1,7 @@
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
+import java.util.Random;
 
 public class Game extends JFrame {
 
@@ -158,6 +159,8 @@ public class Game extends JFrame {
     pack();
     setVisible(true);
     messagePanel.startTimer();
+
+
   }
 
   public void initStrategic() {
@@ -198,6 +201,18 @@ public class Game extends JFrame {
       else {
         playerNames[i] = "Player " + (i + 1);
       }
+
+      boolean aiPlayer = false;
+      int ai_reply = JOptionPane.showConfirmDialog(null, "Do you want "+playerNames[i]+" to be an AI player?", "World of Sweets - AI",
+                                                JOptionPane.YES_NO_OPTION);
+      if (ai_reply == JOptionPane.YES_OPTION) {
+        aiPlayer = true;
+      }
+      else {
+        aiPlayer = false;
+      }
+
+      tokens[i] = new Token(i, aiPlayer);
     }
 
     numTurns = 1;
@@ -212,7 +227,6 @@ public class Game extends JFrame {
 
     // initialize the player tokens
     for(int i = 0; i < NUMBER_OF_PLAYERS; i++) {
-      tokens[i] = new Token(i);
       numBoomerangs[i] = 3;
     }
 
@@ -317,6 +331,10 @@ public class Game extends JFrame {
       utilityPanel.add(cardDeckPanel);
 
       pack();
+
+      if(tokens[current_turn].getAIStatus()) {
+        this.aiTurn();
+      }
     }
     else {
       System.exit(0);
@@ -346,7 +364,6 @@ public class Game extends JFrame {
       }
 
       for(int i = 0; i < NUMBER_OF_PLAYERS; i++) {
-        tokens[i] = new Token(i);
         numBoomerangs[i] = 3;
       }
 
@@ -369,6 +386,18 @@ public class Game extends JFrame {
         else {
           playerNames[i] = "Player " + (i + 1);
         }
+
+        boolean aiPlayer = false;
+        int ai_reply = JOptionPane.showConfirmDialog(null, "Do you want "+playerNames[i]+" to be an AI player?", "World of Sweets - AI",
+                                                  JOptionPane.YES_NO_OPTION);
+        if (ai_reply == JOptionPane.YES_OPTION) {
+          aiPlayer = true;
+        }
+        else {
+          aiPlayer = false;
+        }
+
+        tokens[i] = new Token(i, aiPlayer);
       }
 
       numTurns = 1;
@@ -398,8 +427,12 @@ public class Game extends JFrame {
   public void restart() {
     if(mode == MODE_CLASSIC)
       restartClassic();
+      if(tokens[current_turn].getAIStatus())
+        this.aiTurn();
     else if(mode == MODE_STRATEGIC)
       restartStrategic();
+      if(tokens[current_turn].getAIStatus())
+        this.aiTurn();
   }
 
   public void nextTurn()
@@ -426,7 +459,8 @@ public class Game extends JFrame {
     current_turn = (current_turn + 1) % NUMBER_OF_PLAYERS;
     this.getMessagePanel().setCurrentTurn(current_turn);
     this.getMessagePanel().setMessage("");
-    boomerangPanel.setNum(numBoomerangs[current_turn]);
+    if(mode == MODE_STRATEGIC)
+      boomerangPanel.setNum(numBoomerangs[current_turn]);
 
     // next player should draw a new card
     cardDrawn = false;
@@ -434,8 +468,37 @@ public class Game extends JFrame {
     // increment turn counter
     this.getMessagePanel().incrementTurn();
 
-    if(win)
+    if(win) {
       this.restart();
+    }
+
+    if(tokens[current_turn].getAIStatus())
+      this.aiTurn();
+  }
+
+  private void aiTurn() {
+    if(mode == MODE_STRATEGIC){
+      // 30% chance of using boomerang on random player
+      Random rand = new Random();
+      int x = rand.nextInt(10);
+      if(x > 6) {
+        boomerangPanel.throwBoomerangButton.doClick();
+        int y = rand.nextInt(NUMBER_OF_PLAYERS);
+        while(y == current_turn) {
+          y = rand.nextInt(NUMBER_OF_PLAYERS);
+        }
+        tokens[y].doClick();
+        this.cardDeckPanel.drawCardButton.doClick();
+      }
+      else {
+        this.cardDeckPanel.drawCardButton.doClick();
+        tokens[current_turn].doClick();
+      }
+    }
+    else {
+      this.cardDeckPanel.drawCardButton.doClick();
+      tokens[current_turn].doClick();
+    }
   }
 
   /**
@@ -528,5 +591,9 @@ public class Game extends JFrame {
   public static void main(String [] args) {
     // creates a single instance of the game that can be used in all the other classes
     Game game = Game.getInstance();
+    if(tokens[current_turn].getAIStatus()) {
+      System.out.println("AI Turn");
+      game.aiTurn();
+    }
   }
 }

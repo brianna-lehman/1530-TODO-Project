@@ -235,12 +235,8 @@ public class Board extends JPanel {
 
         if(Game.boomerangNext)
         {
-          System.out.println(nextColorIndex);
-          System.out.println(currentColorIndex);
           while(((currentColorIndex - moves) % 5 + 5) % 5 != nextColorIndex) {
             moves++;
-            System.out.println("Moves: " + moves);
-            System.out.println("Mod: " + ((currentColorIndex - moves) % 5 + 5) % 5);
           }
 
           if (isDouble) {
