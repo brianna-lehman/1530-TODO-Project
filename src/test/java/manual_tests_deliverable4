@@ -16,7 +16,7 @@ TEST CASE IDENTIFIER: AI-POP-UP-FOR-FOUR-PLAYERS
 DESCRIPTION: When four players are playing each player is given a popup asking if they want to be an AI player.
 PRECONDITIONS: The game is running in classic mode with 4 players, the first user puts in their player name.
 EXECUTION STEPS: A popup appears with the message "Do you want Player 1 to be an AI player?" (or whatever the player's name is) and a yes/no option. Click on the 'yes' button. Click on 'yes' for the remaining three players as well.
-POSTCONDITIONS: The game starts with no issues.
+POSTCONDITIONS: The game starts with no issues
 
 TEST CASE IDENTIFIER: AI-POP-UP-FOR-ONE-PLAYER-RESTART
 DESCRIPTION: When two players are playing and one of the players is AI the game still plays normally.
@@ -53,3 +53,16 @@ DESCRIPTION: When a player is identified as an AI player, that player should tak
 PRECONDITIONS: The game is running and at least one player is an AI player.
 EXECUTION STEPS: Play the game by drawing a card for each human player and moving their token.
 POSTCONDITIONS: AI players should have either drawn a card and moved their token, or used a boomerang if they still have one. 
+
+TEST CASE IDENTIFIER: BOOMERANG-COUNTER
+DESCRIPTION: The boomerang counter accurately keeps track of each player's boomerang.
+PRECONDITIONS: The game is running in Strategic Mode.
+EXECUTION STEPS: The users throw their boomerangs at other players.
+POSTCONDITIONS: The boomerang counter decrements up to a minimum of 0 for each player.
+
+TEST CASE IDENTIFIER: BOOMERANG
+DESCRIPTION: The ability to boomerang a player.
+PRECONDITIONS: The game is running in Strategic Mode.
+EXECUTION STEPS: The user clicks throw, clicks a player token, and clicks Draw Card.
+POSTCONDITIONS: The the targeted player is moved to the corresponding special card or backwards.
+

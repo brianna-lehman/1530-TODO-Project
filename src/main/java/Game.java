@@ -97,8 +97,8 @@ public class Game extends JFrame {
       JTextField txt = new JTextField(10);
       panel.add(new JLabel(String.format("Enter Player %d's name", i + 1)));
       panel.add(txt);
-      result = JOptionPane.showConfirmDialog(null, panel, "World of Sweets - Names of Players",
-                                                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+      result = JOptionPane.showConfirmDialog(null, panel, "World of Sweets - Number of Players",
+                                              JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
       if (result == JOptionPane.OK_OPTION) {
         String name = txt.getText();
@@ -111,7 +111,6 @@ public class Game extends JFrame {
         playerNames[i] = "Player " + (i + 1);
       }
 
-      // let the user decide if this player is AI or not
       boolean aiPlayer = false;
       int ai_reply = JOptionPane.showConfirmDialog(null, "Do you want "+playerNames[i]+" to be an AI player?", "World of Sweets - AI",
                                                 JOptionPane.YES_NO_OPTION);
@@ -125,7 +124,8 @@ public class Game extends JFrame {
       tokens[i] = new Token(i, aiPlayer);
     }
 
-    numTurns = 1;
+    numTurns = 0;
+    cardDrawn = false;
 
     deck = new CardDeck();
     utilityPanel = new JPanel();
@@ -189,7 +189,7 @@ public class Game extends JFrame {
       panel.add(new JLabel(String.format("Enter Player %d's name", i + 1)));
       panel.add(txt);
       result = JOptionPane.showConfirmDialog(null, panel, "World of Sweets - Number of Players",
-                                                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+                                              JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
       if (result == JOptionPane.OK_OPTION) {
         String name = txt.getText();
@@ -213,9 +213,11 @@ public class Game extends JFrame {
       }
 
       tokens[i] = new Token(i, aiPlayer);
+      numBoomerangs[i] = 3;
     }
 
-    numTurns = 1;
+    numTurns = 0;
+    cardDrawn = false;
 
     deck = new CardDeck();
     utilityPanel = new JPanel();
@@ -224,11 +226,6 @@ public class Game extends JFrame {
     // create a frame for the game
     setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-    // initialize the player tokens
-    for(int i = 0; i < NUMBER_OF_PLAYERS; i++) {
-      numBoomerangs[i] = 3;
-    }
 
 
     // menu bar for saving/loading games
@@ -259,181 +256,192 @@ public class Game extends JFrame {
     messagePanel.startTimer();
   }
 
-  public void restartClassic()
+  public void stopClassic()
   {
-    int reply = JOptionPane.showConfirmDialog(null, "Would you like to play again?", "World of Sweets - Replay", JOptionPane.YES_NO_OPTION);
-    if (reply == JOptionPane.YES_OPTION) {
-
-      current_turn = 0;
-
-      String[] players = {"2", "3", "4"};
-      JComboBox<String> combo = new JComboBox<>(players);
-      JPanel panel = new JPanel(new GridLayout(0, 1));
-      panel.add(new JLabel("Welcome! How many players?"));
-      panel.add(combo);
-      int result = JOptionPane.showConfirmDialog(null, panel, "World of Sweets - Number of Players",
-          JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-      if (result == JOptionPane.OK_OPTION) {
-          NUMBER_OF_PLAYERS = Integer.parseInt((String)combo.getSelectedItem());
-          tokens = new Token[NUMBER_OF_PLAYERS];
-      }
-      else {
-          System.exit(0);
-      }
-
-      playerNames = new String[NUMBER_OF_PLAYERS];
-      for(int i = 0; i < NUMBER_OF_PLAYERS; i++) {
-        panel = new JPanel();
-        JTextField txt = new JTextField(10);
-        panel.add(new JLabel(String.format("Enter Player %d's name", i + 1)));
-        panel.add(txt);
-        result = JOptionPane.showConfirmDialog(null, panel, "World of Sweets - Number of Players",
-                                               JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-
-        if (result == JOptionPane.OK_OPTION) {
-          String name = txt.getText();
-          if(name.equals(""))
-            playerNames[i] = "Player " + (i + 1);
-          else
-            playerNames[i] = name;
-        }
-        else {
-          playerNames[i] = "Player " + (i + 1);
-        }
-
-        boolean aiPlayer = false;
-        int ai_reply = JOptionPane.showConfirmDialog(null, "Do you want "+playerNames[i]+" to be an AI player?", "World of Sweets - AI",
-                                                  JOptionPane.YES_NO_OPTION);
-        if (ai_reply == JOptionPane.YES_OPTION) {
-          aiPlayer = true;
-        }
-        else {
-          aiPlayer = false;
-        }
-
-        tokens[i] = new Token(i, aiPlayer);
-      }
-
-      numTurns = 0;
-      cardDrawn = false;
-      deck = new CardDeck();
-
-      remove(gameboard);
-      gameboard = new Board();
-      add(gameboard);
-
-      utilityPanel.remove(messagePanel);
-      messagePanel = new MessagePanel();
-      utilityPanel.add(messagePanel);
-
-      utilityPanel.remove(cardDeckPanel);
-      cardDeckPanel = new CardDeckPanel();
-      utilityPanel.add(cardDeckPanel);
-
-      pack();
-
-      if(tokens[current_turn].getAIStatus()) {
-        this.aiTurn();
-      }
-    }
-    else {
-      System.exit(0);
-    }
+    remove(gameboard);
+    utilityPanel.remove(messagePanel);
+    utilityPanel.remove(cardDeckPanel);
   }
 
-  public void restartStrategic()
+  public void startClassic()
   {
-    int reply = JOptionPane.showConfirmDialog(null, "Would you like to play again?", "World of Sweets - Replay", JOptionPane.YES_NO_OPTION);
-    if (reply == JOptionPane.YES_OPTION) {
+    current_turn = 0;
 
-      current_turn = 0;
-
-      String[] players = {"2", "3", "4"};
-      JComboBox<String> combo = new JComboBox<>(players);
-      JPanel panel = new JPanel(new GridLayout(0, 1));
-      panel.add(new JLabel("Welcome! How many players?"));
-      panel.add(combo);
-      int result = JOptionPane.showConfirmDialog(null, panel, "World of Sweets - Number of Players",
-          JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-      if (result == JOptionPane.OK_OPTION) {
-          NUMBER_OF_PLAYERS = Integer.parseInt((String)combo.getSelectedItem());
-          tokens = new Token[NUMBER_OF_PLAYERS];
-      }
-      else {
-          System.exit(0);
-      }
-
-      for(int i = 0; i < NUMBER_OF_PLAYERS; i++) {
-        numBoomerangs[i] = 3;
-      }
-
-      playerNames = new String[NUMBER_OF_PLAYERS];
-      for(int i = 0; i < NUMBER_OF_PLAYERS; i++) {
-        panel = new JPanel();
-        JTextField txt = new JTextField(10);
-        panel.add(new JLabel(String.format("Enter Player %d's name", i + 1)));
-        panel.add(txt);
-        result = JOptionPane.showConfirmDialog(null, panel, "World of Sweets - Number of Players",
-                                               JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-
-        if (result == JOptionPane.OK_OPTION) {
-          String name = txt.getText();
-          if(name.equals(""))
-            playerNames[i] = "Player " + (i + 1);
-          else
-            playerNames[i] = name;
-        }
-        else {
-          playerNames[i] = "Player " + (i + 1);
-        }
-
-        boolean aiPlayer = false;
-        int ai_reply = JOptionPane.showConfirmDialog(null, "Do you want "+playerNames[i]+" to be an AI player?", "World of Sweets - AI",
-                                                  JOptionPane.YES_NO_OPTION);
-        if (ai_reply == JOptionPane.YES_OPTION) {
-          aiPlayer = true;
-        }
-        else {
-          aiPlayer = false;
-        }
-
-        tokens[i] = new Token(i, aiPlayer);
-      }
-
-      numTurns = 1;
-
-      remove(gameboard);
-      gameboard = new Board();
-      add(gameboard);
-
-      utilityPanel.remove(messagePanel);
-      messagePanel = new MessagePanel();
-      utilityPanel.add(messagePanel);
-
-      utilityPanel.remove(cardDeckPanel);
-      cardDeckPanel = new CardDeckPanel();
-      utilityPanel.add(cardDeckPanel);
-      utilityPanel.remove(boomerangPanel);
-      boomerangPanel = new BoomerangPanel();
-      utilityPanel.add(boomerangPanel);
-
-      pack();
+    String[] players = {"2", "3", "4"};
+    JComboBox<String> combo = new JComboBox<>(players);
+    JPanel panel = new JPanel(new GridLayout(0, 1));
+    panel.add(new JLabel("Welcome! How many players?"));
+    panel.add(combo);
+    int result = JOptionPane.showConfirmDialog(null, panel, "World of Sweets - Number of Players",
+        JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+    if (result == JOptionPane.OK_OPTION) {
+        NUMBER_OF_PLAYERS = Integer.parseInt((String)combo.getSelectedItem());
+        tokens = new Token[NUMBER_OF_PLAYERS];
     }
     else {
-      System.exit(0);
+        System.exit(0);
     }
+
+    playerNames = new String[NUMBER_OF_PLAYERS];
+    for(int i = 0; i < NUMBER_OF_PLAYERS; i++) {
+      panel = new JPanel();
+      JTextField txt = new JTextField(10);
+      panel.add(new JLabel(String.format("Enter Player %d's name", i + 1)));
+      panel.add(txt);
+      result = JOptionPane.showConfirmDialog(null, panel, "World of Sweets - Number of Players",
+                                              JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+      if (result == JOptionPane.OK_OPTION) {
+        String name = txt.getText();
+        if(name.equals(""))
+          playerNames[i] = "Player " + (i + 1);
+        else
+          playerNames[i] = name;
+      }
+      else {
+        playerNames[i] = "Player " + (i + 1);
+      }
+
+      boolean aiPlayer = false;
+      int ai_reply = JOptionPane.showConfirmDialog(null, "Do you want "+playerNames[i]+" to be an AI player?", "World of Sweets - AI",
+                                                JOptionPane.YES_NO_OPTION);
+      if (ai_reply == JOptionPane.YES_OPTION) {
+        aiPlayer = true;
+      }
+      else {
+        aiPlayer = false;
+      }
+
+      tokens[i] = new Token(i, aiPlayer);
+    }
+
+    numTurns = 0;
+    cardDrawn = false;
+    deck = new CardDeck();
+
+    gameboard = new Board();
+    add(gameboard);
+
+    messagePanel = new MessagePanel();
+    utilityPanel.add(messagePanel);
+
+    cardDeckPanel = new CardDeckPanel();
+    utilityPanel.add(cardDeckPanel);
+
+    pack();
+  }
+
+  public void stopStrategic()
+  {
+    remove(gameboard);
+    utilityPanel.remove(messagePanel);
+    utilityPanel.remove(cardDeckPanel);
+    utilityPanel.remove(boomerangPanel);
+  }
+
+  public void startStrategic()
+  {
+    current_turn = 0;
+
+    String[] players = {"2", "3", "4"};
+    JComboBox<String> combo = new JComboBox<>(players);
+    JPanel panel = new JPanel(new GridLayout(0, 1));
+    panel.add(new JLabel("Welcome! How many players?"));
+    panel.add(combo);
+    int result = JOptionPane.showConfirmDialog(null, panel, "World of Sweets - Number of Players",
+        JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+    if (result == JOptionPane.OK_OPTION) {
+        NUMBER_OF_PLAYERS = Integer.parseInt((String)combo.getSelectedItem());
+        tokens = new Token[NUMBER_OF_PLAYERS];
+        numBoomerangs = new int[NUMBER_OF_PLAYERS];
+    }
+    else {
+        System.exit(0);
+    }
+
+    playerNames = new String[NUMBER_OF_PLAYERS];
+    for(int i = 0; i < NUMBER_OF_PLAYERS; i++) {
+      panel = new JPanel();
+      JTextField txt = new JTextField(10);
+      panel.add(new JLabel(String.format("Enter Player %d's name", i + 1)));
+      panel.add(txt);
+      result = JOptionPane.showConfirmDialog(null, panel, "World of Sweets - Number of Players",
+                                              JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+      if (result == JOptionPane.OK_OPTION) {
+        String name = txt.getText();
+        if(name.equals(""))
+          playerNames[i] = "Player " + (i + 1);
+        else
+          playerNames[i] = name;
+      }
+      else {
+        playerNames[i] = "Player " + (i + 1);
+      }
+
+      boolean aiPlayer = false;
+      int ai_reply = JOptionPane.showConfirmDialog(null, "Do you want "+playerNames[i]+" to be an AI player?", "World of Sweets - AI",
+                                                JOptionPane.YES_NO_OPTION);
+      if (ai_reply == JOptionPane.YES_OPTION) {
+        aiPlayer = true;
+      }
+      else {
+        aiPlayer = false;
+      }
+
+      tokens[i] = new Token(i, aiPlayer);
+      numBoomerangs[i] = 3;
+    }
+
+    numTurns = 0;
+    cardDrawn = false;
+    deck = new CardDeck();
+
+    gameboard = new Board();
+    add(gameboard);
+
+    messagePanel = new MessagePanel();
+    utilityPanel.add(messagePanel);
+
+    cardDeckPanel = new CardDeckPanel();
+    utilityPanel.add(cardDeckPanel);
+    boomerangPanel = new BoomerangPanel();
+    utilityPanel.add(boomerangPanel);
+
+    pack();
   }
 
   public void restart() {
-    if(mode == MODE_CLASSIC)
-      restartClassic();
-      if(tokens[current_turn].getAIStatus())
-        this.aiTurn();
-    else if(mode == MODE_STRATEGIC)
-      System.out.println("restart");
-      restartStrategic();
-      if(tokens[current_turn].getAIStatus())
-        this.aiTurn();
+    int reply = JOptionPane.showConfirmDialog(null, "Would you like to play again?", "World of Sweets - Replay", JOptionPane.YES_NO_OPTION);
+    if (reply == JOptionPane.YES_OPTION) {
+      if(mode == MODE_CLASSIC)
+        stopClassic();
+      else if(mode == MODE_STRATEGIC)
+        stopStrategic();
+
+      //dialog box for specifying which mode
+      String[] modes = {"Classic", "Strategic"};
+      JComboBox<String> comboModes = new JComboBox<>(modes);
+      JPanel panelModes = new JPanel(new GridLayout(0, 1));
+      panelModes.add(new JLabel("Welcome! Which gamemode?"));
+      panelModes.add(comboModes);
+      int resultModes = JOptionPane.showConfirmDialog(null, panelModes, "World of Sweets - Gamemode",
+                                                      JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+      if (resultModes == JOptionPane.OK_OPTION) {
+        mode = comboModes.getSelectedIndex();
+      }
+      else {
+        System.exit(0);
+      }
+
+      if(mode == MODE_CLASSIC)
+        startClassic();
+      else if(mode == MODE_STRATEGIC)
+        startStrategic();
+    }
+    else {
+      System.exit(0);
+    }
   }
 
   public void nextTurn()
@@ -461,7 +469,7 @@ public class Game extends JFrame {
     this.getMessagePanel().setCurrentTurn(current_turn);
     this.getMessagePanel().setMessage("");
     if(mode == MODE_STRATEGIC)
-      boomerangPanel.setNum(numBoomerangs[current_turn]);
+      refreshBoomerang();
 
     // next player should draw a new card
     cardDrawn = false;
@@ -482,7 +490,7 @@ public class Game extends JFrame {
       // 30% chance of using boomerang on random player
       Random rand = new Random();
       int x = rand.nextInt(10);
-      if(x > 6 && numBoomerangs[current_turn] > 0) {
+      if(x > 6) {
         boomerangPanel.throwBoomerangButton.doClick();
         int y = rand.nextInt(NUMBER_OF_PLAYERS);
         while(y == current_turn) {
@@ -588,12 +596,15 @@ public class Game extends JFrame {
     playerNames = newNames;
   }
 
+  public void refreshBoomerang() {
+    boomerangPanel.setNum(numBoomerangs[current_turn]);
+  }
+
   // main simply creates an instance of Game for now
   public static void main(String [] args) {
     // creates a single instance of the game that can be used in all the other classes
     Game game = Game.getInstance();
     if(tokens[current_turn].getAIStatus()) {
-      System.out.println("AI Turn");
       game.aiTurn();
     }
   }
