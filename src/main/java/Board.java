@@ -208,7 +208,7 @@ public class Board extends JPanel {
     gs.addToken(token);
   }
 
-  private int nextSquare(int currentSquare, Card card) {
+  public int nextSquare(int currentSquare, Card card) {
     Set<Integer> specialIndexes = new HashSet<Integer>();
     specialIndexes.addAll(Arrays.asList(6,8,15,22,24));
     switch (card.getCardType()) {

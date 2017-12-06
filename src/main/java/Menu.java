@@ -237,8 +237,9 @@ public class Menu extends JMenuBar {
       String playerName = new String(tokenStringParts[0]);
       int playerIndex = Integer.parseInt(tokenStringParts[1]);
       int currentSquare = Integer.parseInt(tokenStringParts[2]);
+      boolean aiStatus = Boolean.parseBoolean(tokenStringParts[3]);
       newNames[i] = playerName;
-      newTokens[i] = new Token(playerIndex);
+      newTokens[i] = new Token(playerIndex, aiStatus);
       newTokens[i].currentSquare = currentSquare;
     }
     game.setPlayerNames(newNames);
@@ -343,7 +344,7 @@ public class Menu extends JMenuBar {
     Token[] tokens = game.getTokens();
     String[] players = game.getPlayerNames();
     for (int i = 0; i < tokens.length; i++) {
-      gameDataBuilder.append(players[i] + ":" + tokens[i].getPlayerIndex() + ":" + tokens[i].currentSquare);
+      gameDataBuilder.append(players[i] + ":" + tokens[i].getPlayerIndex() + ":" + tokens[i].currentSquare + ":" + tokens[i].getAIStatus());
       gameDataBuilder.append("\n");
     }
     int currentTurn = game.getCurrentTurn();

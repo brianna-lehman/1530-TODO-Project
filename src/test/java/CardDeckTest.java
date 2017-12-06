@@ -33,10 +33,20 @@ public class CardDeckTest {
   @Test
   public void testGetNextCardAllCards() {
     CardDeck deck = new CardDeck();
-    for (int i = 1; i <= SIZEOFDECK; i++) {
+    for (int i = 1; i <= SIZEOFDECK+1; i++) {
         deck.getNextCard();
     }
-    assertEquals(deck.deckSize(), SIZEOFDECK);
+    assertEquals(deck.deckSize(), SIZEOFDECK-1);
+  }
+
+  @Test
+  public void testGetWorstCardAllCards() {
+    CardDeck deck = new CardDeck();
+    int tokenSquare = 0;
+    for (int i = 1; i <= SIZEOFDECK+1; i++) {
+      deck.getWorstCard(tokenSquare);
+    }
+    assertEquals(deck.deckSize(), SIZEOFDECK-1);
   }
 
   // when the deck is filled it contains 5 skip cards
