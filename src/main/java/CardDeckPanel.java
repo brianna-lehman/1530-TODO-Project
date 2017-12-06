@@ -12,6 +12,7 @@ public class CardDeckPanel extends JPanel {
 
   // this will hold cards
   private JPanel cardPile = new JPanel();
+  public JButton drawCardButton;
 
   // card that will be shown
   Card currentCard = null;
@@ -21,7 +22,7 @@ public class CardDeckPanel extends JPanel {
     setLayout(new GridBagLayout());
 
     // add a button used to draw new cards
-    JButton drawCardButton = new JButton("Draw a Card");
+    drawCardButton = new JButton("Draw a Card");
     ActionListener drawCardListener = new DrawCardListener();
     drawCardButton.addActionListener(drawCardListener);
     add(drawCardButton, constraints);
@@ -114,6 +115,7 @@ public class CardDeckPanel extends JPanel {
           currentCard = Game.deck.getNextCard();
         }
 
+
         cardPile.add(currentCard);
 
         // set card drawn to true
@@ -121,6 +123,7 @@ public class CardDeckPanel extends JPanel {
 
         // refresh the component
         refresh();
+
 
         if (currentCard.isSpecial()) {
           game.getMessagePanel().setMessage("Follow the instructions on the card");

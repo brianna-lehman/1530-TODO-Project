@@ -1,6 +1,7 @@
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
+import java.util.Random;
 
 public class Game extends JFrame {
 
@@ -158,6 +159,8 @@ public class Game extends JFrame {
     pack();
     setVisible(true);
     messagePanel.startTimer();
+
+
   }
 
   public void initStrategic() {
@@ -474,8 +477,37 @@ public class Game extends JFrame {
     // increment turn counter
     this.getMessagePanel().incrementTurn();
 
-    if(win)
+    if(win) {
       this.restart();
+    }
+
+    if(tokens[current_turn].getAIStatus())
+      this.aiTurn();
+  }
+
+  private void aiTurn() {
+    if(mode == MODE_STRATEGIC){
+      // 30% chance of using boomerang on random player
+      Random rand = new Random();
+      int x = rand.nextInt(10);
+      if(x > 6) {
+        boomerangPanel.throwBoomerangButton.doClick();
+        int y = rand.nextInt(NUMBER_OF_PLAYERS);
+        while(y == current_turn) {
+          y = rand.nextInt(NUMBER_OF_PLAYERS);
+        }
+        tokens[y].doClick();
+        this.cardDeckPanel.drawCardButton.doClick();
+      }
+      else {
+        this.cardDeckPanel.drawCardButton.doClick();
+        tokens[current_turn].doClick();
+      }
+    }
+    else {
+      this.cardDeckPanel.drawCardButton.doClick();
+      tokens[current_turn].doClick();
+    }
   }
 
   /**
@@ -572,5 +604,8 @@ public class Game extends JFrame {
   public static void main(String [] args) {
     // creates a single instance of the game that can be used in all the other classes
     Game game = Game.getInstance();
+    if(tokens[current_turn].getAIStatus()) {
+      game.aiTurn();
+    }
   }
 }

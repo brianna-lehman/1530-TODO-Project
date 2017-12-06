@@ -12,6 +12,7 @@ public class BoomerangPanel extends JPanel {
 
   JLabel label;
   int num = 3;
+  public JButton throwBoomerangButton;
 
   public BoomerangPanel() {
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -22,7 +23,7 @@ public class BoomerangPanel extends JPanel {
     label.setAlignmentX(Component.CENTER_ALIGNMENT);
     add(label);
 
-    JButton throwBoomerangButton = new JButton("Throw");
+    throwBoomerangButton = new JButton("Throw");
     ActionListener throwBoomerangListener = new ThrowBoomerangListener();
     throwBoomerangButton.addActionListener(throwBoomerangListener);
     throwBoomerangButton.setAlignmentX(Component.CENTER_ALIGNMENT);

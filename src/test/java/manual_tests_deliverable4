@@ -42,6 +42,18 @@ PRECONDITIONS: The game is running with four players, all named "Dad"
 EXECUTION STEPS: Play the game by drawing a card for each player and moving their token.
 POSTCONDITIONS: All tokens should pull a skip card once. Dad token 1 will pull a second skip card then every token will pull a red card and move to the red square directly beside the start square. Eventually Dad token 4 will win in 64 movements.
 
+TEST CASE IDENTIFIER: AI-PLAYERS-CLASSIC
+DESCRIPTION: When a player is identified as an AI player, that player should take its turn automatically.
+PRECONDITIONS: The game is running and at least one player is an AI player.
+EXECUTION STEPS: Play the game by drawing a card for each human player and moving their token.
+POSTCONDITIONS: AI players should have drawn a card and moved their token.
+
+TEST CASE IDENTIFIER: AI-PLAYERS-STRATEGIC
+DESCRIPTION: When a player is identified as an AI player, that player should take its turn automatically.
+PRECONDITIONS: The game is running and at least one player is an AI player.
+EXECUTION STEPS: Play the game by drawing a card for each human player and moving their token.
+POSTCONDITIONS: AI players should have either drawn a card and moved their token, or used a boomerang if they still have one. 
+
 TEST CASE IDENTIFIER: BOOMERANG-COUNTER
 DESCRIPTION: The boomerang counter accurately keeps track of each player's boomerang.
 PRECONDITIONS: The game is running in Strategic Mode.
@@ -53,3 +65,4 @@ DESCRIPTION: The ability to boomerang a player.
 PRECONDITIONS: The game is running in Strategic Mode.
 EXECUTION STEPS: The user clicks throw, clicks a player token, and clicks Draw Card.
 POSTCONDITIONS: The the targeted player is moved to the corresponding special card or backwards.
+
