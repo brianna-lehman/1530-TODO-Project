@@ -33,9 +33,14 @@ public class Token extends JButton {
   private class ButtonListener implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
-      if(Game.current_turn == player_index && Game.cardDrawn)
+      Game game = Game.getInstance();
+      if(game.boomerangNext == true && game.cardDrawn == false && game.current_turn != player_index)
       {
-        Game game = Game.getInstance();
+        game.boomerangTarget = player_index;
+        game.getMessagePanel().setMessage("Player " + (player_index + 1) + " targeted. Draw a card");
+      }
+      if(game.current_turn == player_index && game.cardDrawn)
+      {
         game.nextTurn();
       }
     }

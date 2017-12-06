@@ -69,39 +69,61 @@ public class CardDeckPanel extends JPanel {
     public void actionPerformed(ActionEvent e) {
       Game game = Game.getInstance();
 
-      // do not let a user draw multiple cards per turn
-      if (game.cardDrawn) {
-        return;
-      }
-
-      // remove the current card from the screen if there is one there
-      if (currentCard != null) {
-        cardPile.remove(currentCard);
-      }
-
-      // replace the card with the next one from the deck
-      currentCard = Game.deck.getNextCard();
-      cardPile.add(currentCard);
-
-      // set card drawn to true
-      game.cardDrawn = true;
-
-      // refresh the component
-      refresh();
-
-      if (currentCard.isSpecial()) {
-        game.getMessagePanel().setMessage("Follow the instructions on the card");
-
-        // skip this player's turn if they draw a skip turn card
-        if (currentCard.getCardType() == Card.CardType.SKIP) {
-          game.nextTurn();
+      if(game.boomerangNext)
+      {
+        if (game.cardDrawn) {
+          return;
         }
+
+        if (currentCard != null) {
+          cardPile.remove(currentCard);
+        }
+
+        currentCard = Game.deck.getNextCard();
+        cardPile.add(currentCard);
+
+        game.cardDrawn = true;
+
+        refresh();
+
+        game.nextTurn();
       }
-      else if (currentCard.isMultiple()) {
-        game.getMessagePanel().setMessage("Move to the second matching colored square");
-      }
-      else {
-        game.getMessagePanel().setMessage("Move to the matching colored square");
+      else
+      {
+        // do not let a user draw multiple cards per turn
+        if (game.cardDrawn) {
+          return;
+        }
+
+        // remove the current card from the screen if there is one there
+        if (currentCard != null) {
+          cardPile.remove(currentCard);
+        }
+
+        // replace the card with the next one from the deck
+        currentCard = Game.deck.getNextCard();
+        cardPile.add(currentCard);
+
+        // set card drawn to true
+        game.cardDrawn = true;
+
+        // refresh the component
+        refresh();
+
+        if (currentCard.isSpecial()) {
+          game.getMessagePanel().setMessage("Follow the instructions on the card");
+
+          // skip this player's turn if they draw a skip turn card
+          if (currentCard.getCardType() == Card.CardType.SKIP) {
+            game.nextTurn();
+          }
+        }
+        else if (currentCard.isMultiple()) {
+          game.getMessagePanel().setMessage("Move to the second matching colored square");
+        }
+        else {
+          game.getMessagePanel().setMessage("Move to the matching colored square");
+        }
       }
     }
   }

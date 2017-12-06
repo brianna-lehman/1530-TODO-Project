@@ -37,17 +37,22 @@ public class Game extends JFrame {
   static MessagePanel messagePanel;
   static Board gameboard;
   static CardDeckPanel cardDeckPanel;
+  static BoomerangPanel boomerangPanel;
   static boolean cardDrawn = false;
   static int mode = 0;
+  static int[] numBoomerangs;
+  static boolean boomerangNext = false;
+  static int boomerangTarget = -1;
 
   static final int MODE_CLASSIC = 0;
+  static final int MODE_STRATEGIC = 1;
 
   public Game() {
     // set label for frame
     super("World of Sweets");
 
     //dialog box for specifying which mode
-    String[] modes = {"Classic"};
+    String[] modes = {"Classic", "Strategic"};
     JComboBox<String> comboModes = new JComboBox<>(modes);
     JPanel panelModes = new JPanel(new GridLayout(0, 1));
     panelModes.add(new JLabel("Welcome! Which gamemode?"));
@@ -63,6 +68,8 @@ public class Game extends JFrame {
 
     if(mode == MODE_CLASSIC)
       initClassic();
+    else if(mode == MODE_STRATEGIC)
+      initStrategic();
   }
 
   public void initClassic() {
@@ -146,6 +153,91 @@ public class Game extends JFrame {
     messagePanel.startTimer();
   }
 
+  public void initStrategic() {
+    //dialog box for specifying number of players
+    String[] players = {"2", "3", "4"};
+    JComboBox<String> combo = new JComboBox<>(players);
+    JPanel panel = new JPanel(new GridLayout(0, 1));
+    panel.add(new JLabel("How many players?"));
+    panel.add(combo);
+    int result = JOptionPane.showConfirmDialog(null, panel, "World of Sweets - Number of Players",
+        JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+    if (result == JOptionPane.OK_OPTION) {
+        NUMBER_OF_PLAYERS = Integer.parseInt((String)combo.getSelectedItem());
+        tokens = new Token[NUMBER_OF_PLAYERS];
+        numBoomerangs = new int[NUMBER_OF_PLAYERS];
+    }
+    else {
+        System.exit(0);
+    }
+
+    playerNames = new String[NUMBER_OF_PLAYERS];
+    for(int i = 0; i < NUMBER_OF_PLAYERS; i++) {
+      panel = new JPanel();
+      JTextField txt = new JTextField(10);
+      panel.add(new JLabel(String.format("Enter Player %d's name", i + 1)));
+      panel.add(txt);
+      result = JOptionPane.showConfirmDialog(null, panel, "World of Sweets - Number of Players",
+                                                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+      if (result == JOptionPane.OK_OPTION) {
+        String name = txt.getText();
+        if(name.equals(""))
+          playerNames[i] = "Player " + (i + 1);
+        else
+          playerNames[i] = name;
+      }
+      else {
+        playerNames[i] = "Player " + (i + 1);
+      }
+    }
+
+    numTurns = 1;
+
+    deck = new CardDeck();
+    utilityPanel = new JPanel();
+    messagePanel = new MessagePanel();
+
+    // create a frame for the game
+    setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+    // initialize the player tokens
+    for(int i = 0; i < NUMBER_OF_PLAYERS; i++) {
+      tokens[i] = new Token(i);
+      numBoomerangs[i] = 3;
+    }
+
+
+    // menu bar for saving/loading games
+    menu = new Menu();
+    setJMenuBar(menu);
+
+    // panel which contains all of the movement squares
+    gameboard = new Board();
+    add(gameboard);
+
+    // utility panel at the bottom of the main panel
+    utilityPanel = new JPanel(new GridLayout(1, 3));
+    utilityPanel.setPreferredSize(new Dimension(WINDOW_WIDTH,
+        WINDOW_HEIGHT - Board.GAMEBOARD_HEIGHT));
+    add(utilityPanel, BorderLayout.PAGE_END);
+
+    // panel to display messages to user
+    utilityPanel.add(messagePanel);
+
+    // add panels that represent card and discard piles
+    cardDeckPanel = new CardDeckPanel();
+    utilityPanel.add(cardDeckPanel);
+    boomerangPanel = new BoomerangPanel();
+    utilityPanel.add(boomerangPanel);
+
+    pack();
+    setVisible(true);
+    messagePanel.startTimer();
+  }
+
   public void restartClassic()
   {
     int reply = JOptionPane.showConfirmDialog(null, "Would you like to play again?", "World of Sweets - Replay", JOptionPane.YES_NO_OPTION);
@@ -214,14 +306,88 @@ public class Game extends JFrame {
     }
   }
 
+  public void restartStrategic()
+  {
+    int reply = JOptionPane.showConfirmDialog(null, "Would you like to play again?", "World of Sweets - Replay", JOptionPane.YES_NO_OPTION);
+    if (reply == JOptionPane.YES_OPTION) {
+
+      current_turn = 0;
+
+      String[] players = {"2", "3", "4"};
+      JComboBox<String> combo = new JComboBox<>(players);
+      JPanel panel = new JPanel(new GridLayout(0, 1));
+      panel.add(new JLabel("Welcome! How many players?"));
+      panel.add(combo);
+      int result = JOptionPane.showConfirmDialog(null, panel, "World of Sweets - Number of Players",
+          JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+      if (result == JOptionPane.OK_OPTION) {
+          NUMBER_OF_PLAYERS = Integer.parseInt((String)combo.getSelectedItem());
+          tokens = new Token[NUMBER_OF_PLAYERS];
+      }
+      else {
+          System.exit(0);
+      }
+
+      for(int i = 0; i < NUMBER_OF_PLAYERS; i++) {
+        tokens[i] = new Token(i);
+        numBoomerangs[i] = 3;
+      }
+
+      playerNames = new String[NUMBER_OF_PLAYERS];
+      for(int i = 0; i < NUMBER_OF_PLAYERS; i++) {
+        panel = new JPanel();
+        JTextField txt = new JTextField(10);
+        panel.add(new JLabel(String.format("Enter Player %d's name", i + 1)));
+        panel.add(txt);
+        result = JOptionPane.showConfirmDialog(null, panel, "World of Sweets - Number of Players",
+                                               JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+        if (result == JOptionPane.OK_OPTION) {
+          String name = txt.getText();
+          if(name.equals(""))
+            playerNames[i] = "Player " + (i + 1);
+          else
+            playerNames[i] = name;
+        }
+        else {
+          playerNames[i] = "Player " + (i + 1);
+        }
+      }
+
+      numTurns = 1;
+
+      remove(gameboard);
+      gameboard = new Board();
+      add(gameboard);
+
+      utilityPanel.remove(messagePanel);
+      messagePanel = new MessagePanel();
+      utilityPanel.add(messagePanel);
+
+      utilityPanel.remove(cardDeckPanel);
+      cardDeckPanel = new CardDeckPanel();
+      utilityPanel.add(cardDeckPanel);
+      utilityPanel.remove(boomerangPanel);
+      boomerangPanel = new BoomerangPanel();
+      utilityPanel.add(boomerangPanel);
+
+      pack();
+    }
+    else {
+      System.exit(0);
+    }
+  }
+
   public void restart() {
     if(mode == MODE_CLASSIC)
       restartClassic();
+    else if(mode == MODE_STRATEGIC)
+      restartStrategic();
   }
 
   public void nextTurn()
   {
-    //move Token of current player to square given my currentCard
+    //move Token of current player to square given my currentCard or boomerang the targeted player
     Card currentCard = cardDeckPanel.currentCard;
     //if no card has been drawn yet at the start of the game
     if (currentCard == null) {
@@ -229,11 +395,21 @@ public class Game extends JFrame {
     }
 
     // possibly move the token on the board
-    boolean win = this.getBoard().moveToken(tokens[current_turn], currentCard);
+    boolean win = false;
+    if(boomerangNext)
+    {
+      win = this.getBoard().moveToken(tokens[boomerangTarget], currentCard);
+      boomerangNext = false;
+    }
+    else
+    {
+      win = this.getBoard().moveToken(tokens[current_turn], currentCard);
+    }
 
     current_turn = (current_turn + 1) % NUMBER_OF_PLAYERS;
     this.getMessagePanel().setCurrentTurn(current_turn);
     this.getMessagePanel().setMessage("");
+    boomerangPanel.setNum(numBoomerangs[current_turn]);
 
     // next player should draw a new card
     cardDrawn = false;
