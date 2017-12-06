@@ -431,7 +431,7 @@ public class Game extends JFrame {
     this.getMessagePanel().setCurrentTurn(current_turn);
     this.getMessagePanel().setMessage("");
     if(mode == MODE_STRATEGIC)
-      boomerangPanel.setNum(numBoomerangs[current_turn]);
+      refreshBoomerang();
 
     // next player should draw a new card
     cardDrawn = false;
@@ -527,6 +527,10 @@ public class Game extends JFrame {
 
   public void setPlayerNames(String[] newNames) {
     playerNames = newNames;
+  }
+
+  public void refreshBoomerang() {
+    boomerangPanel.setNum(numBoomerangs[current_turn]);
   }
 
   // main simply creates an instance of Game for now
